@@ -104,6 +104,7 @@ export const LONG_JOB_KINDS = [
   "storage.migrate",
   "skills.update",
   "vault.sync",
+  "wiki.repository.sync",
   "org.delete",
   "account.delete",
   "channel.delete",

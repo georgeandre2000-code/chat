@@ -298,7 +298,8 @@
       "storage.connect.provider.r2",
       "storage.connect.provider.s3",
       "storage.connect.provider.b2",
-      "storage.connect.awsRegion.il-central-1"
+      "storage.connect.awsRegion.il-central-1",
+      "wiki.repo.connect.branch"
     ],
     "es": [
       "devices.iphone.path.general",
@@ -986,7 +987,8 @@
       "storage.connect.awsRegion.eu-central-2",
       "storage.connect.awsRegion.eu-west-3",
       "storage.connect.awsRegion.eu-south-1",
-      "storage.connect.awsRegion.eu-north-1"
+      "storage.connect.awsRegion.eu-north-1",
+      "wiki.repo.manage.notes"
     ],
     "de": [
       "devices.iphone.steps.account",
@@ -1446,7 +1448,9 @@
       "storage.connect.theirName.s3Secret",
       "storage.connect.theirName.b2Key",
       "storage.connect.theirName.b2Secret",
-      "storage.connect.awsRegion.il-central-1"
+      "storage.connect.awsRegion.il-central-1",
+      "wiki.repo.connect.repository",
+      "wiki.repo.connect.branch"
     ],
     "it": [
       "shell.email.label",
@@ -1818,7 +1822,9 @@
       "appsDownload.computer",
       "storage.connect.provider.r2",
       "storage.connect.provider.s3",
-      "storage.connect.provider.b2"
+      "storage.connect.provider.b2",
+      "wiki.repo.connect.repository",
+      "wiki.repo.connect.branch"
     ],
     "nl": [
       "calendar.moreRuns",
@@ -2426,7 +2432,9 @@
       "storage.connect.theirName.s3Key",
       "storage.connect.theirName.s3Secret",
       "storage.connect.theirName.b2Key",
-      "storage.connect.theirName.b2Secret"
+      "storage.connect.theirName.b2Secret",
+      "wiki.repo.connect.repository",
+      "wiki.repo.connect.branch"
     ],
     "ja": [
       "channel.tooLong.fileName",
@@ -3231,7 +3239,9 @@
       "storage.connect.provider.r2",
       "storage.connect.provider.s3",
       "storage.connect.provider.b2",
-      "storage.connect.awsRegion.il-central-1"
+      "storage.connect.awsRegion.il-central-1",
+      "wiki.repo.connect.folder",
+      "wiki.repo.connect.branch"
     ],
     "tr": [
       "devices.cpus",
@@ -3723,7 +3733,8 @@
       "storage.connect.provider.r2",
       "storage.connect.provider.s3",
       "storage.connect.provider.b2",
-      "storage.connect.region"
+      "storage.connect.region",
+      "wiki.repo.connect.folder"
     ],
     "ru": [
       "channel.tooLong.fileName",
