@@ -7849,6 +7849,9 @@
   "connectAi.chat.yours": {
     "value": "Yours"
   },
+  "connectAi.chat.free": {
+    "value": "Free"
+  },
   "connectAi.chat.keys": {
     "value": "Workspace key"
   },

@@ -37,17 +37,20 @@ export interface HaveItem {
   signIn?: boolean;
   /** A workspace key: after the plans. */
   isKey?: boolean;
+  /** Nobody's free tier (OpenCode's free models): after the plans with room, before the keys. */
+  free?: boolean;
 }
 
 /** How much of its plan an item has used, and whether it is near or at its limit; null where nothing says. */
 const roomOf = (usage: PlanUsage | null) => (usage ? planState(usage) : null);
 const limited = (i: Pick<HaveItem, "usage">) => roomOf(i.usage)?.state === "limited";
 
-type Rankable = Pick<HaveItem, "usage" | "off" | "signIn" | "isKey">;
+type Rankable = Pick<HaveItem, "usage" | "off" | "signIn" | "isKey" | "free">;
 
 /**
  * A plan that is used in one click first, the one with most room on top (one that doesn't say counts as half used);
- * then one that asks for a sign-in, the workspace's keys, a plan at its limit, and last what can't be picked.
+ * then a free tier, one that asks for a sign-in, the workspace's keys, a plan at its limit, and last what can't be
+ * picked.
  */
 export function sortHave<T extends Rankable>(items: readonly T[]): T[] {
   const rank = (i: Rankable) => {
@@ -57,6 +60,7 @@ export function sortHave<T extends Rankable>(items: readonly T[]): T[] {
       (s?.state === "limited" ? 4000 : 0) +
       (i.isKey ? 2000 : 0) +
       (i.signIn ? 1000 : 0) +
+      (i.free ? 500 : 0) +
       (s?.used ?? 50)
     );
   };
@@ -261,9 +265,9 @@ export function HaveList({
       if (all) for (const i of list.filter(limited)) into("limit", t("connectAi.chat.atLimit"), i);
       return out;
     }
-    for (const i of open) if (i.group.key === "mine") into(i.group.key, i.group.label, i);
-    for (const i of open) if (i.group.key === "keys") into(i.group.key, i.group.label, i);
-    for (const i of open) if (i.group.key !== "mine" && i.group.key !== "keys") into(i.group.key, i.group.label, i);
+    const firsts = ["mine", "free", "keys"];
+    for (const key of firsts) for (const i of open) if (i.group.key === key) into(i.group.key, i.group.label, i);
+    for (const i of open) if (!firsts.includes(i.group.key)) into(i.group.key, i.group.label, i);
     if (all) for (const i of list.filter(limited)) into("limit", t("connectAi.chat.atLimit"), i);
     return out;
   };

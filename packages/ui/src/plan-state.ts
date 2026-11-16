@@ -277,6 +277,21 @@ export function limitOffers<A extends OfferAccount>(
     .sort((a, b) => (a.used ?? 101) - (b.used ?? 101));
 }
 
+/**
+ * A kind's accounts around the computer's own sign-in of that kind: before it, those it lists after them. OpenCode's
+ * own sign-in is its free models, nobody's plan: the accounts with room come first, those at their limit after it.
+ * Any other kind's own sign-in leads. The phone's mirror of the web's `sortHave`.
+ */
+export function aroundOwnSignIn<A extends { usage?: PlanMeterUsage | null }>(
+  kind: string,
+  accounts: readonly A[],
+  now = Date.now(),
+): [before: A[], after: A[]] {
+  if (kind !== "opencode") return [[], [...accounts]];
+  const atLimit = (a: A) => (a.usage ? planState(a.usage, now).state === "limited" : false);
+  return [accounts.filter((a) => !atLimit(a)), accounts.filter(atLimit)];
+}
+
 /** From here long work pauses until the window resets (ADR 0118); replies to people go on until the limit. */
 export const PLAN_PAUSE = 95;
 /** From here an agent is told where its plan stands, so it can say a long task may pause. */
