@@ -2543,6 +2543,16 @@
     }
   },
   "rightHand": {
+    "brain": {
+      "unusable": {
+        "title": "需要一台电脑",
+        "computerOnly": "属于 {{owner}}，仅在 {{computer}} 上登录。Lodi 使用以账号登录的方案思考。",
+        "noComputer": "属于 {{owner}}。需要一台电脑，而工作区还没有连接任何电脑。",
+        "away": "属于 {{owner}}，在 {{computer}} 上，该电脑当前离线。",
+        "connect": "连接电脑",
+        "plans": "查看方案"
+      }
+    },
     "label": "你的得力助手",
     "labelCapitalized": "你的得力助手",
     "unusable": {
@@ -2815,16 +2825,6 @@
       "invite_roles_other": "角色为 {{roles}}。",
       "invite_people_sent_other": "已向 <b>{{emails}}</b> 发送邀请。",
       "remove_ai_key": "删除 API 密钥“{{name}}”。"
-    },
-    "brain": {
-      "unusable": {
-        "title": "需要一台电脑",
-        "computerOnly": "属于 {{owner}}，仅在 {{computer}} 上登录。Lodi 使用以账号登录的方案思考。",
-        "noComputer": "属于 {{owner}}。需要一台电脑，而工作区还没有连接任何电脑。",
-        "away": "属于 {{owner}}，在 {{computer}} 上，该电脑当前离线。",
-        "connect": "连接电脑",
-        "plans": "查看方案"
-      }
     }
   },
   "teamWeek": {
@@ -2982,6 +2982,14 @@
       "grok": "这台电脑上的 Grok 未登录。请在 {{name}} 的页面上连接 Grok 账号。",
       "antigravity": "这台电脑上的 Gemini 未登录。请在 {{name}} 的页面上连接 Gemini 账号。",
       "opencode": "OpenCode 无法在这台电脑上思考。请在 {{name}} 的页面连接一个 OpenCode 密钥。"
+    },
+    "notSignedInOn": {
+      "claude_code": "{{computer}}上的 Claude Code 未登录。请在 {{name}} 的页面上连接 Claude 账号。",
+      "codex": "{{computer}}上的 Codex 未登录。请在 {{name}} 的页面上连接 ChatGPT 账号。",
+      "cursor": "{{computer}}上的 Cursor 未登录。请在 {{name}} 的页面上连接 Cursor 账号。",
+      "grok": "{{computer}}上的 Grok 未登录。请在 {{name}} 的页面上连接 Grok 账号。",
+      "antigravity": "{{computer}}上的 Gemini 未登录。请在 {{name}} 的页面上连接 Gemini 账号。",
+      "opencode": "OpenCode 无法在{{computer}}上思考。请在 {{name}} 的页面连接一个 OpenCode 密钥。"
     },
     "card": {
       "connected": "完成：{{name}} 现在有 AI 了。",
@@ -7476,6 +7484,9 @@
     }
   },
   "issues": {
+    "handedBy": "由 <0/>{{name}} 移交",
+    "fromDm": "来自<0>你与 {{name}} 的私信</0>",
+    "fromDmText": "来自你与 {{name}} 的私信",
     "delete": {
       "action": "删除任务",
       "title": "删除任务 #{{number}}？",
@@ -7678,6 +7689,9 @@
       "runningTitle_female": "{{name}} 正在处理",
       "waitingTitle": "{{name}} 在等你",
       "waitingTitle_female": "{{name}} 在等你",
+      "finishedTitle": "{{name}} 已完成",
+      "finishedMeta": "{{when}} · 由 {{name}} 移交",
+      "answer": "回答",
       "stalledTitle": "{{name}} 于 {{when}} 停止",
       "stalledTitle_female": "{{name}} 于 {{when}} 停止",
       "stalledText": "任务仍由 {{name}} 负责，但目前没有运行。",
@@ -7696,10 +7710,7 @@
         "failed": "上次运行失败了。",
         "canceled": "有人停止了运行。",
         "budget": "智能体的月度预算已用完。"
-      },
-      "finishedTitle": "{{name}} 已完成",
-      "finishedMeta": "{{when}} · 由 {{name}} 移交",
-      "answer": "回答"
+      }
     },
     "status": {
       "todo": "待办",
@@ -7885,10 +7896,7 @@
       "criterion_checked": "勾选了标准“{{text}}”",
       "criterion_unchecked": "取消勾选了标准“{{text}}”",
       "agent_asked": "请 {{name}} 来完成"
-    },
-    "handedBy": "由 <0/>{{name}} 移交",
-    "fromDm": "来自<0>你与 {{name}} 的私信</0>",
-    "fromDmText": "来自你与 {{name}} 的私信"
+    }
   },
   "routines": {
     "filters": "筛选例行工作",
@@ -15479,6 +15487,8 @@
       "none": "没有人更换电脑。",
       "resumed_other": "{{count}} 个任务已重新开始",
       "stillWaiting_other": "{{count}} 个仍在等待 {{name}}",
+      "planDropped": "{{name}} 的 {{plan}} 套餐登录在 {{from}} 上。请也在 {{to}} 上登录，或继续使用 {{from}}。",
+      "signIn": "在 {{name}} 上登录",
       "skipped": "{{name}} 未更换：{{reason}}",
       "skip": {
         "other": "目前无法更换",
@@ -16588,6 +16598,21 @@
     "tomorrowAt": "明天 {{time}}"
   },
   "work": {
+    "handed": {
+      "lead": "已移交给 <0/>{{name}}",
+      "working": "进行中",
+      "done": "用时 {{duration}} 完成",
+      "waitingYou": "等待你的回答",
+      "waiting": "等待回答",
+      "waitingApprovalYou": "等待你的批准",
+      "waitingApproval": "等待批准",
+      "waitingComputer": "等待电脑",
+      "paused": "已在方案限额处暂停",
+      "queued": "排队中",
+      "failed": "未完成",
+      "stopped": "已停止",
+      "step": "第 {{current}} 步，共 {{total}} 步"
+    },
     "duration": {
       "minutes_other": "{{count}} 分钟",
       "hours_other": "{{count}} 小时",
@@ -16661,24 +16686,12 @@
       "failed": "已阻塞 · 未完成",
       "failedWhy": "已阻塞 · 未完成：{{why}}"
     },
-    "working": "后台进行中",
-    "handed": {
-      "lead": "已移交给 <0/>{{name}}",
-      "working": "进行中",
-      "done": "用时 {{duration}} 完成",
-      "waitingYou": "等待你的回答",
-      "waiting": "等待回答",
-      "waitingApprovalYou": "等待你的批准",
-      "waitingApproval": "等待批准",
-      "waitingComputer": "等待电脑",
-      "paused": "已在方案限额处暂停",
-      "queued": "排队中",
-      "failed": "未完成",
-      "stopped": "已停止",
-      "step": "第 {{current}} 步，共 {{total}} 步"
-    }
+    "working": "后台进行中"
   },
   "chat": {
+    "request": {
+      "asksYou": "{{name}} 问你"
+    },
     "speedFallback": {
       "text": "ChatGPT 拒绝了此账号或模型的快速模式，因此这条回复以标准速度发送。",
       "action": "打开智能体"
@@ -17275,9 +17288,6 @@
       "interrupted": "因服务器重启而中断。请再问一次以继续。",
       "step_limit": "完成前步骤已用完。",
       "stuck": "我卡住了，在完成前停了下来。"
-    },
-    "request": {
-      "asksYou": "{{name}} 问你"
     }
   },
   "builtinTools": {

@@ -2736,6 +2736,16 @@
     }
   },
   "rightHand": {
+    "brain": {
+      "unusable": {
+        "title": "Besoin d'un ordinateur",
+        "computerOnly": "De {{owner}}, connecté seulement sur {{computer}}. Lodi réfléchit avec un forfait connecté en tant que compte.",
+        "noComputer": "De {{owner}}. Il faut un ordinateur, et l'espace de travail n'en a aucun de connecté.",
+        "away": "De {{owner}}, sur {{computer}}, qui est absent.",
+        "connect": "Connecter un ordinateur",
+        "plans": "Voir les forfaits"
+      }
+    },
     "label": "votre bras droit",
     "labelCapitalized": "Votre bras droit",
     "unusable": {
@@ -3028,16 +3038,6 @@
       "invite_people_sent_many": "Invitations envoyées à <b>{{emails}}</b>.",
       "invite_people_sent_other": "Invitations envoyées à <b>{{emails}}</b>.",
       "remove_ai_key": "Supprimer la clé API « {{name}} »."
-    },
-    "brain": {
-      "unusable": {
-        "title": "Besoin d'un ordinateur",
-        "computerOnly": "De {{owner}}, connecté seulement sur {{computer}}. Lodi réfléchit avec un forfait connecté en tant que compte.",
-        "noComputer": "De {{owner}}. Il faut un ordinateur, et l'espace de travail n'en a aucun de connecté.",
-        "away": "De {{owner}}, sur {{computer}}, qui est absent.",
-        "connect": "Connecter un ordinateur",
-        "plans": "Voir les forfaits"
-      }
     }
   },
   "teamWeek": {
@@ -3219,6 +3219,14 @@
       "grok": "Grok n'est pas connecté sur cet ordinateur. Connectez un compte Grok sur la page de {{name}}.",
       "antigravity": "Gemini n'est pas connecté sur cet ordinateur. Connectez un compte Gemini sur la page de {{name}}.",
       "opencode": "OpenCode ne peut pas réfléchir sur cet ordinateur. Connectez une clé OpenCode sur la page de {{name}}."
+    },
+    "notSignedInOn": {
+      "claude_code": "Claude Code n'est pas connecté sur {{computer}}. Connectez un compte Claude sur la page de {{name}}.",
+      "codex": "Codex n'est pas connecté sur {{computer}}. Connectez un compte ChatGPT sur la page de {{name}}.",
+      "cursor": "Cursor n'est pas connecté sur {{computer}}. Connectez un compte Cursor sur la page de {{name}}.",
+      "grok": "Grok n'est pas connecté sur {{computer}}. Connectez un compte Grok sur la page de {{name}}.",
+      "antigravity": "Gemini n'est pas connecté sur {{computer}}. Connectez un compte Gemini sur la page de {{name}}.",
+      "opencode": "OpenCode ne peut pas réfléchir sur {{computer}}. Connectez une clé OpenCode sur la page de {{name}}."
     },
     "card": {
       "connected": "C'est fait : {{name}} a maintenant une IA.",
@@ -7987,6 +7995,9 @@
     }
   },
   "issues": {
+    "handedBy": "confiée par <0/>{{name}}",
+    "fromDm": "depuis <0>ta DM avec {{name}}</0>",
+    "fromDmText": "depuis ta DM avec {{name}}",
     "delete": {
       "action": "Supprimer la tâche",
       "title": "Supprimer la tâche #{{number}} ?",
@@ -8207,6 +8218,9 @@
       "runningTitle_female": "{{name}} y travaille",
       "waitingTitle": "{{name}} vous attend",
       "waitingTitle_female": "{{name}} vous attend",
+      "finishedTitle": "{{name}} l'a terminée",
+      "finishedMeta": "{{when}} · confiée par {{name}}",
+      "answer": "Répondre",
       "stalledTitle": "{{name}} s'est arrêté {{when}}",
       "stalledTitle_female": "{{name}} s'est arrêtée {{when}}",
       "stalledText": "La tâche est toujours confiée à {{name}}, mais aucune exécution n'est en cours.",
@@ -8225,10 +8239,7 @@
         "failed": "La dernière exécution a échoué.",
         "canceled": "Quelqu'un a arrêté l'exécution.",
         "budget": "Le budget mensuel de l'agent est épuisé."
-      },
-      "finishedTitle": "{{name}} l'a terminée",
-      "finishedMeta": "{{when}} · confiée par {{name}}",
-      "answer": "Répondre"
+      }
     },
     "status": {
       "todo": "À faire",
@@ -8422,10 +8433,7 @@
       "criterion_checked": "a coché le critère « {{text}} »",
       "criterion_unchecked": "a décoché le critère « {{text}} »",
       "agent_asked": "a demandé à {{name}} de la faire"
-    },
-    "handedBy": "confiée par <0/>{{name}}",
-    "fromDm": "depuis <0>ta DM avec {{name}}</0>",
-    "fromDmText": "depuis ta DM avec {{name}}"
+    }
   },
   "routines": {
     "filters": "Filtrer les routines",
@@ -16484,6 +16492,8 @@
       "stillWaiting_one": "{{count}} attend toujours {{name}}",
       "stillWaiting_many": "{{count}} attendent toujours {{name}}",
       "stillWaiting_other": "{{count}} attendent toujours {{name}}",
+      "planDropped": "Le forfait {{plan}} de {{name}} est connecté sur {{from}}. Connectez-vous aussi sur {{to}}, ou gardez {{from}}.",
+      "signIn": "Se connecter sur {{name}}",
       "skipped": "{{name}} n'a pas changé : {{reason}}",
       "skip": {
         "other": "impossible de changer pour l'instant",
@@ -17637,6 +17647,21 @@
     "tomorrowAt": "demain à {{time}}"
   },
   "work": {
+    "handed": {
+      "lead": "Confié à <0/>{{name}}",
+      "working": "en cours",
+      "done": "terminé en {{duration}}",
+      "waitingYou": "attend ta réponse",
+      "waiting": "attend une réponse",
+      "waitingApprovalYou": "attend ton approbation",
+      "waitingApproval": "attend une approbation",
+      "waitingComputer": "attend l'ordinateur",
+      "paused": "en pause à la limite du forfait",
+      "queued": "en file d'attente",
+      "failed": "n'a pas abouti",
+      "stopped": "arrêté",
+      "step": "étape {{current}} sur {{total}}"
+    },
     "duration": {
       "minutes_one": "{{count}} min",
       "minutes_many": "{{count}} min",
@@ -17714,24 +17739,12 @@
       "failed": "Bloqué · pas terminé",
       "failedWhy": "Bloqué · pas terminé : {{why}}"
     },
-    "working": "En arrière-plan",
-    "handed": {
-      "lead": "Confié à <0/>{{name}}",
-      "working": "en cours",
-      "done": "terminé en {{duration}}",
-      "waitingYou": "attend ta réponse",
-      "waiting": "attend une réponse",
-      "waitingApprovalYou": "attend ton approbation",
-      "waitingApproval": "attend une approbation",
-      "waitingComputer": "attend l'ordinateur",
-      "paused": "en pause à la limite du forfait",
-      "queued": "en file d'attente",
-      "failed": "n'a pas abouti",
-      "stopped": "arrêté",
-      "step": "étape {{current}} sur {{total}}"
-    }
+    "working": "En arrière-plan"
   },
   "chat": {
+    "request": {
+      "asksYou": "{{name}} te demande"
+    },
     "speedFallback": {
       "text": "ChatGPT a refusé la vitesse Rapide pour ce compte ou ce modèle, cette réponse est donc arrivée en standard.",
       "action": "Ouvrir l'agent"
@@ -18344,9 +18357,6 @@
       "interrupted": "Interrompu par un redémarrage du serveur. Redemandez pour continuer.",
       "step_limit": "Je n'avais plus d'étapes avant de terminer.",
       "stuck": "J'ai été bloqué et je me suis arrêté avant de terminer."
-    },
-    "request": {
-      "asksYou": "{{name}} te demande"
     }
   },
   "builtinTools": {

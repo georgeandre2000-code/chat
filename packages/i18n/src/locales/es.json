@@ -2731,6 +2731,16 @@
     }
   },
   "rightHand": {
+    "brain": {
+      "unusable": {
+        "title": "Necesita un ordenador",
+        "computerOnly": "De {{owner}}, conectado solo en {{computer}}. Lodi piensa con un plan conectado como cuenta.",
+        "noComputer": "De {{owner}}. Necesita un ordenador y el espacio de trabajo no tiene ninguno conectado.",
+        "away": "De {{owner}}, en {{computer}}, que está ausente.",
+        "connect": "Conectar un ordenador",
+        "plans": "Ver planes"
+      }
+    },
     "label": "tu mano derecha",
     "labelCapitalized": "Tu mano derecha",
     "unusable": {
@@ -3023,16 +3033,6 @@
       "invite_people_sent_many": "Invitaciones enviadas a <b>{{emails}}</b>.",
       "invite_people_sent_other": "Invitaciones enviadas a <b>{{emails}}</b>.",
       "remove_ai_key": "Eliminar la clave de API «{{name}}»."
-    },
-    "brain": {
-      "unusable": {
-        "title": "Necesita un ordenador",
-        "computerOnly": "De {{owner}}, conectado solo en {{computer}}. Lodi piensa con un plan conectado como cuenta.",
-        "noComputer": "De {{owner}}. Necesita un ordenador y el espacio de trabajo no tiene ninguno conectado.",
-        "away": "De {{owner}}, en {{computer}}, que está ausente.",
-        "connect": "Conectar un ordenador",
-        "plans": "Ver planes"
-      }
     }
   },
   "teamWeek": {
@@ -3214,6 +3214,14 @@
       "grok": "Grok no tiene la sesión iniciada en esta computadora. Conecta una cuenta de Grok en la página de {{name}}.",
       "antigravity": "Gemini no tiene la sesión iniciada en esta computadora. Conecta una cuenta de Gemini en la página de {{name}}.",
       "opencode": "OpenCode no puede pensar en esta computadora. Conecta una clave de OpenCode en la página de {{name}}."
+    },
+    "notSignedInOn": {
+      "claude_code": "Claude Code no tiene la sesión iniciada en {{computer}}. Conecta una cuenta de Claude en la página de {{name}}.",
+      "codex": "Codex no tiene la sesión iniciada en {{computer}}. Conecta una cuenta de ChatGPT en la página de {{name}}.",
+      "cursor": "Cursor no tiene la sesión iniciada en {{computer}}. Conecta una cuenta de Cursor en la página de {{name}}.",
+      "grok": "Grok no tiene la sesión iniciada en {{computer}}. Conecta una cuenta de Grok en la página de {{name}}.",
+      "antigravity": "Gemini no tiene la sesión iniciada en {{computer}}. Conecta una cuenta de Gemini en la página de {{name}}.",
+      "opencode": "OpenCode no puede pensar en {{computer}}. Conecta una clave de OpenCode en la página de {{name}}."
     },
     "card": {
       "connected": "Listo: {{name}} ya tiene una IA.",
@@ -7935,6 +7943,9 @@
     }
   },
   "issues": {
+    "handedBy": "entregada por <0/>{{name}}",
+    "fromDm": "de <0>tu DM con {{name}}</0>",
+    "fromDmText": "de tu DM con {{name}}",
     "delete": {
       "action": "Eliminar tarea",
       "title": "¿Eliminar la tarea #{{number}}?",
@@ -8155,6 +8166,9 @@
       "runningTitle_female": "{{name}} está trabajando en ella",
       "waitingTitle": "{{name}} te está esperando",
       "waitingTitle_female": "{{name}} te está esperando",
+      "finishedTitle": "{{name}} la terminó",
+      "finishedMeta": "{{when}} · entregada por {{name}}",
+      "answer": "Responder",
       "stalledTitle": "{{name}} se detuvo {{when}}",
       "stalledTitle_female": "{{name}} se detuvo {{when}}",
       "stalledText": "La tarea sigue con {{name}}, pero no hay ninguna ejecución en curso.",
@@ -8173,10 +8187,7 @@
         "failed": "La última ejecución falló.",
         "canceled": "Alguien detuvo la ejecución.",
         "budget": "Se acabó el presupuesto mensual del agente."
-      },
-      "finishedTitle": "{{name}} la terminó",
-      "finishedMeta": "{{when}} · entregada por {{name}}",
-      "answer": "Responder"
+      }
     },
     "status": {
       "todo": "Por hacer",
@@ -8370,10 +8381,7 @@
       "criterion_checked": "marcó el criterio \"{{text}}\"",
       "criterion_unchecked": "desmarcó el criterio \"{{text}}\"",
       "agent_asked": "le pidió a {{name}} que lo hiciera"
-    },
-    "handedBy": "entregada por <0/>{{name}}",
-    "fromDm": "de <0>tu DM con {{name}}</0>",
-    "fromDmText": "de tu DM con {{name}}"
+    }
   },
   "routines": {
     "filters": "Filtrar rutinas",
@@ -16413,6 +16421,8 @@
       "stillWaiting_one": "{{count}} sigue esperando a {{name}}",
       "stillWaiting_many": "{{count}} siguen esperando a {{name}}",
       "stillWaiting_other": "{{count}} siguen esperando a {{name}}",
+      "planDropped": "El plan de {{plan}} de {{name}} tiene la sesión iniciada en {{from}}. Inicia sesión también en {{to}} o quédate con {{from}}.",
+      "signIn": "Iniciar sesión en {{name}}",
       "skipped": "{{name}} se quedó: {{reason}}",
       "skip": {
         "other": "no se pudo cambiar ahora",
@@ -17566,6 +17576,21 @@
     "tomorrowAt": "mañana {{time}}"
   },
   "work": {
+    "handed": {
+      "lead": "Entregado a <0/>{{name}}",
+      "working": "trabajando en ello",
+      "done": "listo en {{duration}}",
+      "waitingYou": "esperando tu respuesta",
+      "waiting": "esperando una respuesta",
+      "waitingApprovalYou": "esperando tu aprobación",
+      "waitingApproval": "esperando aprobación",
+      "waitingComputer": "esperando el ordenador",
+      "paused": "en pausa en el límite del plan",
+      "queued": "en cola",
+      "failed": "no terminó",
+      "stopped": "detenido",
+      "step": "paso {{current}} de {{total}}"
+    },
     "duration": {
       "minutes_one": "{{count}} min",
       "minutes_many": "{{count}} min",
@@ -17643,24 +17668,12 @@
       "failed": "Bloqueado · no terminó",
       "failedWhy": "Bloqueado · no terminó: {{why}}"
     },
-    "working": "En segundo plano",
-    "handed": {
-      "lead": "Entregado a <0/>{{name}}",
-      "working": "trabajando en ello",
-      "done": "listo en {{duration}}",
-      "waitingYou": "esperando tu respuesta",
-      "waiting": "esperando una respuesta",
-      "waitingApprovalYou": "esperando tu aprobación",
-      "waitingApproval": "esperando aprobación",
-      "waitingComputer": "esperando el ordenador",
-      "paused": "en pausa en el límite del plan",
-      "queued": "en cola",
-      "failed": "no terminó",
-      "stopped": "detenido",
-      "step": "paso {{current}} de {{total}}"
-    }
+    "working": "En segundo plano"
   },
   "chat": {
+    "request": {
+      "asksYou": "{{name}} te pregunta"
+    },
     "speedFallback": {
       "text": "ChatGPT rechazó la velocidad Rápida en esta cuenta o modelo, así que esta respuesta salió en estándar.",
       "action": "Abrir agente"
@@ -18261,9 +18274,6 @@
       "interrupted": "Interrumpido por un reinicio del servidor. Vuelve a pedirlo para continuar.",
       "step_limit": "Me quedé sin pasos antes de terminar.",
       "stuck": "Me trabé y me detuve antes de terminar."
-    },
-    "request": {
-      "asksYou": "{{name}} te pregunta"
     }
   },
   "builtinTools": {

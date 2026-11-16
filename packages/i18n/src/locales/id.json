@@ -2544,6 +2544,16 @@
     }
   },
   "rightHand": {
+    "brain": {
+      "unusable": {
+        "title": "Butuh komputer",
+        "computerOnly": "Milik {{owner}}, masuk hanya di {{computer}}. Lodi berpikir dengan paket yang masuk sebagai akun.",
+        "noComputer": "Milik {{owner}}. Butuh komputer, dan workspace belum menghubungkan satu pun.",
+        "away": "Milik {{owner}}, di {{computer}}, yang sedang tidak aktif.",
+        "connect": "Hubungkan komputer",
+        "plans": "Lihat paket"
+      }
+    },
     "label": "tangan kanan Anda",
     "labelCapitalized": "Tangan kanan Anda",
     "unusable": {
@@ -2816,16 +2826,6 @@
       "invite_roles_other": "Dengan peran {{roles}}.",
       "invite_people_sent_other": "Undangan terkirim ke <b>{{emails}}</b>.",
       "remove_ai_key": "Hapus kunci API \"{{name}}\"."
-    },
-    "brain": {
-      "unusable": {
-        "title": "Butuh komputer",
-        "computerOnly": "Milik {{owner}}, masuk hanya di {{computer}}. Lodi berpikir dengan paket yang masuk sebagai akun.",
-        "noComputer": "Milik {{owner}}. Butuh komputer, dan workspace belum menghubungkan satu pun.",
-        "away": "Milik {{owner}}, di {{computer}}, yang sedang tidak aktif.",
-        "connect": "Hubungkan komputer",
-        "plans": "Lihat paket"
-      }
     }
   },
   "teamWeek": {
@@ -2989,6 +2989,20 @@
       "antigravity_female": "Gemini belum masuk di komputer ini. Hubungkan akun Gemini di halaman {{name}}.",
       "opencode": "OpenCode tidak bisa berpikir di komputer ini. Hubungkan kunci OpenCode di halaman {{name}}.",
       "opencode_female": "OpenCode tidak bisa berpikir di komputer ini. Hubungkan kunci OpenCode di halaman {{name}}."
+    },
+    "notSignedInOn": {
+      "claude_code": "Claude Code belum masuk di {{computer}}. Hubungkan akun Claude di halaman {{name}}.",
+      "claude_code_female": "Claude Code belum masuk di {{computer}}. Hubungkan akun Claude di halaman {{name}}.",
+      "codex": "Codex belum masuk di {{computer}}. Hubungkan akun ChatGPT di halaman {{name}}.",
+      "codex_female": "Codex belum masuk di {{computer}}. Hubungkan akun ChatGPT di halaman {{name}}.",
+      "cursor": "Cursor belum masuk di {{computer}}. Hubungkan akun Cursor di halaman {{name}}.",
+      "cursor_female": "Cursor belum masuk di {{computer}}. Hubungkan akun Cursor di halaman {{name}}.",
+      "grok": "Grok belum masuk di {{computer}}. Hubungkan akun Grok di halaman {{name}}.",
+      "grok_female": "Grok belum masuk di {{computer}}. Hubungkan akun Grok di halaman {{name}}.",
+      "antigravity": "Gemini belum masuk di {{computer}}. Hubungkan akun Gemini di halaman {{name}}.",
+      "antigravity_female": "Gemini belum masuk di {{computer}}. Hubungkan akun Gemini di halaman {{name}}.",
+      "opencode": "OpenCode tidak bisa berpikir di {{computer}}. Hubungkan kunci OpenCode di halaman {{name}}.",
+      "opencode_female": "OpenCode tidak bisa berpikir di {{computer}}. Hubungkan kunci OpenCode di halaman {{name}}."
     },
     "card": {
       "connected": "Beres: {{name}} sekarang punya AI.",
@@ -7465,6 +7479,9 @@
     }
   },
   "issues": {
+    "handedBy": "diserahkan oleh <0/>{{name}}",
+    "fromDm": "dari <0>DM kamu dengan {{name}}</0>",
+    "fromDmText": "dari DM kamu dengan {{name}}",
     "delete": {
       "action": "Hapus tugas",
       "title": "Hapus tugas #{{number}}?",
@@ -7667,6 +7684,9 @@
       "runningTitle_female": "{{name}} sedang mengerjakannya",
       "waitingTitle": "{{name}} sedang menunggumu",
       "waitingTitle_female": "{{name}} sedang menunggumu",
+      "finishedTitle": "{{name}} menyelesaikannya",
+      "finishedMeta": "{{when}} · diserahkan oleh {{name}}",
+      "answer": "Jawab",
       "stalledTitle": "{{name}} berhenti {{when}}",
       "stalledTitle_female": "{{name}} berhenti {{when}}",
       "stalledText": "Tugas ini masih dipegang {{name}}, tapi tidak ada proses yang berjalan.",
@@ -7685,10 +7705,7 @@
         "failed": "Proses terakhir gagal.",
         "canceled": "Seseorang menghentikan prosesnya.",
         "budget": "Anggaran bulanan agen sudah habis."
-      },
-      "finishedTitle": "{{name}} menyelesaikannya",
-      "finishedMeta": "{{when}} · diserahkan oleh {{name}}",
-      "answer": "Jawab"
+      }
     },
     "status": {
       "todo": "Akan dikerjakan",
@@ -7874,10 +7891,7 @@
       "criterion_checked": "mencentang kriteria \"{{text}}\"",
       "criterion_unchecked": "menghapus centang kriteria \"{{text}}\"",
       "agent_asked": "meminta {{name}} mengerjakannya"
-    },
-    "handedBy": "diserahkan oleh <0/>{{name}}",
-    "fromDm": "dari <0>DM kamu dengan {{name}}</0>",
-    "fromDmText": "dari DM kamu dengan {{name}}"
+    }
   },
   "routines": {
     "filters": "Saring rutinitas",
@@ -15469,6 +15483,8 @@
       "none": "Tidak ada yang pindah komputer.",
       "resumed_other": "{{count}} tugas berjalan lagi",
       "stillWaiting_other": "{{count}} masih menunggu {{name}}",
+      "planDropped": "Paket {{plan}} milik {{name}} masuk di {{from}}. Masuk juga di {{to}}, atau tetap pakai {{from}}.",
+      "signIn": "Masuk di {{name}}",
       "skipped": "{{name}} tetap: {{reason}}",
       "skip": {
         "other": "tidak bisa pindah sekarang",
@@ -16584,6 +16600,21 @@
     "tomorrowAt": "besok {{time}}"
   },
   "work": {
+    "handed": {
+      "lead": "Diserahkan ke <0/>{{name}}",
+      "working": "sedang dikerjakan",
+      "done": "selesai dalam {{duration}}",
+      "waitingYou": "menunggu jawabanmu",
+      "waiting": "menunggu jawaban",
+      "waitingApprovalYou": "menunggu persetujuanmu",
+      "waitingApproval": "menunggu persetujuan",
+      "waitingComputer": "menunggu komputer",
+      "paused": "dijeda di batas paket",
+      "queued": "dalam antrean",
+      "failed": "tidak selesai",
+      "stopped": "dihentikan",
+      "step": "langkah {{current}} dari {{total}}"
+    },
     "duration": {
       "minutes_other": "{{count}} mnt",
       "hours_other": "{{count}} j",
@@ -16657,24 +16688,12 @@
       "failed": "Terhambat · tidak selesai",
       "failedWhy": "Terhambat · tidak selesai: {{why}}"
     },
-    "working": "Di latar belakang",
-    "handed": {
-      "lead": "Diserahkan ke <0/>{{name}}",
-      "working": "sedang dikerjakan",
-      "done": "selesai dalam {{duration}}",
-      "waitingYou": "menunggu jawabanmu",
-      "waiting": "menunggu jawaban",
-      "waitingApprovalYou": "menunggu persetujuanmu",
-      "waitingApproval": "menunggu persetujuan",
-      "waitingComputer": "menunggu komputer",
-      "paused": "dijeda di batas paket",
-      "queued": "dalam antrean",
-      "failed": "tidak selesai",
-      "stopped": "dihentikan",
-      "step": "langkah {{current}} dari {{total}}"
-    }
+    "working": "Di latar belakang"
   },
   "chat": {
+    "request": {
+      "asksYou": "{{name}} bertanya padamu"
+    },
     "speedFallback": {
       "text": "ChatGPT menolak kecepatan Cepat untuk akun atau model ini, jadi jawaban ini memakai kecepatan standar.",
       "action": "Buka agen"
@@ -17259,9 +17278,6 @@
       "interrupted": "Terputus karena server dimulai ulang. Minta lagi untuk melanjutkan.",
       "step_limit": "Langkahku habis sebelum selesai.",
       "stuck": "Aku macet dan berhenti sebelum selesai."
-    },
-    "request": {
-      "asksYou": "{{name}} bertanya padamu"
     }
   },
   "builtinTools": {

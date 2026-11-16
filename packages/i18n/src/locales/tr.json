@@ -2634,6 +2634,16 @@
     }
   },
   "rightHand": {
+    "brain": {
+      "unusable": {
+        "title": "Bir bilgisayar gerekiyor",
+        "computerOnly": "{{owner}} kişisine ait, yalnızca {{computer}} üzerinde oturum açık. Lodi, hesap olarak oturum açılmış bir planla düşünür.",
+        "noComputer": "{{owner}} kişisine ait. Bir bilgisayar gerekiyor ve çalışma alanında bağlı hiç yok.",
+        "away": "{{owner}} kişisine ait, {{computer}} üzerinde, şu an ulaşılamıyor.",
+        "connect": "Bilgisayar bağla",
+        "plans": "Planları gör"
+      }
+    },
     "label": "sağ kolun",
     "labelCapitalized": "Sağ kolun",
     "unusable": {
@@ -2916,16 +2926,6 @@
       "invite_people_sent_one": "<b>{{emails}}</b> adresine davet gönderildi.",
       "invite_people_sent_other": "<b>{{emails}}</b> adreslerine davet gönderildi.",
       "remove_ai_key": "\"{{name}}\" API anahtarını sil."
-    },
-    "brain": {
-      "unusable": {
-        "title": "Bir bilgisayar gerekiyor",
-        "computerOnly": "{{owner}} kişisine ait, yalnızca {{computer}} üzerinde oturum açık. Lodi, hesap olarak oturum açılmış bir planla düşünür.",
-        "noComputer": "{{owner}} kişisine ait. Bir bilgisayar gerekiyor ve çalışma alanında bağlı hiç yok.",
-        "away": "{{owner}} kişisine ait, {{computer}} üzerinde, şu an ulaşılamıyor.",
-        "connect": "Bilgisayar bağla",
-        "plans": "Planları gör"
-      }
     }
   },
   "teamWeek": {
@@ -3095,6 +3095,14 @@
       "grok": "Grok bu bilgisayarda giriş yapmamış. {{name}} sayfasından bir Grok hesabı bağlayın.",
       "antigravity": "Gemini bu bilgisayarda giriş yapmamış. {{name}} sayfasından bir Gemini hesabı bağlayın.",
       "opencode": "OpenCode bu bilgisayarda düşünemiyor. {{name}} sayfasından bir OpenCode anahtarı bağlayın."
+    },
+    "notSignedInOn": {
+      "claude_code": "Claude Code {{computer}} bilgisayarında giriş yapmamış. {{name}} sayfasından bir Claude hesabı bağlayın.",
+      "codex": "Codex {{computer}} bilgisayarında giriş yapmamış. {{name}} sayfasından bir ChatGPT hesabı bağlayın.",
+      "cursor": "Cursor {{computer}} bilgisayarında giriş yapmamış. {{name}} sayfasından bir Cursor hesabı bağlayın.",
+      "grok": "Grok {{computer}} bilgisayarında giriş yapmamış. {{name}} sayfasından bir Grok hesabı bağlayın.",
+      "antigravity": "Gemini {{computer}} bilgisayarında giriş yapmamış. {{name}} sayfasından bir Gemini hesabı bağlayın.",
+      "opencode": "OpenCode {{computer}} bilgisayarında düşünemiyor. {{name}} sayfasından bir OpenCode anahtarı bağlayın."
     },
     "card": {
       "connected": "Tamam: {{name}} artık bir yapay zekaya sahip.",
@@ -7677,6 +7685,9 @@
     }
   },
   "issues": {
+    "handedBy": "devreden: <0/>{{name}}",
+    "fromDm": "<0>{{name}} ile DM'inden</0>",
+    "fromDmText": "{{name}} ile DM'inden",
     "delete": {
       "action": "Görevi sil",
       "title": "#{{number}} görevi silinsin mi?",
@@ -7885,6 +7896,9 @@
       "label": "{{name}} çalışması",
       "runningTitle": "{{name}} bunun üzerinde çalışıyor",
       "waitingTitle": "{{name}} sizi bekliyor",
+      "finishedTitle": "{{name}} bitirdi",
+      "finishedMeta": "{{when}} · devreden: {{name}}",
+      "answer": "Yanıtla",
       "stalledTitle": "{{name}} durdu: {{when}}",
       "stalledText": "Görev hâlâ {{name}} üzerinde ama süren bir çalıştırma yok.",
       "started": "başladı: {{when}}",
@@ -7901,10 +7915,7 @@
         "failed": "Son çalıştırma başarısız oldu.",
         "canceled": "Biri çalıştırmayı durdurdu.",
         "budget": "Ajanın aylık bütçesi bitti."
-      },
-      "finishedTitle": "{{name}} bitirdi",
-      "finishedMeta": "{{when}} · devreden: {{name}}",
-      "answer": "Yanıtla"
+      }
     },
     "status": {
       "todo": "Yapılacak",
@@ -8090,10 +8101,7 @@
       "criterion_checked": "\"{{text}}\" kriterini işaretledi",
       "criterion_unchecked": "\"{{text}}\" kriterinin işaretini kaldırdı",
       "agent_asked": "{{name}} ajanından yapmasını istedi"
-    },
-    "handedBy": "devreden: <0/>{{name}}",
-    "fromDm": "<0>{{name}} ile DM'inden</0>",
-    "fromDmText": "{{name}} ile DM'inden"
+    }
   },
   "routines": {
     "filters": "Rutinleri filtrele",
@@ -15905,6 +15913,8 @@
       "resumed_other": "{{count}} görev yeniden başladı",
       "stillWaiting_one": "{{count}} tanesi hâlâ {{name}} bilgisayarını bekliyor",
       "stillWaiting_other": "{{count}} tanesi hâlâ {{name}} bilgisayarını bekliyor",
+      "planDropped": "{{name}} adlı ajanın {{plan}} planı {{from}} üzerinde oturum açmış. {{to}} üzerinde de oturum açın ya da {{from}} ile devam edin.",
+      "signIn": "{{name}} üzerinde oturum aç",
       "skipped": "{{name}} kaldı: {{reason}}",
       "skip": {
         "other": "şu anda geçiş yapılamadı",
@@ -17033,6 +17043,21 @@
     "tomorrowAt": "yarın {{time}}"
   },
   "work": {
+    "handed": {
+      "lead": "Devredildi: <0/>{{name}}",
+      "working": "üzerinde çalışıyor",
+      "done": "{{duration}} içinde bitti",
+      "waitingYou": "yanıtını bekliyor",
+      "waiting": "bir yanıt bekliyor",
+      "waitingApprovalYou": "onayını bekliyor",
+      "waitingApproval": "onay bekliyor",
+      "waitingComputer": "bilgisayarı bekliyor",
+      "paused": "plan sınırında duraklatıldı",
+      "queued": "sırada",
+      "failed": "bitmedi",
+      "stopped": "durduruldu",
+      "step": "adım {{current}}/{{total}}"
+    },
     "duration": {
       "minutes_one": "{{count}} dk",
       "minutes_other": "{{count}} dk",
@@ -17108,24 +17133,12 @@
       "failed": "Engellendi · bitmedi",
       "failedWhy": "Engellendi · bitmedi: {{why}}"
     },
-    "working": "Arka planda",
-    "handed": {
-      "lead": "Devredildi: <0/>{{name}}",
-      "working": "üzerinde çalışıyor",
-      "done": "{{duration}} içinde bitti",
-      "waitingYou": "yanıtını bekliyor",
-      "waiting": "bir yanıt bekliyor",
-      "waitingApprovalYou": "onayını bekliyor",
-      "waitingApproval": "onay bekliyor",
-      "waitingComputer": "bilgisayarı bekliyor",
-      "paused": "plan sınırında duraklatıldı",
-      "queued": "sırada",
-      "failed": "bitmedi",
-      "stopped": "durduruldu",
-      "step": "adım {{current}}/{{total}}"
-    }
+    "working": "Arka planda"
   },
   "chat": {
+    "request": {
+      "asksYou": "{{name}} soruyor"
+    },
     "speedFallback": {
       "text": "ChatGPT bu hesap veya model için Hızlı hızı reddetti, bu yüzden bu yanıt standart hızda geldi.",
       "action": "Ajanı aç"
@@ -17718,9 +17731,6 @@
       "interrupted": "Sunucu yeniden başlatıldığı için kesildi. Devam etmek için yeniden sorun.",
       "step_limit": "Bitirmeden adımlarım tükendi.",
       "stuck": "Takıldım ve bitirmeden durdum."
-    },
-    "request": {
-      "asksYou": "{{name}} soruyor"
     }
   },
   "builtinTools": {

@@ -2637,6 +2637,16 @@
     }
   },
   "rightHand": {
+    "brain": {
+      "unusable": {
+        "title": "Heeft een computer nodig",
+        "computerOnly": "Van {{owner}}, alleen aangemeld op {{computer}}. Lodi denkt met een plan dat als account is aangemeld.",
+        "noComputer": "Van {{owner}}. Er is een computer nodig, en de workspace heeft er geen verbonden.",
+        "away": "Van {{owner}}, op {{computer}}, die weg is.",
+        "connect": "Een computer verbinden",
+        "plans": "Plannen bekijken"
+      }
+    },
     "label": "je rechterhand",
     "labelCapitalized": "Je rechterhand",
     "unusable": {
@@ -2919,16 +2929,6 @@
       "invite_people_sent_one": "Uitnodiging verstuurd naar <b>{{emails}}</b>.",
       "invite_people_sent_other": "Uitnodigingen verstuurd naar <b>{{emails}}</b>.",
       "remove_ai_key": "API-sleutel \"{{name}}\" verwijderen."
-    },
-    "brain": {
-      "unusable": {
-        "title": "Heeft een computer nodig",
-        "computerOnly": "Van {{owner}}, alleen aangemeld op {{computer}}. Lodi denkt met een plan dat als account is aangemeld.",
-        "noComputer": "Van {{owner}}. Er is een computer nodig, en de workspace heeft er geen verbonden.",
-        "away": "Van {{owner}}, op {{computer}}, die weg is.",
-        "connect": "Een computer verbinden",
-        "plans": "Plannen bekijken"
-      }
     }
   },
   "teamWeek": {
@@ -3104,6 +3104,20 @@
       "antigravity_female": "Gemini is niet ingelogd op deze computer. Koppel een Gemini-account op de pagina van {{name}}.",
       "opencode": "OpenCode kan niet denken op deze computer. Koppel een OpenCode-sleutel op de pagina van {{name}}.",
       "opencode_female": "OpenCode kan niet denken op deze computer. Koppel een OpenCode-sleutel op de pagina van {{name}}."
+    },
+    "notSignedInOn": {
+      "claude_code": "Claude Code is niet ingelogd op {{computer}}. Koppel een Claude-account op de pagina van {{name}}.",
+      "claude_code_female": "Claude Code is niet ingelogd op {{computer}}. Koppel een Claude-account op de pagina van {{name}}.",
+      "codex": "Codex is niet ingelogd op {{computer}}. Koppel een ChatGPT-account op de pagina van {{name}}.",
+      "codex_female": "Codex is niet ingelogd op {{computer}}. Koppel een ChatGPT-account op de pagina van {{name}}.",
+      "cursor": "Cursor is niet ingelogd op {{computer}}. Koppel een Cursor-account op de pagina van {{name}}.",
+      "cursor_female": "Cursor is niet ingelogd op {{computer}}. Koppel een Cursor-account op de pagina van {{name}}.",
+      "grok": "Grok is niet ingelogd op {{computer}}. Koppel een Grok-account op de pagina van {{name}}.",
+      "grok_female": "Grok is niet ingelogd op {{computer}}. Koppel een Grok-account op de pagina van {{name}}.",
+      "antigravity": "Gemini is niet ingelogd op {{computer}}. Koppel een Gemini-account op de pagina van {{name}}.",
+      "antigravity_female": "Gemini is niet ingelogd op {{computer}}. Koppel een Gemini-account op de pagina van {{name}}.",
+      "opencode": "OpenCode kan niet denken op {{computer}}. Koppel een OpenCode-sleutel op de pagina van {{name}}.",
+      "opencode_female": "OpenCode kan niet denken op {{computer}}. Koppel een OpenCode-sleutel op de pagina van {{name}}."
     },
     "card": {
       "connected": "Klaar: {{name}} heeft nu een AI.",
@@ -7757,6 +7771,9 @@
     }
   },
   "issues": {
+    "handedBy": "overgedragen door <0/>{{name}}",
+    "fromDm": "uit <0>je DM met {{name}}</0>",
+    "fromDmText": "uit je DM met {{name}}",
     "delete": {
       "action": "Taak verwijderen",
       "title": "Taak #{{number}} verwijderen?",
@@ -7968,6 +7985,9 @@
       "runningTitle_female": "{{name}} werkt eraan",
       "waitingTitle": "{{name}} wacht op jou",
       "waitingTitle_female": "{{name}} wacht op jou",
+      "finishedTitle": "{{name}} heeft het afgerond",
+      "finishedMeta": "{{when}} · overgedragen door {{name}}",
+      "answer": "Antwoorden",
       "stalledTitle": "{{name}} is gestopt {{when}}",
       "stalledTitle_female": "{{name}} is gestopt {{when}}",
       "stalledText": "De taak ligt nog bij {{name}}, maar er loopt geen run.",
@@ -7986,10 +8006,7 @@
         "failed": "De laatste run is mislukt.",
         "canceled": "Iemand heeft de run gestopt.",
         "budget": "Het maandbudget van de agent is op."
-      },
-      "finishedTitle": "{{name}} heeft het afgerond",
-      "finishedMeta": "{{when}} · overgedragen door {{name}}",
-      "answer": "Antwoorden"
+      }
     },
     "status": {
       "todo": "Te doen",
@@ -8179,10 +8196,7 @@
       "criterion_checked": "heeft het criterium \"{{text}}\" aangevinkt",
       "criterion_unchecked": "heeft het criterium \"{{text}}\" uitgevinkt",
       "agent_asked": "heeft {{name}} gevraagd het te doen"
-    },
-    "handedBy": "overgedragen door <0/>{{name}}",
-    "fromDm": "uit <0>je DM met {{name}}</0>",
-    "fromDmText": "uit je DM met {{name}}"
+    }
   },
   "routines": {
     "filters": "Routines filteren",
@@ -16032,6 +16046,8 @@
       "resumed_other": "{{count}} taken weer gestart",
       "stillWaiting_one": "{{count}} wacht nog op {{name}}",
       "stillWaiting_other": "{{count}} wachten nog op {{name}}",
+      "planDropped": "Het {{plan}}-abonnement van {{name}} is ingelogd op {{from}}. Log ook in op {{to}}, of houd {{from}}.",
+      "signIn": "Inloggen op {{name}}",
       "skipped": "{{name}} bleef: {{reason}}",
       "skip": {
         "other": "kon nu niet overstappen",
@@ -17160,6 +17176,21 @@
     "tomorrowAt": "morgen {{time}}"
   },
   "work": {
+    "handed": {
+      "lead": "Overgedragen aan <0/>{{name}}",
+      "working": "bezig",
+      "done": "klaar in {{duration}}",
+      "waitingYou": "wacht op jouw antwoord",
+      "waiting": "wacht op een antwoord",
+      "waitingApprovalYou": "wacht op jouw goedkeuring",
+      "waitingApproval": "wacht op goedkeuring",
+      "waitingComputer": "wacht op de computer",
+      "paused": "gepauzeerd op de limiet van het plan",
+      "queued": "in de wachtrij",
+      "failed": "niet afgemaakt",
+      "stopped": "gestopt",
+      "step": "stap {{current}} van {{total}}"
+    },
     "duration": {
       "minutes_one": "{{count}} min",
       "minutes_other": "{{count}} min",
@@ -17235,24 +17266,12 @@
       "failed": "Geblokkeerd · niet afgemaakt",
       "failedWhy": "Geblokkeerd · niet afgemaakt: {{why}}"
     },
-    "working": "Op de achtergrond",
-    "handed": {
-      "lead": "Overgedragen aan <0/>{{name}}",
-      "working": "bezig",
-      "done": "klaar in {{duration}}",
-      "waitingYou": "wacht op jouw antwoord",
-      "waiting": "wacht op een antwoord",
-      "waitingApprovalYou": "wacht op jouw goedkeuring",
-      "waitingApproval": "wacht op goedkeuring",
-      "waitingComputer": "wacht op de computer",
-      "paused": "gepauzeerd op de limiet van het plan",
-      "queued": "in de wachtrij",
-      "failed": "niet afgemaakt",
-      "stopped": "gestopt",
-      "step": "stap {{current}} van {{total}}"
-    }
+    "working": "Op de achtergrond"
   },
   "chat": {
+    "request": {
+      "asksYou": "{{name}} vraagt je"
+    },
     "speedFallback": {
       "text": "ChatGPT weigerde de snelheid Snel voor dit account of model, dus dit antwoord kwam op standaardsnelheid.",
       "action": "Agent openen"
@@ -17857,9 +17876,6 @@
       "interrupted": "Onderbroken door een herstart van de server. Vraag het opnieuw om verder te gaan.",
       "step_limit": "Mijn stappen waren op voordat ik klaar was.",
       "stuck": "Ik liep vast en stopte voordat ik klaar was."
-    },
-    "request": {
-      "asksYou": "{{name}} vraagt je"
     }
   },
   "builtinTools": {

@@ -2826,6 +2826,16 @@
     }
   },
   "rightHand": {
+    "brain": {
+      "unusable": {
+        "title": "Нужен компьютер",
+        "computerOnly": "Принадлежит {{owner}}, вход выполнен только на {{computer}}. Lodi думает с планом, подключённым как аккаунт.",
+        "noComputer": "Принадлежит {{owner}}. Нужен компьютер, а в рабочем пространстве ни одного не подключено.",
+        "away": "Принадлежит {{owner}}, на {{computer}}, который сейчас недоступен.",
+        "connect": "Подключить компьютер",
+        "plans": "Посмотреть планы"
+      }
+    },
     "label": "ваша правая рука",
     "labelCapitalized": "Ваша правая рука",
     "unusable": {
@@ -3128,16 +3138,6 @@
       "invite_people_sent_many": "Приглашения отправлены на <b>{{emails}}</b>.",
       "invite_people_sent_other": "Приглашения отправлены на <b>{{emails}}</b>.",
       "remove_ai_key": "Удалить API-ключ «{{name}}»."
-    },
-    "brain": {
-      "unusable": {
-        "title": "Нужен компьютер",
-        "computerOnly": "Принадлежит {{owner}}, вход выполнен только на {{computer}}. Lodi думает с планом, подключённым как аккаунт.",
-        "noComputer": "Принадлежит {{owner}}. Нужен компьютер, а в рабочем пространстве ни одного не подключено.",
-        "away": "Принадлежит {{owner}}, на {{computer}}, который сейчас недоступен.",
-        "connect": "Подключить компьютер",
-        "plans": "Посмотреть планы"
-      }
     }
   },
   "teamWeek": {
@@ -3331,6 +3331,14 @@
       "grok": "На этом компьютере не выполнен вход в Grok. Подключите аккаунт Grok на странице {{name}}.",
       "antigravity": "На этом компьютере не выполнен вход в Gemini. Подключите аккаунт Gemini на странице {{name}}.",
       "opencode": "OpenCode не может думать на этом компьютере. Подключите ключ OpenCode на странице {{name}}."
+    },
+    "notSignedInOn": {
+      "claude_code": "На компьютере {{computer}} не выполнен вход в Claude Code. Подключите аккаунт Claude на странице {{name}}.",
+      "codex": "На компьютере {{computer}} не выполнен вход в Codex. Подключите аккаунт ChatGPT на странице {{name}}.",
+      "cursor": "На компьютере {{computer}} не выполнен вход в Cursor. Подключите аккаунт Cursor на странице {{name}}.",
+      "grok": "На компьютере {{computer}} не выполнен вход в Grok. Подключите аккаунт Grok на странице {{name}}.",
+      "antigravity": "На компьютере {{computer}} не выполнен вход в Gemini. Подключите аккаунт Gemini на странице {{name}}.",
+      "opencode": "OpenCode не может думать на компьютере {{computer}}. Подключите ключ OpenCode на странице {{name}}."
     },
     "card": {
       "connected": "Готово: теперь у {{name}} есть ИИ.",
@@ -8199,6 +8207,9 @@
     }
   },
   "issues": {
+    "handedBy": "передано от <0/>{{name}}",
+    "fromDm": "из <0>твоего чата с {{name}}</0>",
+    "fromDmText": "из твоего чата с {{name}}",
     "delete": {
       "action": "Удалить задачу",
       "title": "Удалить задачу #{{number}}?",
@@ -8428,6 +8439,9 @@
       "runningTitle_female": "{{name}} работает над этим",
       "waitingTitle": "{{name}} ждёт вас",
       "waitingTitle_female": "{{name}} ждёт вас",
+      "finishedTitle": "{{name}}: готово",
+      "finishedMeta": "{{when}} · передано от {{name}}",
+      "answer": "Ответить",
       "stalledTitle": "{{name}} остановился {{when}}",
       "stalledTitle_female": "{{name}} остановилась {{when}}",
       "stalledText": "Задача всё ещё у {{name}}, но ни один запуск не идёт.",
@@ -8446,10 +8460,7 @@
         "failed": "Последний запуск завершился ошибкой.",
         "canceled": "Кто-то остановил запуск.",
         "budget": "Месячный бюджет агента закончился."
-      },
-      "finishedTitle": "{{name}}: готово",
-      "finishedMeta": "{{when}} · передано от {{name}}",
-      "answer": "Ответить"
+      }
     },
     "status": {
       "todo": "Сделать",
@@ -8649,10 +8660,7 @@
       "criterion_checked": "отметил(а) критерий «{{text}}»",
       "criterion_unchecked": "снял(а) отметку с критерия «{{text}}»",
       "agent_asked": "попросил(а) {{name}} выполнить задачу"
-    },
-    "handedBy": "передано от <0/>{{name}}",
-    "fromDm": "из <0>твоего чата с {{name}}</0>",
-    "fromDmText": "из твоего чата с {{name}}"
+    }
   },
   "routines": {
     "filters": "Фильтры регулярных задач",
@@ -16961,6 +16969,8 @@
       "stillWaiting_few": "{{count}} всё ещё ждут {{name}}",
       "stillWaiting_many": "{{count}} всё ещё ждут {{name}}",
       "stillWaiting_other": "{{count}} всё ещё ждут {{name}}",
+      "planDropped": "План {{plan}} агента {{name}} подключён на компьютере {{from}}. Войдите и на {{to}} или оставьте {{from}}.",
+      "signIn": "Войти на {{name}}",
       "skipped": "{{name}} остался: {{reason}}",
       "skip": {
         "other": "сейчас не получилось перенести",
@@ -18127,6 +18137,21 @@
     "tomorrowAt": "завтра в {{time}}"
   },
   "work": {
+    "handed": {
+      "lead": "Передано: <0/>{{name}}",
+      "working": "в работе",
+      "done": "готово за {{duration}}",
+      "waitingYou": "ждёт твоего ответа",
+      "waiting": "ждёт ответа",
+      "waitingApprovalYou": "ждёт твоего одобрения",
+      "waitingApproval": "ждёт одобрения",
+      "waitingComputer": "ждёт компьютер",
+      "paused": "на паузе по лимиту плана",
+      "queued": "в очереди",
+      "failed": "не завершено",
+      "stopped": "остановлено",
+      "step": "шаг {{current}} из {{total}}"
+    },
     "duration": {
       "minutes_one": "{{count}} мин",
       "minutes_few": "{{count}} мин",
@@ -18206,24 +18231,12 @@
       "failed": "Заблокировано · не завершено",
       "failedWhy": "Заблокировано · не завершено: {{why}}"
     },
-    "working": "В фоне",
-    "handed": {
-      "lead": "Передано: <0/>{{name}}",
-      "working": "в работе",
-      "done": "готово за {{duration}}",
-      "waitingYou": "ждёт твоего ответа",
-      "waiting": "ждёт ответа",
-      "waitingApprovalYou": "ждёт твоего одобрения",
-      "waitingApproval": "ждёт одобрения",
-      "waitingComputer": "ждёт компьютер",
-      "paused": "на паузе по лимиту плана",
-      "queued": "в очереди",
-      "failed": "не завершено",
-      "stopped": "остановлено",
-      "step": "шаг {{current}} из {{total}}"
-    }
+    "working": "В фоне"
   },
   "chat": {
+    "request": {
+      "asksYou": "{{name}} спрашивает тебя"
+    },
     "speedFallback": {
       "text": "ChatGPT отклонил быструю скорость для этого аккаунта или модели, поэтому ответ пришёл на стандартной скорости.",
       "action": "Открыть агента"
@@ -18832,9 +18845,6 @@
       "interrupted": "Прервано перезапуском сервера. Спросите ещё раз, чтобы продолжить.",
       "step_limit": "У меня закончились шаги, и я не успел закончить.",
       "stuck": "Я застрял и остановился, не закончив."
-    },
-    "request": {
-      "asksYou": "{{name}} спрашивает тебя"
     }
   },
   "builtinTools": {

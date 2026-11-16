@@ -16,6 +16,7 @@ import {
   machineOnline,
   machinePause,
   mayBeHome,
+  type PlanDropped,
   setAgentComputerTarget,
 } from "./machines";
 import { missionTurnFor } from "./missions-engine";
@@ -250,6 +251,8 @@ export interface MoveAgentsResult {
   resumed: number;
   /** Waiting runs that stay with the old computer (a cut-off turn that already ran tools there, or a mission's). */
   stillWaiting: number;
+  /** Moved agents whose plan is signed in only on the old computer: they think again once it is signed in here too. */
+  planDropped: ({ agentId: string } & PlanDropped)[];
 }
 
 /**
@@ -292,6 +295,7 @@ export async function moveAgentsFromMachine(
   const waiting = await waitingRunsFor(db, orgId, [from.id], agentIds);
   const moved: string[] = [];
   const skipped: MoveAgentsResult["skipped"] = [];
+  const planDropped: MoveAgentsResult["planDropped"] = [];
   for (const agentId of agentIds) {
     const agent = await getAgent(db, orgId, agentId);
     const related = agent?.machineId === from.id || waiting.some((r) => r.agentId === agentId);
@@ -309,8 +313,9 @@ export async function moveAgentsFromMachine(
       continue;
     }
     try {
-      await setAgentComputerTarget(deps, actorId, orgId, agentId, to.id);
+      const set = await setAgentComputerTarget(deps, actorId, orgId, agentId, to.id);
       moved.push(agentId);
+      if (set.planDropped) planDropped.push({ agentId, ...set.planDropped });
     } catch (error) {
       if (error instanceof ForbiddenError) skipped.push({ agentId, reason: "forbidden" });
       else if (error instanceof NotFoundError) skipped.push({ agentId, reason: "not_found" });
@@ -350,6 +355,7 @@ export async function moveAgentsFromMachine(
       skipped,
       resumed,
       stillWaiting,
+      planDropped,
     },
   });
   if (resumed > 0) await publishQueueChanged(deps.pubsub, orgId, from.id);
@@ -365,7 +371,7 @@ export async function moveAgentsFromMachine(
       },
     });
   }
-  return { moved, skipped, resumed, stillWaiting };
+  return { moved, skipped, resumed, stillWaiting, planDropped };
 }
 
 /**

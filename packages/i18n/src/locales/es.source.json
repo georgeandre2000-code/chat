@@ -6563,6 +6563,24 @@
   "receipts.by.default": {
     "value": "Nobody was called, so {{name}} answered"
   },
+  "rightHand.brain.unusable.title": {
+    "value": "Needs a computer"
+  },
+  "rightHand.brain.unusable.computerOnly": {
+    "value": "{{owner}}'s, signed in on {{computer}} only. Lodi thinks with a plan signed in as an account."
+  },
+  "rightHand.brain.unusable.noComputer": {
+    "value": "{{owner}}'s. It needs a computer, and the workspace has none connected."
+  },
+  "rightHand.brain.unusable.away": {
+    "value": "{{owner}}'s, on {{computer}}, which is away."
+  },
+  "rightHand.brain.unusable.connect": {
+    "value": "Connect a computer"
+  },
+  "rightHand.brain.unusable.plans": {
+    "value": "See plans"
+  },
   "rightHand.label": {
     "value": "your right hand"
   },
@@ -7656,6 +7674,24 @@
   },
   "noAi.notSignedIn.opencode": {
     "value": "OpenCode can't think on this computer. Connect an OpenCode key on {{name}}'s page."
+  },
+  "noAi.notSignedInOn.claude_code": {
+    "value": "Claude Code isn't signed in on {{computer}}. Connect a Claude account on {{name}}'s page."
+  },
+  "noAi.notSignedInOn.codex": {
+    "value": "Codex isn't signed in on {{computer}}. Connect a ChatGPT account on {{name}}'s page."
+  },
+  "noAi.notSignedInOn.cursor": {
+    "value": "Cursor isn't signed in on {{computer}}. Connect a Cursor account on {{name}}'s page."
+  },
+  "noAi.notSignedInOn.grok": {
+    "value": "Grok isn't signed in on {{computer}}. Connect a Grok account on {{name}}'s page."
+  },
+  "noAi.notSignedInOn.antigravity": {
+    "value": "Gemini isn't signed in on {{computer}}. Connect a Gemini account on {{name}}'s page."
+  },
+  "noAi.notSignedInOn.opencode": {
+    "value": "OpenCode can't think on {{computer}}. Connect an OpenCode key on {{name}}'s page."
   },
   "noAi.card.connected": {
     "value": "Done: {{name}} has an AI now."
@@ -18706,6 +18742,15 @@
   "scopes.custom_write.description": {
     "value": "Use the write tools. Those marked sensitive always ask for approval."
   },
+  "issues.handedBy": {
+    "value": "handed by <0/>{{name}}"
+  },
+  "issues.fromDm": {
+    "value": "from <0>your DM with {{name}}</0>"
+  },
+  "issues.fromDmText": {
+    "value": "from your DM with {{name}}"
+  },
   "issues.delete.action": {
     "value": "Delete task"
   },
@@ -19230,6 +19275,15 @@
   },
   "issues.work.waitingTitle": {
     "value": "{{name}} is waiting for you"
+  },
+  "issues.work.finishedTitle": {
+    "value": "{{name}} finished it"
+  },
+  "issues.work.finishedMeta": {
+    "value": "{{when}} · handed by {{name}}"
+  },
+  "issues.work.answer": {
+    "value": "Answer"
   },
   "issues.work.stalledTitle": {
     "value": "{{name}} stopped {{when}}"
@@ -39271,6 +39325,12 @@
       "other": "{{count}} still wait for {{name}}"
     }
   },
+  "outage.done.planDropped": {
+    "value": "{{name}}'s {{plan}} plan is signed in on {{from}}. Sign in on {{to}} too, or keep {{from}}."
+  },
+  "outage.done.signIn": {
+    "value": "Sign in on {{name}}"
+  },
   "outage.done.skipped": {
     "value": "{{name}} stayed: {{reason}}"
   },
@@ -42052,6 +42112,45 @@
   "format.tomorrowAt": {
     "value": "tomorrow {{time}}"
   },
+  "work.handed.lead": {
+    "value": "Handed to <0/>{{name}}"
+  },
+  "work.handed.working": {
+    "value": "working on it"
+  },
+  "work.handed.done": {
+    "value": "done in {{duration}}"
+  },
+  "work.handed.waitingYou": {
+    "value": "waiting for your answer"
+  },
+  "work.handed.waiting": {
+    "value": "waiting for an answer"
+  },
+  "work.handed.waitingApprovalYou": {
+    "value": "waiting for your approval"
+  },
+  "work.handed.waitingApproval": {
+    "value": "waiting for approval"
+  },
+  "work.handed.waitingComputer": {
+    "value": "waiting for the computer"
+  },
+  "work.handed.paused": {
+    "value": "paused at the plan's limit"
+  },
+  "work.handed.queued": {
+    "value": "in line"
+  },
+  "work.handed.failed": {
+    "value": "didn't finish"
+  },
+  "work.handed.stopped": {
+    "value": "stopped"
+  },
+  "work.handed.step": {
+    "value": "step {{current}} of {{total}}"
+  },
   "work.duration.minutes": {
     "value": {
       "one": "{{count}} min",
@@ -42249,6 +42348,9 @@
   },
   "work.working": {
     "value": "In the background"
+  },
+  "chat.request.asksYou": {
+    "value": "{{name}} asks you"
   },
   "chat.speedFallback.text": {
     "value": "ChatGPT refused Fast speed on this account or model, so this reply came at standard speed."
@@ -49282,83 +49384,5 @@
   },
   "feedback.offer.askFirst": {
     "value": "Ask before sending"
-  },
-  "rightHand.brain.unusable.title": {
-    "value": "Needs a computer"
-  },
-  "rightHand.brain.unusable.computerOnly": {
-    "value": "{{owner}}'s, signed in on {{computer}} only. Lodi thinks with a plan signed in as an account."
-  },
-  "rightHand.brain.unusable.noComputer": {
-    "value": "{{owner}}'s. It needs a computer, and the workspace has none connected."
-  },
-  "rightHand.brain.unusable.away": {
-    "value": "{{owner}}'s, on {{computer}}, which is away."
-  },
-  "rightHand.brain.unusable.connect": {
-    "value": "Connect a computer"
-  },
-  "rightHand.brain.unusable.plans": {
-    "value": "See plans"
-  },
-  "issues.handedBy": {
-    "value": "handed by <0/>{{name}}"
-  },
-  "issues.fromDm": {
-    "value": "from <0>your DM with {{name}}</0>"
-  },
-  "issues.fromDmText": {
-    "value": "from your DM with {{name}}"
-  },
-  "issues.work.finishedTitle": {
-    "value": "{{name}} finished it"
-  },
-  "issues.work.finishedMeta": {
-    "value": "{{when}} · handed by {{name}}"
-  },
-  "issues.work.answer": {
-    "value": "Answer"
-  },
-  "work.handed.lead": {
-    "value": "Handed to <0/>{{name}}"
-  },
-  "work.handed.working": {
-    "value": "working on it"
-  },
-  "work.handed.done": {
-    "value": "done in {{duration}}"
-  },
-  "work.handed.waitingYou": {
-    "value": "waiting for your answer"
-  },
-  "work.handed.waiting": {
-    "value": "waiting for an answer"
-  },
-  "work.handed.waitingApprovalYou": {
-    "value": "waiting for your approval"
-  },
-  "work.handed.waitingApproval": {
-    "value": "waiting for approval"
-  },
-  "work.handed.waitingComputer": {
-    "value": "waiting for the computer"
-  },
-  "work.handed.paused": {
-    "value": "paused at the plan's limit"
-  },
-  "work.handed.queued": {
-    "value": "in line"
-  },
-  "work.handed.failed": {
-    "value": "didn't finish"
-  },
-  "work.handed.stopped": {
-    "value": "stopped"
-  },
-  "work.handed.step": {
-    "value": "step {{current}} of {{total}}"
-  },
-  "chat.request.asksYou": {
-    "value": "{{name}} asks you"
   }
 }
