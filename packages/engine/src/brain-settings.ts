@@ -34,6 +34,7 @@ import {
   AUTO_MODEL,
   type ContextLimit,
   catalogModelOf,
+  claudeCodeAliasModel,
   contextWindowOf,
   isAutoModel,
   isContextLimit,
@@ -48,6 +49,7 @@ import {
   GROK_BUILD_MODELS,
   isPlanModelId,
   OPENCODE_FREE_MODELS,
+  PLAN_ALIASES,
   planModel,
   planModelById,
   planOf,
@@ -216,16 +218,16 @@ export const antigravityModels = (listed: readonly { id: string; label?: string 
   });
 
 /**
- * Claude Code's aliases (`--model opus|sonnet|haiku`), mapped to today's ids in the catalog. Each is named by its
- * catalog row without the maker ("Opus 5.5"), so moving an alias to a new id renames it with no copy change.
+ * Claude Code's aliases (`--model opus|sonnet|haiku`), each on the newest model of its family in the registry
+ * (`claudeCodeAliasModel`, ADR 0195), named by its catalog row without the maker ("Opus 5.5"): a newer model renames
+ * the alias with no change here. The one on Claude's suggested model is the suggested one.
  */
-export const CLAUDE_CODE_MODELS: readonly BrainModelOption[] = (
-  [
-    { value: "opus", modelId: "claude-opus-5-5" },
-    { value: "sonnet", modelId: "claude-sonnet-5-5", recommended: true },
-    { value: "haiku", modelId: "claude-haiku-5-5" },
-  ] as const
-).map((o) => ({ ...o, label: MODEL_CATALOG[o.modelId]?.label.replace(/^Claude /, "") ?? o.value }));
+export const CLAUDE_CODE_MODELS: readonly BrainModelOption[] = PLAN_ALIASES.flatMap((value) => {
+  const modelId = claudeCodeAliasModel(value);
+  if (!modelId) return [];
+  const label = MODEL_CATALOG[modelId]?.label.replace(/^Claude /, "") ?? value;
+  return [{ value, modelId, label, ...(MODEL_CATALOG[modelId]?.recommended ? { recommended: true } : {}) }];
+});
 
 /** Codex's models: the OpenAI rows of the catalog (any other name is accepted as typed). */
 export const codexModels = (): BrainModelOption[] =>
@@ -261,7 +263,7 @@ export function defaultBrainModel(kind: BrainKind): string | null {
   if (kind === "model" || kind === "cursor" || kind === "opencode" || kind === "grok" || kind === "antigravity")
     return null;
   const options = brainModelOptions(kind);
-  return (options.find((o) => o.recommended) ?? options[0])?.value ?? (kind === "codex" ? "gpt-6.2-sol" : "sonnet");
+  return (options.find((o) => o.recommended) ?? options[0])?.value ?? (kind === "codex" ? null : "sonnet");
 }
 
 /** The model id behind a stored value (an alias resolved; anything else as is). */
