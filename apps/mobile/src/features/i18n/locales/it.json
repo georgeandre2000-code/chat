@@ -1177,6 +1177,8 @@
     "notificationsOnHint": "Arrivano anche nel browser e nell'app desktop, se lì sono attive.",
     "notificationsOffHint": "Attivale per ricevere notifiche qui. I tipi qui sotto valgono per tutti i tuoi dispositivi.",
     "notificationsKindsHint": "Attività recenti tiene tutto. Vale per questo spazio di lavoro, su tutti i tuoi dispositivi.",
+    "liveActivity": "Agenti nella Dynamic Island",
+    "liveActivityHint": "Quando un agente lavora a qualcosa che hai chiesto, appare in cima allo schermo, in qualsiasi app, e nella schermata di blocco. Con l'app chiusa serve iOS 17.2 o successivo.",
     "version": "agentes.chat · versione {{version}}",
     "edit": "Modifica",
     "status": "Stato",

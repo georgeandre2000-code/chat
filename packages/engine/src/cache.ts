@@ -122,6 +122,8 @@ export const caches = {
   deviceRoster: new TtlCache<unknown>(5_000),
   /** Registered hosts by name (`hostLook`, ADR 0194), read by the origin check of every write. */
   hosts: new TtlCache<unknown>(TTL_MS),
+  /** Whether any phone shows a Live Activity (`liveActivitiesInUse`, ADR 0201), read on every run's start and end. */
+  liveActivities: new TtlCache<boolean>(TTL_MS),
 };
 
 /** `caches.contextPresence`'s key for whether an agent holds a rule people gave (`rulesForRun`). */

@@ -236,6 +236,7 @@ import {
   rateLimited,
 } from "./key-line";
 import { carriesLiveFile } from "./live/tools";
+import { queueLiveActivityRun } from "./live-activity-queue";
 import { answerNoTurn, deliverLive, listenLiveSteering, renderSteered } from "./live-steer";
 import {
   accountEverWorked,
@@ -1431,6 +1432,8 @@ async function executeRunInner(
   // back, its plan reset) passes here: the agent's status stops saying it waits now, not at the apps' next refetch,
   // and the conversations that asked a consulted one (ADR 0034) stop showing it held.
   if (backFromWait) await announceAgentStatus(deps.pubsub, run.orgId, run.agentId).catch(() => {});
+  // At work now (its start, or back from a wait): the phone of the person behind it shows it (ADR 0201).
+  if (fresh || backFromWait) await queueLiveActivityRun(db, run).catch(() => {});
   if (waitedOn && USAGE_WAIT_CODES.has(waitedOn)) await usageWaitNoteEnded(deps, run, true).catch(() => {});
   if (backFromWait && channelRow && answersHandOffs(channelRow)) {
     await announceConsultationChange({ db, pubsub: deps.pubsub }, run).catch(() => {});
@@ -1515,6 +1518,8 @@ async function executeRunInner(
     }
     // Its line ends with the run (checked on read); the apps refresh now (ADR 0084 §11).
     await announceAgentStatus(deps.pubsub, run.orgId, run.agentId).catch(() => {});
+    // Ended or waiting: so does the Live Activity of the person behind it (ADR 0201).
+    await queueLiveActivityRun(db, run).catch(() => {});
     // Back from its plan or budget and over: the turns its note took in still wait, so the note speaks on for them.
     if (waitedOn && USAGE_WAIT_CODES.has(waitedOn) && status !== "waiting_input" && status !== "waiting_approval") {
       await usageNoteHandOn(deps, run).catch(() => {});
@@ -1617,6 +1622,7 @@ async function executeRunInner(
     });
     await publishChannelEvent(deps.pubsub, event("running"));
     await announceAgentStatus(deps.pubsub, run.orgId, run.agentId).catch(() => {});
+    await queueLiveActivityRun(db, run).catch(() => {});
     await publishQueueChanged(deps.pubsub, run.orgId, machineId);
     await kickParkedWakes(db, run.orgId, run.agentId).catch(() => {});
     // A widget says it waits for room once that wait is `COMPUTER_QUEUE_NOTE_MS` old: it hears the turn started.

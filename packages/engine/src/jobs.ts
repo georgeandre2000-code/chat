@@ -81,6 +81,8 @@ import { platformCapReached } from "./limits";
 import type { LiveDocs } from "./live/docs";
 import { liveImageJobHandlers } from "./live/images";
 import { liveJobHandlers } from "./live/jobs";
+import { runLiveActivityJob } from "./live-activity";
+import { LIVE_ACTIVITY_JOB } from "./live-activity-queue";
 import { wakeForAccessDecision } from "./machine-access";
 import type { MachineCaller } from "./machine-hub";
 import {
@@ -1175,6 +1177,10 @@ export function createJobHandlers(deps: JobDeps): JobHandlers {
         String(job.payload.notificationId),
         { held: job.payload.held === true },
       );
+    },
+    // The Live Activity of a person's agents at work, on their iPhones (ADR 0201): sent when what it shows changed.
+    [LIVE_ACTIVITY_JOB]: async (job) => {
+      await runLiveActivityJob({ db: deps.db, push: deps.push }, job);
     },
     // A workspace's skills that update by themselves from their links, once a day.
     [SKILL_UPDATES_JOB]: async (job) => {

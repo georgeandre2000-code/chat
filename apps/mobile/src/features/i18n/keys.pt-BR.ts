@@ -1147,6 +1147,10 @@ export const featureKeysPtBR = {
     notificationsOnHint: "Também chegam no navegador e no app do computador, se estiverem ligadas lá.",
     notificationsOffHint: "Ligue para receber avisos aqui. Os tipos abaixo valem para todos os seus aparelhos.",
     notificationsKindsHint: "A Atividade guarda tudo. Vale para este workspace, em todos os seus aparelhos.",
+    /** The switch for the agents' Live Activity (the iPhone's Dynamic Island and Lock Screen, ADR 0201). */
+    liveActivity: "Agentes na ilha",
+    liveActivityHint:
+      "Quando um agente trabalha no que você pediu, ele aparece em cima da tela, em qualquer app, e na tela bloqueada. Com o app fechado, precisa do iOS 17.2 ou mais novo.",
     version: "agentes.chat · versão {{version}}",
     edit: "Editar",
     status: "Status",

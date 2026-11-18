@@ -1743,6 +1743,12 @@ export function createFakeHttpApi(state: FakeState): Omit<HttpApi, FakedParts> {
       unregister: async (token) => {
         log("push.unregister", token);
       },
+      liveActivity: async (input) => {
+        log("push.liveActivity", input);
+      },
+      liveActivityOff: async (installId) => {
+        log("push.liveActivityOff", installId);
+      },
       stale: async (ids) => {
         log("push.stale", ids);
         return ids.filter((id) => state.stalePushIds?.includes(id));

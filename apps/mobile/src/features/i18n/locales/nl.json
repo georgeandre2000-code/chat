@@ -1101,6 +1101,8 @@
     "notificationsOnHint": "Ze komen ook binnen in de browser en de desktop-app, als ze daar aan staan.",
     "notificationsOffHint": "Zet ze aan om hier meldingen te krijgen. De soorten hieronder gelden voor al je apparaten.",
     "notificationsKindsHint": "Activiteit bewaart alles. Dit geldt voor deze werkruimte, op al je apparaten.",
+    "liveActivity": "Agents in het Dynamic Island",
+    "liveActivityHint": "Als een agent werkt aan iets wat je vroeg, staat hij bovenaan het scherm, in elke app, en op het toegangsscherm. Met de app gesloten is iOS 17.2 of nieuwer nodig.",
     "version": "agentes.chat · versie {{version}}",
     "edit": "Bewerken",
     "status": "Status",

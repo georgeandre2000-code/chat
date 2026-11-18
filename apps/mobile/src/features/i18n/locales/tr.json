@@ -1101,6 +1101,8 @@
     "notificationsOnHint": "Açıksa tarayıcıya ve masaüstü uygulamasına da gelir.",
     "notificationsOffHint": "Burada bildirim almak için açın. Aşağıdaki türler tüm cihazlarınız için geçerlidir.",
     "notificationsKindsHint": "Etkinlik her şeyi tutar. Bu ayar, tüm cihazlarınızda bu çalışma alanı için geçerlidir.",
+    "liveActivity": "Dynamic Island'da ajanlar",
+    "liveActivityHint": "Bir ajan istediğin bir şey üzerinde çalışırken ekranın üstünde, her uygulamada ve Kilitli Ekran'da görünür. Uygulama kapalıyken iOS 17.2 veya üstü gerekir.",
     "version": "agentes.chat · sürüm {{version}}",
     "edit": "Düzenle",
     "status": "Durum",

@@ -1025,6 +1025,8 @@
     "notificationsOnHint": "브라우저와 데스크톱 앱에서 알림을 켜 두었다면 그곳에도 도착해요.",
     "notificationsOffHint": "여기서 알림을 받으려면 켜 주세요. 아래 종류는 모든 기기에 적용돼요.",
     "notificationsKindsHint": "활동에는 모든 게 남아요. 이 설정은 이 워크스페이스의 모든 기기에 적용돼요.",
+    "liveActivity": "Dynamic Island의 에이전트",
+    "liveActivityHint": "요청한 일을 에이전트가 하는 동안 어떤 앱에서든 화면 위쪽과 잠금 화면에 표시됩니다. 앱이 닫혀 있을 때는 iOS 17.2 이상이 필요합니다.",
     "version": "agentes.chat · 버전 {{version}}",
     "edit": "편집",
     "status": "상태",

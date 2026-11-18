@@ -1171,6 +1171,10 @@ export const featureKeysEn = {
     notificationsOnHint: "They also arrive in the browser and the desktop app, if they're on there.",
     notificationsOffHint: "Turn them on to get notifications here. The kinds below apply to all your devices.",
     notificationsKindsHint: "Activity keeps everything. This applies to this workspace, on all your devices.",
+    /** The switch for the agents' Live Activity (the iPhone's Dynamic Island and Lock Screen, ADR 0201). */
+    liveActivity: "Agents in the Dynamic Island",
+    liveActivityHint:
+      "When an agent works on something you asked for, it shows at the top of the screen, in any app, and on the Lock Screen. With the app closed, it needs iOS 17.2 or later.",
     version: "agentes.chat · version {{version}}",
     /** The bar's word on Você: it opens Conta. */
     edit: "Edit",

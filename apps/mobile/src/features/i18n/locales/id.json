@@ -1025,6 +1025,8 @@
     "notificationsOnHint": "Notifikasi juga masuk ke browser dan aplikasi desktop, jika diaktifkan di sana.",
     "notificationsOffHint": "Aktifkan untuk menerima notifikasi di sini. Jenis di bawah berlaku untuk semua perangkatmu.",
     "notificationsKindsHint": "Aktivitas menyimpan semuanya. Ini berlaku untuk ruang kerja ini, di semua perangkatmu.",
+    "liveActivity": "Agen di Dynamic Island",
+    "liveActivityHint": "Saat agen mengerjakan sesuatu yang kamu minta, ia muncul di atas layar, di aplikasi apa pun, dan di Layar Terkunci. Saat aplikasi tertutup, perlu iOS 17.2 atau lebih baru.",
     "version": "agentes.chat · versi {{version}}",
     "edit": "Ubah",
     "status": "Status",

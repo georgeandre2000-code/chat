@@ -5,6 +5,7 @@ import { publishOrgEvent } from "./events";
 import { type PendingReturn, pendingReturns } from "./follow-through";
 import { cutText } from "./format";
 import type { Judge } from "./judge";
+import { queueLiveActivityRun } from "./live-activity-queue";
 import { requirePermission } from "./organizations";
 import { type OutOfOffice, outOfOffice } from "./out-of-office";
 import { rightHandId } from "./right-hand";
@@ -692,9 +693,11 @@ export async function startRunStatus(
       : undefined
     : candidates.find((c) => STICKY.has(c.kind));
   const busy = (pick?.heavy ?? 0) >= AGENT_HEAVY_PROBABILITY;
-  await writeAutoLine(deps, run, chosen ?? null, { busy, now, keepOwn: true });
+  const wrote = await writeAutoLine(deps, run, chosen ?? null, { busy, now, keepOwn: true });
   // Its run started: the presence moved even when the line stays (the agent's own words, another run's).
   await announceAgentStatus(deps.pubsub, run.orgId, run.agentId).catch(() => {});
+  // What it does now, on the phone of the person behind it (ADR 0201).
+  if (chosen && wrote) await queueLiveActivityRun(deps.db, run).catch(() => {});
 }
 
 /** Jev's pick for a run as it starts (§8–9): a request of its own, beside the run, never in its way. */
@@ -824,6 +827,7 @@ export async function followWork(
     const stale = still !== null && still < AGENT_LINE_STALE_BELOW;
     if (stale && (await writeAutoLine(deps, target, act, { now, keepOwn: false }))) {
       await announceAgentStatus(deps.pubsub, ctx.orgId, ctx.agentId).catch(() => {});
+      await queueLiveActivityRun(deps.db, target).catch(() => {});
     }
     return;
   }
@@ -840,6 +844,7 @@ export async function followWork(
   if (a.at && now.getTime() - a.at.getTime() < AGENT_LINE_EVERY_MS) return;
   if (await writeAutoLine(deps, target, act, { now, keepOwn: true })) {
     await announceAgentStatus(deps.pubsub, ctx.orgId, ctx.agentId).catch(() => {});
+    await queueLiveActivityRun(deps.db, { ...target, background: run?.background }).catch(() => {});
   }
 }
 
@@ -940,6 +945,8 @@ export function createSetStatusToolSource(deps: { pubsub?: PubSub } = {}): ToolS
         )
         .where(and(eq(agents.orgId, ctx.orgId), eq(agents.id, ctx.agentId)));
       await announceAgentStatus(deps.pubsub, ctx.orgId, ctx.agentId);
+      // Its own words, on the phone of the person behind its run (ADR 0201).
+      if (ctx.runId) await queueLiveActivityRun(ctx.db, { id: ctx.runId, orgId: ctx.orgId }).catch(() => {});
       return { content: text ? "Status set." : "Status cleared." };
     },
   };

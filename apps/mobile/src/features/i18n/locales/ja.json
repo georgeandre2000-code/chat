@@ -1025,6 +1025,8 @@
     "notificationsOnHint": "ブラウザやデスクトップアプリでもオンにしていれば、そちらにも届きます。",
     "notificationsOffHint": "ここで通知を受け取るにはオンにしてください。下の種類はすべてのデバイスに適用されます。",
     "notificationsKindsHint": "アクティビティにはすべてが残ります。この設定はこのワークスペースの、すべてのデバイスに適用されます。",
+    "liveActivity": "Dynamic Islandのエージェント",
+    "liveActivityHint": "頼んだことにエージェントが取り組んでいる間、どのアプリでも画面上部とロック画面に表示されます。アプリを閉じているときは iOS 17.2 以降が必要です。",
     "version": "agentes.chat · バージョン {{version}}",
     "edit": "編集",
     "status": "ステータス",

@@ -660,6 +660,9 @@ export function createHttpApi(options: TransportOptions = {}): HttpApi {
         (await nullOn(404, () => request<{ publicKey: string }>("/api/app/push/web")))?.publicKey ?? null,
       register: (input) => request<void>("/api/app/push/devices", { json: input }),
       unregister: (token) => request<void>("/api/app/push/devices/forget", { json: { token } }),
+      liveActivity: (input) => request<void>("/api/app/push/live-activity", { json: input }),
+      liveActivityOff: (installId) =>
+        request<void>("/api/app/push/live-activity", { method: "DELETE", json: { installId } }),
       stale: async (ids) => (await request<{ stale: string[] }>("/api/app/push/stale", { json: { ids } })).stale,
     },
     orgs: {

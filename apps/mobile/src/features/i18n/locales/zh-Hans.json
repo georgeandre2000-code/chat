@@ -1025,6 +1025,8 @@
     "notificationsOnHint": "如果浏览器和桌面应用中开启了通知，也会在那里收到。",
     "notificationsOffHint": "开启后即可在这里收到通知。以下类型适用于你的所有设备。",
     "notificationsKindsHint": "“动态”会保留所有内容。此设置适用于此工作区，在你的所有设备上生效。",
+    "liveActivity": "灵动岛中的智能体",
+    "liveActivityHint": "智能体处理你交代的事情时,会显示在屏幕顶部(任何 App 中)和锁定屏幕上。App 关闭时需要 iOS 17.2 或更高版本。",
     "version": "agentes.chat · 版本 {{version}}",
     "edit": "编辑",
     "status": "状态",

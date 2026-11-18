@@ -177,6 +177,8 @@ export * from "./judge";
 export * from "./key-line";
 export * from "./limits";
 export * from "./live";
+export * from "./live-activity";
+export * from "./live-activity-queue";
 export * from "./machine-access";
 export * from "./machine-accounts";
 export * from "./machine-clis";

@@ -9,6 +9,7 @@ import { lineMachineOf, publishQueueChanged } from "./computer-queue";
 import { INBOX_JOB } from "./dispatch";
 import { ConflictError, ForbiddenError, NotFoundError } from "./errors";
 import { publishChannelEvent, publishMessageCreated } from "./events";
+import { queueLiveActivityRun } from "./live-activity-queue";
 import type { MachineHub } from "./machine-hub";
 import { cancelOrgTasks, type TaskCall } from "./machine-tasks";
 import { insertMessage, type Message, messageView } from "./messages";
@@ -544,8 +545,9 @@ export async function stopRun(
       ...(actor.agentId ? { byAgentId: actor.agentId } : {}),
     });
   await publishChannelEvent(deps.pubsub, { type: "agent.run", ...where, ...bg, status: "canceled" });
-  // Its line ends with the run (ADR 0084 §11).
+  // Its line ends with the run (ADR 0084 §11), and so does its place in its person's Live Activity (ADR 0201).
   await announceAgentStatus(deps.pubsub, run.orgId, run.agentId).catch(() => {});
+  await queueLiveActivityRun(db, run).catch(() => {});
   if (line) await publishQueueChanged(deps.pubsub, run.orgId, line);
   if (previous !== "running" && run.background) {
     await publishChannelEvent(deps.pubsub, { type: "agent.idle", ...where, ...bg });
