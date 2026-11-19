@@ -8894,6 +8894,8 @@ export const ptBR = {
     },
   },
   routines: {
+    missingReport:
+      "Esta rotina terminou sem o relatório obrigatório. Não foi possível verificar seus resultados. Execução: {{runId}}.",
     filters: "Filtrar rotinas",
     agentFilter: "Agente",
     resume: "Retomar",
