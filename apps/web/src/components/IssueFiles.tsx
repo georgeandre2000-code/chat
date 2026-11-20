@@ -7,7 +7,7 @@ import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useActors } from "@/components/actors";
 import { useArtifactDownload } from "@/components/artifacts/ArtifactActions";
-import { useArtifactViewer } from "@/components/artifacts/ArtifactViewer";
+import { useArtifactViewer } from "@/components/artifacts/viewer-context";
 import { DrivePreview } from "@/components/drive/DrivePreview";
 import { useFileDrop } from "@/components/drive/DriveUploads";
 import { useOrg } from "@/components/org-context";
