@@ -67,7 +67,8 @@ import type { Spawn } from "./scope-gate";
  *   `item/fileChange/requestApproval`); the runner answers with the same
  *   decision Claude Code's permission prompt gets (`permissionPrompt`: deny
  *   list, secrets, plain reads, a `plan` turn's refusals, then the server's
- *   rules or a person), `accept` or `decline`.
+ *   rules or a person), `accept` or `decline`. A decline carries no reason in
+ *   the protocol: the reason is steered into the turn (`DECLINED_PREFIX`).
  * - Notifications → the same events exec gives: `item/agentMessage/delta`
  *   streamed as text deltas (batched), a completed `commandExecution` /
  *   `fileChange` as an executed `tool_call`, `thread/tokenUsage/updated`
@@ -645,6 +646,9 @@ export class CodexAppMapper {
 
 // ── Approvals (ADR 0053 §3) ──────────────────────────────────────────────────
 
+/** How the reason of a declined command or change starts, steered to Codex: from the computer, not a person. */
+export const DECLINED_PREFIX = "[agentes.chat, not the person] The computer declined that command or change: ";
+
 /** A call as the command policy reads it (Claude Code's permission prompt arguments). */
 export type PolicyCall = { tool_name: string; input: Record<string, unknown> };
 
@@ -687,11 +691,20 @@ export function approvalCalls(
   return null;
 }
 
-/** `accept` only when the policy allows every call of the approval (`permissionPrompt`, as Claude Code's prompt). */
+/**
+ * `accept` only when the policy allows every call of the approval (`permissionPrompt`, as Claude Code's prompt).
+ * `onDecline` gets why, the words Claude Code's prompt would have answered.
+ */
 export async function decideApproval(
   calls: PolicyCall[],
   ask: (tool: string, args: Record<string, unknown>) => Promise<IpcReply>,
-  opts: { scope: CommandScope; profile: CommandProfile; signal?: AbortSignal; asks?: "never" },
+  opts: {
+    scope: CommandScope;
+    profile: CommandProfile;
+    signal?: AbortSignal;
+    asks?: "never";
+    onDecline?: (message: string) => void;
+  },
 ): Promise<"accept" | "decline"> {
   if (calls.length === 0) return "decline";
   const sleep = (ms: number) =>
@@ -717,7 +730,10 @@ export async function decideApproval(
       sleep,
       ...(opts.asks ? { asks: opts.asks } : {}),
     });
-    if (answer.behavior !== "allow") return "decline";
+    if (answer.behavior !== "allow") {
+      opts.onDecline?.(answer.message);
+      return "decline";
+    }
   }
   return "accept";
 }
@@ -1390,6 +1406,23 @@ export class CodexAppServers implements CodexAppRunner {
         ...(opts.runnerHome ? { runnerHome: opts.runnerHome } : {}),
       };
       const windows = (opts.platform ?? process.platform) === "win32";
+      // A decline has no field for why (`v2/CommandExecutionApprovalDecision`), and Codex tells the model only that it
+      // was rejected: why reaches it as steered input, written before the decline so it is there at its next request.
+      const tellDeclined = (message: string) => {
+        if (settled || !turnId || !message) return;
+        void client
+          .request(
+            "turn/steer",
+            {
+              threadId,
+              expectedTurnId: turnId,
+              clientUserMessageId: randomUUID(),
+              input: [text(`${DECLINED_PREFIX}${redact(message)}`)],
+            },
+            STEER_RPC_MS,
+          )
+          .catch(() => undefined);
+      };
       client.onRequest((method, params) => {
         if (settled) return null;
         if (typeof params.threadId === "string" && params.threadId !== threadId) return null;
@@ -1405,6 +1438,7 @@ export class CodexAppServers implements CodexAppRunner {
           profile: input.profile ?? "work",
           signal: approvals.signal,
           ...(input.asks ? { asks: input.asks } : {}),
+          onDecline: tellDeclined,
         }).then((decision) => {
           if (decision === "decline")
             this.log(`codex approval declined: ${redact(JSON.stringify(calls)).slice(0, 300)}`);

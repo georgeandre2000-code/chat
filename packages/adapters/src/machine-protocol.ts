@@ -4274,6 +4274,8 @@ export const MISSION_MCP_TOOLS: readonly MissionMcpTool[] = [
         request_id: { type: "string", maxLength: 64 },
         /** Added by the runner: where the task runs and its folders (the code-side rules check paths). */
         scope: { type: "object" },
+        /** Added by the runner: it refused this call by itself (`localVerdict`'s code and words), told for the run's steps. */
+        refused: { type: "object" },
       },
     },
   },

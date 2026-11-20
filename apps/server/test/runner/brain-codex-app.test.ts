@@ -1,6 +1,7 @@
 import { afterEach, expect, test } from "bun:test";
 import { chmodSync, existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import path from "node:path";
+import { ASK_IN_CHAT, approvalMessage, PLAN_MESSAGE } from "@agenteschat/adapters/command-policy";
 import { type MachineRequest, parseBrainEvent } from "@agenteschat/adapters/machine-protocol";
 import { sealSecret, secretAad } from "@agenteschat/adapters/secret-box";
 import {
@@ -19,6 +20,7 @@ import {
   codexAppServerArgs,
   codexAtLeast,
   codexThreadPolicy,
+  DECLINED_PREFIX,
   decideApproval,
 } from "../../runner/brain-codex-app";
 import { CODEX_WINDOWS_CONFIG } from "../../runner/codex-windows";
@@ -694,13 +696,17 @@ test("an approval is judged on its script exactly: a second line is a second com
   );
   expect(calls).toEqual([{ tool_name: "Bash", input: { command: "ls\nrm -rf /tmp/elsewhere" } }]);
   const asked: string[] = [];
-  const ask = async (tool: string): Promise<IpcReply> => {
-    asked.push(tool);
+  const ask = async (tool: string, args: Record<string, unknown>): Promise<IpcReply> => {
+    if (!args.refused) asked.push(tool);
     return { ok: true, text: JSON.stringify({ behavior: "allow" }) };
   };
   const scope = { cwd: "/w", folders: ["/w"] };
+  const why: string[] = [];
   // A plan turn refuses the write on the computer (joined on one line it read as `ls` with arguments, a plain read).
-  expect(await decideApproval(calls ?? [], ask, { scope, profile: "plan" })).toBe("decline");
+  expect(await decideApproval(calls ?? [], ask, { scope, profile: "plan", onDecline: (m) => why.push(m) })).toBe(
+    "decline",
+  );
+  expect(why).toEqual([PLAN_MESSAGE]);
   expect(await decideApproval([{ tool_name: "Bash", input: { command: "ls" } }], ask, { scope, profile: "plan" })).toBe(
     "accept",
   );
@@ -731,20 +737,37 @@ test.skipIf(!posix)(
   "a work turn's approvals get the command policy's answer: merges declined, reads accepted, the rest asks the server",
   async () => {
     const asked: Array<{ tool: string; args: Record<string, unknown> }> = [];
+    const told: Array<Record<string, unknown>> = [];
     const replies: unknown[] = [{ behavior: "allow" }, { behavior: "deny", message: "A person said no." }];
     const t = await setup({
       ask: async (_process, tool, args): Promise<IpcReply> => {
+        // A refusal the computer made is only told (its answer changes nothing).
+        if (args.refused) {
+          told.push(args);
+          return { ok: true, text: "{}" };
+        }
         asked.push({ tool, args });
         return { ok: true, text: JSON.stringify(replies.shift() ?? { behavior: "deny", message: "no" }) };
       },
     });
+    const steered = () =>
+      t.rpcs("turn/steer").map((p) => (p.input as Array<{ text: string }>).map((i) => i.text).join(""));
     const merge = start(t.ctx, request(1, "APPROVE gh pr merge 1"));
     await merge.done;
     expect(answerOf(merge.events)).toBe("decision: decline");
+    // Codex's decline carries no reason: the model gets it as steered input, and the server a step of the refusal.
+    const why = approvalMessage("This is a merge", ASK_IN_CHAT);
+    expect(steered()).toEqual([`${DECLINED_PREFIX}${why}`]);
+    await waitFor(() => told.length === 1);
+    expect(told[0]).toMatchObject({
+      tool_name: "Bash",
+      input: { command: "gh pr merge 1" },
+      refused: { code: "never", message: why },
+    });
     const status = start(t.ctx, request(2, "APPROVE git status"));
     await status.done;
     expect(answerOf(status.events)).toBe("decision: accept");
-    // Neither reached the server: the computer decides those by itself.
+    // Neither was asked of the server: the computer decides those by itself.
     expect(asked).toEqual([]);
     // An install: the server's rules decide (allowed here), then a person's no.
     const install = start(t.ctx, request(3, "APPROVE npm install left-pad"));
@@ -761,14 +784,19 @@ test.skipIf(!posix)(
     const again = start(t.ctx, request(4, "APPROVE npm install other"));
     await again.done;
     expect(answerOf(again.events)).toBe("decision: decline");
+    expect(steered().at(-1)).toBe(`${DECLINED_PREFIX}A person said no.`);
+    // The server decided that one: its own step, nothing told.
+    expect(told).toHaveLength(1);
   },
 );
 
 test.skipIf(!posix)("a plan turn's approvals are refused on the computer, never asked of anyone", async () => {
   const asked: unknown[] = [];
+  const told: Array<Record<string, unknown>> = [];
   const t = await setup({
     ask: async (_process, tool, args): Promise<IpcReply> => {
-      asked.push({ tool, args });
+      if (args.refused) told.push(args);
+      else asked.push({ tool, args });
       return { ok: true, text: JSON.stringify({ behavior: "allow" }) };
     },
   });
@@ -783,6 +811,10 @@ test.skipIf(!posix)("a plan turn's approvals are refused on the computer, never 
   await read.done;
   expect(answerOf(read.events)).toBe("decision: accept");
   expect(asked).toEqual([]);
+  expect(told.map((a) => a.refused)).toEqual([
+    { code: "policy", message: PLAN_MESSAGE },
+    { code: "policy", message: PLAN_MESSAGE },
+  ]);
 });
 
 test.skipIf(!posix)(
