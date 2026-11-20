@@ -2768,6 +2768,8 @@ export const ptBR = {
     uploading: "enviando…",
     uploadFailed: "não foi enviado",
     removeFile: "Remover {{name}}",
+    dropFileTitle: "Solte para anexar",
+    dropFileNote: "Os arquivos ficam no rascunho desta conversa até você enviar.",
     tooManyFiles: "Até {{max}} arquivos por mensagem.",
     reminder: "Lembrete",
     reactions: "Reações",

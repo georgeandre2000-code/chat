@@ -57,7 +57,7 @@ import {
 } from "@/components/drive/DriveFolders";
 import { DriveCard, DriveRow, type ItemProps } from "@/components/drive/DriveItems";
 import { DriveTrash } from "@/components/drive/DriveTrash";
-import { DropOverlay, UploadProgress, useFileDrop } from "@/components/drive/DriveUploads";
+import { DropOverlay, UploadProgress } from "@/components/drive/DriveUploads";
 import { useActorFilterOptions } from "@/components/filters";
 import { ErrorState, LoadingList } from "@/components/Loading";
 import { LivePresenceScope } from "@/components/live/LiveCover";
@@ -66,6 +66,7 @@ import { cachedKind, openLivePage } from "@/components/live/open";
 import { COMPACT_QUERY } from "@/components/NavDrawer";
 import { useOrg } from "@/components/org-context";
 import { SelectionBar } from "@/components/SelectionBar";
+import { useFileDrop } from "@/hooks/useFileDrop";
 import { useRightHandLook } from "@/hooks/useRightHandLook";
 import type { MenuEntry } from "@/lib/context-menu";
 import { entityMenu } from "@/lib/entity-menu";

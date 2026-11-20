@@ -1097,11 +1097,87 @@ html:not([data-pointer]) .sidebar__user:focus-visible {
   display: flex;
 }
 .channel__col {
+  position: relative;
   flex: 1;
   min-width: 0;
   display: flex;
   flex-direction: column;
 }
+.channel__file-drop {
+  position: absolute;
+  z-index: 5;
+  inset: 8px;
+  display: grid;
+  place-items: center;
+  padding: 20px;
+  border: 1px dashed var(--info);
+  border-radius: 18px;
+  background: color-mix(in srgb, var(--bg) 81%, transparent);
+  color: var(--ink);
+  pointer-events: none;
+}
+.channel__file-drop-card {
+  display: grid;
+  justify-items: center;
+  gap: 8px;
+  width: min(100%, 320px);
+  padding: 24px 20px;
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  background: var(--raised);
+  box-shadow: var(--e3), var(--top);
+  text-align: center;
+}
+.channel__file-drop-card strong {
+  font-family: var(--font-display);
+  font-weight: var(--font-display-weight, 500);
+  font-size: 23px;
+  letter-spacing: -0.025em;
+}
+.channel__file-drop-card > span:last-child {
+  max-width: 28ch;
+  color: var(--ink-muted);
+  font-size: 13px;
+  line-height: 1.45;
+}
+.channel__file-drop-icon {
+  display: grid;
+  place-items: center;
+  width: 54px;
+  height: 54px;
+  margin-bottom: 4px;
+  border-radius: 17px;
+  background: color-mix(in srgb, var(--info) 15%, var(--raised));
+  color: var(--info);
+}
+@media (prefers-reduced-motion: no-preference) {
+  .channel__file-drop {
+    animation: chat-drop-veil 160ms ease-out both;
+  }
+  .channel__file-drop-card {
+    animation: chat-drop-card 240ms cubic-bezier(0.2, 0.8, 0.3, 1) both;
+  }
+  .channel__file-drop-icon .ac-icon {
+    animation: chat-drop-arrow 1.35s ease-in-out 160ms infinite;
+  }
+}
+@keyframes chat-drop-veil {
+  from {
+    opacity: 0;
+  }
+}
+@keyframes chat-drop-card {
+  from {
+    opacity: 0;
+    transform: translateY(9px) scale(0.96);
+  }
+}
+@keyframes chat-drop-arrow {
+  50% {
+    transform: translateY(-4px);
+  }
+}
+
 .channel__messages {
   flex: 1;
   min-height: 0;

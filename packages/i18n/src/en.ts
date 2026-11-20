@@ -2894,6 +2894,8 @@ export const en = {
     uploading: "uploading…",
     uploadFailed: "was not uploaded",
     removeFile: "Remove {{name}}",
+    dropFileTitle: "Drop to attach",
+    dropFileNote: "Files stay in this conversation’s draft until you send them.",
     tooManyFiles: "Up to {{max}} files per message.",
     reminder: "Reminder",
     reactions: "Reactions",
