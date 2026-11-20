@@ -119,6 +119,8 @@ export interface ModelInfo {
   efforts?: readonly string[];
   /** It can't follow an `outputSchema`: never a pick for routing, the judge or summaries. */
   structuredOutput?: false;
+  /** Reads tool results' pictures over Chat Completions (OpenRouter's `input_modalities`, Command Code's catalog). */
+  images?: boolean;
   /**
    * `false`: the pickers offer it only to a workspace with its provider's key (OpenRouter's long list, Command Code's).
    * `true`: a long list's good pick, shown first, greyed without a key. Absent: a catalog model.
@@ -441,6 +443,7 @@ export const MODEL_CATALOG: Record<string, ModelInfo> = {
     prices: { input: 4000, output: 20000, cacheRead: 200, cacheWrite: 5000 },
     contextWindow: 1_000_000,
     serverSideFallback: false,
+    images: true,
   },
   "commandcode:claude-sonnet-5-5": {
     provider: "commandcode",
@@ -449,6 +452,7 @@ export const MODEL_CATALOG: Record<string, ModelInfo> = {
     prices: { input: 2000, output: 10000, cacheRead: 100, cacheWrite: 2500 },
     contextWindow: 1_000_000,
     serverSideFallback: false,
+    images: true,
     tier: "large",
   },
   "commandcode:claude-haiku-5-5": {
@@ -459,6 +463,7 @@ export const MODEL_CATALOG: Record<string, ModelInfo> = {
     longContext: { aboveInputTokens: 100_000, prices: { input: 500, output: 2500, cacheRead: 50, cacheWrite: 625 } },
     contextWindow: 1_000_000,
     serverSideFallback: false,
+    images: true,
     router: true,
     leastThinking: "off",
   },
@@ -473,6 +478,7 @@ export const MODEL_CATALOG: Record<string, ModelInfo> = {
     },
     contextWindow: 1_050_000,
     serverSideFallback: false,
+    images: true,
   },
   "commandcode:gpt-6-luna": {
     provider: "commandcode",
@@ -482,6 +488,7 @@ export const MODEL_CATALOG: Record<string, ModelInfo> = {
     longContext: { aboveInputTokens: 272_000, prices: { input: 200, output: 750, cacheRead: 20, cacheWrite: 250 } },
     contextWindow: 1_050_000,
     serverSideFallback: false,
+    images: true,
   },
   "commandcode:zai-org/GLM-5.3": {
     provider: "commandcode",
@@ -500,6 +507,7 @@ export const MODEL_CATALOG: Record<string, ModelInfo> = {
     prices: { input: 2000, output: 10000, cacheRead: 200, cacheWrite: 2000 },
     contextWindow: 1_048_576,
     serverSideFallback: false,
+    images: true,
   },
   "commandcode:deepseek/deepseek-v4-pro": {
     provider: "commandcode",
@@ -524,6 +532,7 @@ export const MODEL_CATALOG: Record<string, ModelInfo> = {
     },
     contextWindow: 1_000_000,
     serverSideFallback: false,
+    images: true,
     cheap: true,
     tier: "small",
   },
@@ -534,6 +543,7 @@ export const MODEL_CATALOG: Record<string, ModelInfo> = {
     prices: { input: 1500, output: 7500, cacheRead: 150, cacheWrite: 1500 },
     contextWindow: 1_000_000,
     serverSideFallback: false,
+    images: true,
   },
   "commandcode:deepseek/deepseek-v4.1-flash-fast": {
     provider: "commandcode",
@@ -546,6 +556,7 @@ export const MODEL_CATALOG: Record<string, ModelInfo> = {
     },
     contextWindow: 1_000_000,
     serverSideFallback: false,
+    images: true,
   },
   "commandcode:deepseek/deepseek-v4.1-flash-ultrafast": {
     provider: "commandcode",
@@ -554,6 +565,7 @@ export const MODEL_CATALOG: Record<string, ModelInfo> = {
     prices: { input: 2400, output: 9600, cacheRead: 48, cacheWrite: 2400 },
     contextWindow: 1_048_576,
     serverSideFallback: false,
+    images: true,
   },
   "commandcode:z-ai/glm-5.3-flash": {
     provider: "commandcode",
@@ -562,6 +574,7 @@ export const MODEL_CATALOG: Record<string, ModelInfo> = {
     prices: { input: 150, output: 500, cacheRead: 30, cacheWrite: 150 },
     contextWindow: 1_048_576,
     serverSideFallback: false,
+    images: true,
   },
   "commandcode:z-ai/glm-5.3-flashx": {
     provider: "commandcode",
@@ -570,6 +583,7 @@ export const MODEL_CATALOG: Record<string, ModelInfo> = {
     prices: { input: 370, output: 1250, cacheRead: 75, cacheWrite: 370 },
     contextWindow: 1_000_000,
     serverSideFallback: false,
+    images: true,
     structuredOutput: false,
   },
   "commandcode:moonshotai/Kimi-K2.7-Code": {
@@ -579,6 +593,7 @@ export const MODEL_CATALOG: Record<string, ModelInfo> = {
     prices: { input: 950, output: 4000, cacheRead: 190, cacheWrite: 950 },
     contextWindow: 256_000,
     serverSideFallback: false,
+    images: true,
   },
   "commandcode:moonshotai/Kimi-K2.7-Code-Highspeed": {
     provider: "commandcode",
@@ -587,6 +602,7 @@ export const MODEL_CATALOG: Record<string, ModelInfo> = {
     prices: { input: 1900, output: 8000, cacheRead: 380, cacheWrite: 1900 },
     contextWindow: 262_000,
     serverSideFallback: false,
+    images: true,
   },
   "commandcode:minimax/minimax-m3.1-flash": {
     provider: "commandcode",
@@ -595,6 +611,7 @@ export const MODEL_CATALOG: Record<string, ModelInfo> = {
     prices: { input: 150, output: 600, cacheRead: 15, cacheWrite: 150 },
     contextWindow: 1_000_000,
     serverSideFallback: false,
+    images: true,
     structuredOutput: false,
   },
   "commandcode:xiaomi/mimo-v2.6-pro": {
@@ -604,6 +621,7 @@ export const MODEL_CATALOG: Record<string, ModelInfo> = {
     prices: { input: 435, output: 870, cacheRead: 4, cacheWrite: 435 },
     contextWindow: 1_048_576,
     serverSideFallback: false,
+    images: true,
     structuredOutput: false,
   },
   "commandcode:xiaomi/mimo-v2.6-pro-ultraspeed": {
@@ -613,6 +631,7 @@ export const MODEL_CATALOG: Record<string, ModelInfo> = {
     prices: { input: 4350, output: 8700, cacheRead: 36, cacheWrite: 4350 },
     contextWindow: 1_048_576,
     serverSideFallback: false,
+    images: true,
     structuredOutput: false,
   },
   "commandcode:xiaomi/mimo-v2.6-flash": {
@@ -622,6 +641,7 @@ export const MODEL_CATALOG: Record<string, ModelInfo> = {
     prices: { input: 140, output: 280, cacheRead: 3, cacheWrite: 140 },
     contextWindow: 1_048_576,
     serverSideFallback: false,
+    images: true,
     structuredOutput: false,
   },
   "commandcode:meta/muse-spark-1.3": {
@@ -631,6 +651,7 @@ export const MODEL_CATALOG: Record<string, ModelInfo> = {
     prices: { input: 1250, output: 4250, cacheRead: 150, cacheWrite: 1250 },
     contextWindow: 1_048_576,
     serverSideFallback: false,
+    images: true,
   },
   "commandcode:meta/muse-spark-1.3-contributor": {
     provider: "commandcode",
@@ -639,6 +660,7 @@ export const MODEL_CATALOG: Record<string, ModelInfo> = {
     prices: { input: 100, output: 200, cacheRead: 2, cacheWrite: 100 },
     contextWindow: 1_048_576,
     serverSideFallback: false,
+    images: true,
   },
   "commandcode:meta/muse-spark-open": {
     provider: "commandcode",
@@ -647,6 +669,7 @@ export const MODEL_CATALOG: Record<string, ModelInfo> = {
     prices: { input: 1250, output: 4250, cacheRead: 150, cacheWrite: 1250 },
     contextWindow: 1_048_576,
     serverSideFallback: false,
+    images: true,
   },
   "commandcode:meta/muse-ember": {
     provider: "commandcode",
@@ -655,6 +678,7 @@ export const MODEL_CATALOG: Record<string, ModelInfo> = {
     prices: { input: 100, output: 500, cacheRead: 4, cacheWrite: 100 },
     contextWindow: 1_048_576,
     serverSideFallback: false,
+    images: true,
   },
 };
 
