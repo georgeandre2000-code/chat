@@ -3295,6 +3295,8 @@ async function executeRunInner(
         source: choice.source,
       };
       later(() => addRunStep(db, run, "context", { autoModel: chosen }));
+      if (choice.source === "judge" && choice.tier === "small" && choice.effort === "low" && !run.background)
+        t.system = [...t.system, { turn: true, found: true, text: QUICK_TURN_NOTE } as ContextBlock];
       later(() => saveTranscript(db, t));
     }
   }
@@ -6495,6 +6497,14 @@ function createBrain(
     session: brainSessionId(agent.id, replyThreadOf(run) ?? run.channelId, "model"),
   });
 }
+
+/**
+ * What a run reads on its first turn when the judge heard a quick turn (small tier, low effort): each tool call is
+ * one more model call, seconds the person waits, so it answers from what it has. Never fewer tools: the message may
+ * still ask for one, and the rules on checking a state before claiming it stand.
+ */
+export const QUICK_TURN_NOTE =
+  "# A quick turn\nThis message reads as a quick one (a greeting, thanks, a short question or answer). Answer it in this reply from what you already have here: don't search, look up tools or check anything first just in case. When the message asks you to do something or whether something is done, use the tools for it as usual.";
 
 /** For computer brains: a reaction through the bridge is the whole answer. */
 export const COMPUTER_REACT_NOTE =
