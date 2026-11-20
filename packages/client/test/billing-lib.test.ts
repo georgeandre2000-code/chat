@@ -4,7 +4,7 @@ import { ApiError } from "../src/api/http";
 import type { AppNotification } from "../src/api/types";
 import { BILLING_HOLDS, billingHoldOf, planOfferOf } from "../src/lib/billing";
 import { errorText, holdText, restrictionLine } from "../src/lib/errors";
-import { workspaceHeadline } from "../src/lib/notifications";
+import { openTarget, workspaceHeadline } from "../src/lib/notifications";
 import { can } from "../src/lib/permissions";
 
 /** The key and its values, so a test sees which words were picked (the words themselves: packages/i18n). */
@@ -88,5 +88,17 @@ describe("the plan the onboarding offers (the billing service's plan list)", () 
     expect(planOfferOf(list([{ key: "team" }]))).toBeNull();
     expect(planOfferOf(list([{ key: "Team!", name: "Equipe" }], "Team!"))).toBeNull();
     expect(planOfferOf(list([{ key: "team", name: "x".repeat(41) }]))).toBeNull();
+  });
+});
+
+describe("the platform AI used up for the month (ADR 0079)", () => {
+  test("its notice says what stops and the way out in its own words, and opens AI and usage", () => {
+    const notice = {
+      kind: "platform_ai_limit",
+      source: {},
+      latest: { title: "2026-11" },
+    } as unknown as AppNotification;
+    expect(workspaceHeadline(notice)).toBe("limits.platformAi.notice");
+    expect(openTarget(notice)).toEqual({ to: "/org/$orgId/settings/$section", params: { section: "usage" } });
   });
 });

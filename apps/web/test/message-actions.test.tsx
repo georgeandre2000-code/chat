@@ -6,6 +6,7 @@ setupDom();
 import { readdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import type { Message } from "@agenteschat/client";
+import { ptBR } from "@agenteschat/i18n/pt-BR";
 import { act, cleanup, fireEvent, within } from "@testing-library/react";
 import { messageLink } from "@/components/MessageMore";
 import { ADA_ID, ATLAS_ID, createFakeApi, ENG_ID, NOW, ORG_ID, seedState } from "./fake-api";
@@ -242,9 +243,11 @@ describe("message action bars", () => {
     await settle(8);
     const row = document.querySelector('article[data-message-id="c1"]') as HTMLElement;
     const foot = row.querySelector(".ac-msg__body > .ac-msg__foot:last-child") as HTMLElement;
-    expect(foot.querySelector(".ac-receipt > .ac-receipt__words")?.textContent).toBe(
-      "Mencione um agente com @ para ele responder.",
-    );
+    // What stops, until when, what still works, and the way out.
+    expect(foot.querySelector(".ac-receipt > .ac-receipt__words")?.textContent).toBe(ptBR.receipts.platformCap);
+    expect(ptBR.receipts.platformCap).toContain("até o dia 1º");
+    expect(ptBR.receipts.platformCap).toContain("@menção");
+    expect(ptBR.receipts.platformCap).toContain("chave de IA");
     expect(row.querySelector(".ac-msg__head .ac-receipt, .ac-msg__aside .ac-receipt")).toBeNull();
   });
 

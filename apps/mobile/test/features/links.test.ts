@@ -221,6 +221,11 @@ describe("inbox items", () => {
     // A computer without Google Chrome (ADR 0133) opens it too.
     expect(notificationHref({ ...n, kind: "computer_no_chrome" })).toBe("/settings/devices/m1");
   });
+
+  test("this month's AI for picking who answers used up opens the AI accounts, where a key brings it back", () => {
+    const n = notification({ id: "n", kind: "platform_ai_limit", actors: [], source: {} });
+    expect(notificationHref(n)).toBe("/ai-accounts");
+  });
 });
 
 describe("the workspace's computer is ready", () => {

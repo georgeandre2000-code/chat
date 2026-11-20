@@ -1008,6 +1008,10 @@ export const featureKeysEn = {
       invitation_accepted_other: "{{names}} accepted your invitation",
       composio_limit_one: "This workspace used its Composio calls for the month",
       composio_limit_other: "This workspace used its Composio calls for the month",
+      platform_ai_limit_one:
+        "This workspace used up this month's AI for picking who answers: until the 1st, only an @mention calls an agent. Tap to connect an AI key and turn it back on now.",
+      platform_ai_limit_other:
+        "This workspace used up this month's AI for picking who answers: until the 1st, only an @mention calls an agent. Tap to connect an AI key and turn it back on now.",
       change_request_one: "{{names}} asks for a change to the team",
       change_request_other: "{{names}} ask for a change to the team",
       usage_limit_warning: "You've used {{percent}}% of your limit this month",

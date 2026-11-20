@@ -3131,7 +3131,7 @@
     },
     "retry": "Spróbuj ponownie",
     "retrying": "Ponawianie…",
-    "platformCap": "Wspomnij agenta przez @, aby odpowiedział.",
+    "platformCap": "Ta przestrzeń robocza wykorzystała AI z tego miesiąca do wybierania, kto odpowiada: do 1. dnia miesiąca agenta wywołuje tylko @wzmianka. Wspomniani agenci pracują jak zwykle. Admin może to teraz przywrócić, łącząc klucz AI w Ustawienia › AI i zużycie.",
     "mentionNeeded": "Bez @ żaden agent nie odpowie",
     "mentionNeededHint": "Żadna AI tutaj nie mogła wybrać agenta do tej wiadomości. Wspomnij agenta, aby go wywołać.",
     "picking": "Wybieram, kto odpowie",
@@ -20587,6 +20587,9 @@
     "failed": "Nie udało się teraz otworzyć. Spróbuj ponownie za chwilę."
   },
   "limits": {
+    "platformAi": {
+      "notice": "Ta przestrzeń robocza wykorzystała AI z tego miesiąca do wybierania, kto odpowiada: do 1. dnia miesiąca agenta wywołuje tylko @wzmianka. Połącz klucz AI w Ustawienia › AI i zużycie, aby przywrócić to teraz."
+    },
     "members": {
       "full": "Ta przestrzeń robocza ma {{members}} z {{limit}} osób.",
       "fullOne": "Plan agentes.chat tej przestrzeni roboczej obejmuje 1 osobę.",

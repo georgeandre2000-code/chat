@@ -3012,7 +3012,7 @@
     },
     "retry": "Réessayer",
     "retrying": "Nouvelle tentative…",
-    "platformCap": "Mentionnez un agent avec @ pour qu'il réponde.",
+    "platformCap": "Cet espace de travail a épuisé l'IA de ce mois pour choisir qui répond : jusqu'au 1er, seule une @mention appelle un agent. Les agents que vous mentionnez travaillent normalement. Un admin peut la réactiver maintenant en connectant une clé d'IA dans Paramètres › IA et utilisation.",
     "mentionNeeded": "Aucun agent ne répondra sans @",
     "mentionNeededHint": "Aucune IA ici n'a pu choisir un agent pour ce message. Mentionnez un agent pour l'appeler.",
     "picking": "Choix de qui répond",
@@ -19994,6 +19994,9 @@
     "failed": "Impossible de l'ouvrir pour le moment. Réessayez dans un instant."
   },
   "limits": {
+    "platformAi": {
+      "notice": "Cet espace de travail a épuisé l'IA de ce mois pour choisir qui répond : jusqu'au 1er, seule une @mention appelle un agent. Connectez une clé d'IA dans Paramètres › IA et utilisation pour la réactiver maintenant."
+    },
     "members": {
       "full": "Cet espace de travail compte {{members}} personnes sur {{limit}}.",
       "fullOne": "L'abonnement agentes.chat de cet espace de travail est prévu pour 1 personne.",

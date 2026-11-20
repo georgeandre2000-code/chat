@@ -2891,7 +2891,7 @@
     },
     "retry": "Yeniden dene",
     "retrying": "Yeniden deneniyor…",
-    "platformCap": "Yanıt vermesi için bir ajandan @ ile bahsedin.",
+    "platformCap": "Bu çalışma alanı, kimin yanıt vereceğini seçen bu ayki yapay zekayı tüketti: ayın 1'ine kadar bir ajanı yalnızca @bahsetme çağırır. Bahsettiğiniz ajanlar her zamanki gibi çalışır. Bir yönetici, Ayarlar › Yapay zeka ve kullanım bölümünde bir yapay zeka anahtarı bağlayarak bunu hemen yeniden açabilir.",
     "mentionNeeded": "@ olmadan hiçbir ajan yanıtlamaz",
     "mentionNeededHint": "Buradaki hiçbir yapay zeka bu mesaj için bir ajan seçemedi. Çağırmak için bir ajandan bahsedin.",
     "picking": "Kimin yanıtlayacağı seçiliyor",
@@ -19272,6 +19272,9 @@
     "failed": "Şu anda açılamadı. Birazdan tekrar deneyin."
   },
   "limits": {
+    "platformAi": {
+      "notice": "Bu çalışma alanı, kimin yanıt vereceğini seçen bu ayki yapay zekayı tüketti: ayın 1'ine kadar bir ajanı yalnızca @bahsetme çağırır. Hemen yeniden açmak için Ayarlar › Yapay zeka ve kullanım bölümünde bir yapay zeka anahtarı bağlayın."
+    },
     "members": {
       "full": "Bu çalışma alanında {{limit}} kişiden {{members}} kişi var.",
       "fullOne": "Bu çalışma alanının agentes.chat planı 1 kişiliktir.",

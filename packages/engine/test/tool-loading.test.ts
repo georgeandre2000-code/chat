@@ -216,7 +216,11 @@ test("chooseToolGroups: one calibrated question per group, the threshold, and th
       throw new Error("down");
     },
   };
-  expect(await chooseToolGroups(broken, input)).toEqual({ groups: [], scores: {}, source: "error", kept: [] });
+  // Refused or down (a workspace past its platform AI for the month): every group the agent is granted, and why.
+  const all = await chooseToolGroups(broken, { ...input, keep: ["wiki"] });
+  expect(all).toMatchObject({ source: "error", kept: ["wiki"], reason: "down", scores: {} });
+  expect(all.groups[0]).toBe("wiki");
+  expect([...all.groups].sort()).toEqual(["browser", "issues", "sentry", "wiki"]);
 });
 
 test("a run lists what the judge expects it to need, keeps it for the whole run, and reaches the rest on demand", async () => {

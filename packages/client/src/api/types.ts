@@ -6978,6 +6978,11 @@ export type NotificationKind =
   /** ADR 0107 §7: the workspace used its Composio calls for the month (connector admins). `latest.title`: the month. */
   | "composio_limit"
   /**
+   * ADR 0079: the workspace used its platform AI for the month (who manages AI keys). `latest.title`: the month.
+   * Opens AI and usage, where a key brings the picking back.
+   */
+  | "platform_ai_limit"
+  /**
    * ADR 0110: an agent's owner asks for one more browser profile for it (the people who grant profiles). Waiting;
    * `source.agentId` and its name in `source.label`. Opens the agent's page.
    */

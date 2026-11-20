@@ -186,6 +186,7 @@ function sourceOf(t: TFunction, n: AppNotification, channelName: (id: string) =>
   else if (n.kind === "join_request") [icon, label] = ["mail", t("settings.section.invites")];
   else if (n.kind === "invitation_accepted") [icon, label] = ["members", t("notifications.source.members")];
   else if (n.kind === "composio_limit") [icon, label] = ["wallet", t("notifications.source.usage")];
+  else if (n.kind === "platform_ai_limit") [icon, label] = ["bulb", t("settings.section.usage")];
   else if (n.kind === "skill_update") [icon, label] = ["book", t("skills.title")];
   else if (
     n.kind === "machine_connected" ||

@@ -2891,7 +2891,7 @@
     },
     "retry": "Erneut versuchen",
     "retrying": "Wird erneut versucht…",
-    "platformCap": "Erwähne einen Agenten mit @, damit er antwortet.",
+    "platformCap": "Dieser Workspace hat die KI dieses Monats für die Auswahl, wer antwortet, aufgebraucht: Bis zum 1. ruft nur eine @Erwähnung einen Agenten. Erwähnte Agenten arbeiten wie gewohnt. Ein Admin kann es jetzt wieder einschalten, indem er unter Einstellungen › KI und Verbrauch einen KI-Schlüssel verbindet.",
     "mentionNeeded": "Ohne @ antwortet kein Agent",
     "mentionNeededHint": "Keine KI hier konnte einen Agenten für diese Nachricht auswählen. Erwähne einen Agenten, um ihn zu rufen.",
     "picking": "Wählt aus, wer antwortet",
@@ -19343,6 +19343,9 @@
     "failed": "Konnte gerade nicht geöffnet werden. Versuch es gleich noch einmal."
   },
   "limits": {
+    "platformAi": {
+      "notice": "Dieser Workspace hat die KI dieses Monats für die Auswahl, wer antwortet, aufgebraucht: Bis zum 1. ruft nur eine @Erwähnung einen Agenten. Verbinde unter Einstellungen › KI und Verbrauch einen KI-Schlüssel, um es jetzt wieder einzuschalten."
+    },
     "members": {
       "full": "Dieser Workspace hat {{members}} von {{limit}} Personen.",
       "fullOne": "Der agentes.chat-Tarif dieses Workspace reicht für 1 Person.",

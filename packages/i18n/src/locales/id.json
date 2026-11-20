@@ -2775,7 +2775,7 @@
     },
     "retry": "Coba lagi",
     "retrying": "Mencoba lagi…",
-    "platformCap": "Sebut agen dengan @ agar dia menjawab.",
+    "platformCap": "Ruang kerja ini sudah menghabiskan AI bulan ini untuk memilih siapa yang menjawab: sampai tanggal 1, hanya @sebutan yang memanggil agen. Agen yang kamu sebut tetap bekerja seperti biasa. Admin bisa menyalakannya lagi sekarang dengan menghubungkan kunci AI di Pengaturan › AI dan pemakaian.",
     "mentionNeeded": "Tidak ada agen yang akan menjawab tanpa @",
     "mentionNeededHint": "Tidak ada AI di sini yang bisa memilih agen untuk pesan ini. Sebut agen untuk memanggilnya.",
     "picking": "Memilih siapa yang menjawab",
@@ -18772,6 +18772,9 @@
     "failed": "Tidak bisa membukanya sekarang. Coba lagi sebentar lagi."
   },
   "limits": {
+    "platformAi": {
+      "notice": "Ruang kerja ini sudah menghabiskan AI bulan ini untuk memilih siapa yang menjawab: sampai tanggal 1, hanya @sebutan yang memanggil agen. Hubungkan kunci AI di Pengaturan › AI dan pemakaian untuk menyalakannya lagi sekarang."
+    },
     "members": {
       "full": "Ruang kerja ini berisi {{members}} dari {{limit}} orang.",
       "fullOne": "Paket agentes.chat ruang kerja ini hanya untuk 1 orang.",

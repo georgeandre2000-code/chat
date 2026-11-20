@@ -3011,7 +3011,7 @@
     },
     "retry": "Riprova",
     "retrying": "Nuovo tentativo…",
-    "platformCap": "Menziona un agente con @ perché risponda.",
+    "platformCap": "Questo spazio di lavoro ha esaurito l'IA di questo mese per scegliere chi risponde: fino al 1°, solo una @menzione chiama un agente. Gli agenti che menzioni lavorano come sempre. Un admin può riattivarla ora collegando una chiave IA in Impostazioni › IA e consumi.",
     "mentionNeeded": "Nessun agente risponderà senza una @",
     "mentionNeededHint": "Nessuna IA qui ha potuto scegliere un agente per questo messaggio. Menziona un agente per chiamarlo.",
     "picking": "Scelta di chi risponde",
@@ -20004,6 +20004,9 @@
     "failed": "Impossibile aprirlo ora. Riprova tra un attimo."
   },
   "limits": {
+    "platformAi": {
+      "notice": "Questo spazio di lavoro ha esaurito l'IA di questo mese per scegliere chi risponde: fino al 1°, solo una @menzione chiama un agente. Collega una chiave IA in Impostazioni › IA e consumi per riattivarla ora."
+    },
     "members": {
       "full": "Questo spazio di lavoro ha {{members}} persone su {{limit}}.",
       "fullOne": "Il piano agentes.chat di questo spazio di lavoro prevede 1 persona.",

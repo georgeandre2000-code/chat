@@ -7215,7 +7215,7 @@
     "value": "Trying again…"
   },
   "receipts.platformCap": {
-    "value": "Mention an agent with @ to have it answer."
+    "value": "This workspace used up this month's AI for picking who answers: until the 1st, only an @mention calls an agent. Agents you mention work as usual. An admin can turn it back on now by connecting an AI key in Settings › AI and usage."
   },
   "receipts.mentionNeeded": {
     "value": "No agent will answer without an @"
@@ -47488,6 +47488,9 @@
   },
   "referrals.failed": {
     "value": "Couldn't open it now. Try again in a moment."
+  },
+  "limits.platformAi.notice": {
+    "value": "This workspace used up this month's AI for picking who answers: until the 1st, only an @mention calls an agent. Connect an AI key in Settings › AI and usage to turn it back on now."
   },
   "limits.members.full": {
     "value": "This workspace has {{members}} of {{limit}} people."

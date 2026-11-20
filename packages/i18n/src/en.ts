@@ -3090,7 +3090,12 @@ export const en = {
     retry: "Try again",
     /** On its way (`receipts.retry` pressed): the line says so until the server answers. */
     retrying: "Trying again…",
-    platformCap: "Mention an agent with @ to have it answer.",
+    /**
+     * Nobody was picked: the workspace used its platform AI for the month and has no AI key of its own. What stops,
+     * until when, what still works, and the way out.
+     */
+    platformCap:
+      "This workspace used up this month's AI for picking who answers: until the 1st, only an @mention calls an agent. Agents you mention work as usual. An admin can turn it back on now by connecting an AI key in Settings\u00a0›\u00a0AI and usage.",
     mentionNeeded: "No agent will answer without an @",
     mentionNeededHint: "No AI here could pick an agent for this message. Mention an agent to call it.",
     picking: "Picking who answers",
@@ -19970,6 +19975,11 @@ export const en = {
   },
   /** A workspace's limits, set by the billing service (ADR 0079): people and files. */
   limits: {
+    /** The workspace used its platform AI for the month (`platform_ai_limit`), to who can connect an AI key. */
+    platformAi: {
+      notice:
+        "This workspace used up this month's AI for picking who answers: until the 1st, only an @mention calls an agent. Connect an AI key in Settings\u00a0›\u00a0AI and usage to turn it back on now.",
+    },
     members: {
       full: "This workspace has {{members}} of {{limit}} people.",
       fullOne: "This workspace's agentes.chat plan fits 1 person.",

@@ -985,6 +985,10 @@ export const featureKeysPtBR = {
       invitation_accepted_other: "{{names}} aceitaram seu convite",
       composio_limit_one: "As chamadas da Composio deste mês acabaram",
       composio_limit_other: "As chamadas da Composio deste mês acabaram",
+      platform_ai_limit_one:
+        "A IA deste mês para escolher quem responde acabou neste workspace: até o dia 1º, só uma @menção chama um agente. Toque para conectar uma chave de IA e reativar agora.",
+      platform_ai_limit_other:
+        "A IA deste mês para escolher quem responde acabou neste workspace: até o dia 1º, só uma @menção chama um agente. Toque para conectar uma chave de IA e reativar agora.",
       change_request_one: "{{names}} pede uma mudança no time",
       change_request_other: "{{names}} pedem uma mudança no time",
       usage_limit_warning: "Você usou {{percent}}% do seu limite deste mês",

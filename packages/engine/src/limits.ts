@@ -1,10 +1,13 @@
+import type { PubSub } from "@agenteschat/adapters";
 import { and, count, type Database, type Executor, eq, gt, gte, isNotNull, isNull, schema, sql } from "@agenteschat/db";
 import { caches } from "./cache";
 import { ConflictError } from "./errors";
 import { formatBytes } from "./format";
 import type { Judge } from "./judge";
+import { notifyPlatformAiLimit } from "./notification-producers";
 import { recordOperatorEvent } from "./operator-events";
 import { can, requirePermission } from "./organizations";
+import { orgKeyProviders, RouterSkip, type RouterStrategy } from "./router";
 import { storedBytes, usesOwnBucket } from "./storage";
 import { monthStartUtc } from "./usage";
 
@@ -238,11 +241,17 @@ export const PLATFORM_CAP = "platform_cap" as const;
 /**
  * Whether the workspace used up its platform AI for this UTC month (`platformUsdPerMonth`), cached a minute per
  * process. The first time a month's spend reaches 50% and 100% of it, the operator's feed gets
- * `platform_ai.threshold`, once per workspace, month and threshold.
+ * `platform_ai.threshold`, once per workspace, month and threshold, and at 100%, when the workspace has no AI key of
+ * its own, who can connect one hears it (`platform_ai_limit`).
  * ponytail: the cache lets the spend run up to a minute of calls past the cap; a counter row moved by every call
  * would be exact.
  */
-export async function platformCapReached(db: Database, orgId: string, now = new Date()): Promise<boolean> {
+export async function platformCapReached(
+  db: Database,
+  orgId: string,
+  now = new Date(),
+  pubsub?: PubSub,
+): Promise<boolean> {
   return (await caches.platformSpend.getOrLoad(`${orgId}:`, async () => {
     const [org] = await db
       .select({
@@ -258,7 +267,7 @@ export async function platformCapReached(db: Database, orgId: string, now = new 
     const month = monthStartUtc(now).toISOString().slice(0, 7);
     if (percent > 0 && (org.month !== month || (org.percent ?? 0) < percent)) {
       const data = { month, percent, spentUsd: cents(spent), limitUsd: cents(org.limit) };
-      await db.transaction(async (tx) => {
+      const told = await db.transaction(async (tx) => {
         // Another process may have seen the same crossing: only the one that moves the row tells it.
         const moved = await tx
           .update(organizations)
@@ -271,7 +280,12 @@ export async function platformCapReached(db: Database, orgId: string, now = new 
           )
           .returning({ id: organizations.id });
         if (moved.length > 0) await recordOperatorEvent(tx, { type: "platform_ai.threshold", orgId, data });
+        return moved.length > 0;
       });
+      // With an AI key of its own its small model keeps picking: the notice ("only @mentions", "connect a key") would
+      // be false there.
+      if (told && percent === 100 && (await orgKeyProviders(db, orgId)).size === 0)
+        await notifyPlatformAiLimit({ db, pubsub }, orgId, month).catch(() => {});
     }
     return spent >= org.limit;
   })) as boolean;
@@ -282,12 +296,29 @@ export async function platformCapReached(db: Database, orgId: string, now = new 
  * the workspace's own cheap model answers in its place, and what only Jev answers (calibrated requests, images,
  * boxes) fails like a Jev outage, which its callers already handle.
  */
-export function platformCapJudge(db: Database, jev: Judge): Judge {
+export function platformCapJudge(db: Database, jev: Judge, pubsub?: PubSub): Judge {
   return {
     name: jev.name,
     async ask(request) {
-      if (await platformCapReached(db, request.orgId)) throw new Error("platform_cap");
+      if (await platformCapReached(db, request.orgId, undefined, pubsub)) throw new Error(PLATFORM_CAP);
       return jev.ask(request);
+    },
+  };
+}
+
+/**
+ * The router's Jev step, skipped for a workspace past its platform AI for the month: the chain's next step (the
+ * workspace's own small model) picks in its place. With none, `routeMessage` says so (`platform_cap`).
+ */
+export function platformCapRouter(db: Database, jev: RouterStrategy, pubsub?: PubSub): RouterStrategy {
+  return {
+    get name() {
+      return jev.name;
+    },
+    ...(jev.on ? { on: () => jev.on?.() ?? true } : {}),
+    async decide(input) {
+      if (await platformCapReached(db, input.orgId, undefined, pubsub)) throw new RouterSkip(PLATFORM_CAP);
+      return jev.decide(input);
     },
   };
 }

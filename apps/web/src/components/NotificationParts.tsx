@@ -101,6 +101,12 @@ export function SystemFace({ n, className = "nt-av24" }: { n: AppNotification; c
         <Icon name="plug" size={16} />
       </span>
     );
+  if (n.kind === "platform_ai_limit")
+    return (
+      <span className={cx("nt-sys", className)} aria-hidden="true">
+        <Icon name="bulb" size={16} />
+      </span>
+    );
   if (n.kind === "skill_update")
     return (
       <span className={cx("nt-sys", className)} aria-hidden="true">

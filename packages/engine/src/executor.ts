@@ -2389,13 +2389,13 @@ async function executeRunInner(
   const repeatsLastPost = (text: string) => text.trim() !== "" && text.trim() === transcript?.lastPosted;
   /**
    * What a message of the run says when it held a reply back (`held`): `words` alone when they stand on their own, the
-   * held reply with them, or the held reply alone when they add nothing ("nothing to add", "see above", no words).
-   * A judge error keeps both: nothing it wrote is lost.
+   * held reply with them, or the held reply alone when they add nothing ("nothing to add", "see above", no words, the
+   * same words again). A judge error keeps both: nothing it wrote is lost.
    */
   const heldWords = async (words: string): Promise<string> => {
     const held = transcript?.held;
     if (!held) return words;
-    if (!words) return held;
+    if (!words || words.trim() === held.trim()) return held;
     const read = judge
       ? await heldReplyRead(judge, { orgId: run.orgId, agentId: run.agentId, runId: run.id, held, reply: words }).catch(
           () => "both" as const,
@@ -6006,8 +6006,9 @@ async function executeRunInner(
             continuation: recorded,
             ...(decision.outcome === "continue"
               ? {
-                  nudged:
-                    decision.rule === "untried" || decision.rule === "unbacked" || decision.rule === "widget"
+                  nudged: decision.judgeError
+                    ? "unchecked"
+                    : decision.rule === "untried" || decision.rule === "unbacked" || decision.rule === "widget"
                       ? decision.rule
                       : "promise",
                 }
@@ -6286,7 +6287,9 @@ async function executeRunInner(
       later(() =>
         addRunStep(db, run, "context", {
           continuation: recorded,
-          ...(decision.outcome === "continue" ? { nudged: nudgedAs ?? (plan.missionId ? "mission_ask" : "ask") } : {}),
+          ...(decision.outcome === "continue"
+            ? { nudged: decision.judgeError ? "unchecked" : (nudgedAs ?? (plan.missionId ? "mission_ask" : "ask")) }
+            : {}),
         }),
       );
       if (decision.outcome === "done") learnLater(decision);
@@ -6296,7 +6299,8 @@ async function executeRunInner(
         // A give-up judged untried is held back, not dropped (`held`): it reads as unseen, and goes out if nothing
         // better comes.
         if (decision.rule === "untried") t.held = text;
-        const nudge = decision.rule === "untried" ? heldNudge(decision.nudge) : decision.nudge;
+        // A check that couldn't run says so in its own nudge (`uncheckedNudge`).
+        const nudge = decision.rule === "untried" && !decision.judgeError ? heldNudge(decision.nudge) : decision.nudge;
         appendUserText(t, nudge);
         if (plan.kind !== "model") nextPrompt = nudge;
         // Nothing to post first: it simply goes on. A give-up judged untried isn't posted either: it would send people

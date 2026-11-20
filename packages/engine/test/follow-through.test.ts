@@ -42,6 +42,7 @@ import {
   wakeFollowUp,
 } from "../src";
 import { advance, decideTurnEnd, type TurnEnd, toolsNamed } from "../src/continuation";
+import { JudgeBudgetError } from "../src/judge";
 import { personCanPost } from "../src/routine-state";
 import { addMember, type Fixture, setup } from "./fixtures";
 
@@ -374,9 +375,9 @@ test("follow_up bounds: a day ahead at most, two per run, three per conversation
   expect(refusedAtLimit.result).toMatchObject({ content: STRETCH_REFUSAL, isError: true });
   expect((await f.db.select().from(schema.outbox).where(eq(schema.outbox.kind, STRETCH_JOB))).length).toBe(1);
 
-  // A routine's background work runs again on its own schedule: no follow-ups there.
+  // A routine's background work may set its own resume, for work it is blocked on (`routine-room.test.ts`).
   const tool = { name: FOLLOW_UP_TOOL, scope: "" };
-  expect(toolPolicy({ kind: "routine", personId: null, brief: null }, tool).action).toBe("refuse");
+  expect(toolPolicy({ kind: "routine", personId: null, brief: null }, tool).action).toBe("allow");
   expect(toolPolicy({ kind: "person", personId: f.owner.id }, tool).action).toBe("allow");
 });
 
@@ -1549,14 +1550,42 @@ describe("a turn end's reads and judgment", () => {
       outcome: "continue",
       rule: "promise",
     });
-    // A failed judgment, or a failed read, is what it always was.
+    // A failed judgment checks itself once (below); a failed read is what it always was.
     expect((await timed(turn({ verdict: () => Promise.reject(new Error("down")) }))).d).toMatchObject({
-      outcome: "done",
-      rule: "judge_error",
+      outcome: "continue",
+      rule: "untried",
+      judgeError: true,
     });
     expect((await timed(turn({ wakesLater: () => Promise.reject(new Error("db")) }))).d).toMatchObject({
       outcome: "continue",
       rule: "promise",
+    });
+  });
+
+  test("a check refused or down: once per run the agent checks itself, held in a conversation; then done", async () => {
+    const down = () => Promise.reject(new Error("platform_cap"));
+    const evidence = { means: ["terminal (run_code)"], tried: ["github_get_issue #12 → ok"] };
+    const first = await decideTurnEnd(turn({ verdict: down, evidence }));
+    expect(first).toMatchObject({ outcome: "continue", rule: "untried", judgeError: true });
+    expect(first.nudge).toStartWith("Not posted yet");
+    expect(first.nudge).toContain("check it yourself");
+    expect(first.nudge).toContain("terminal (run_code)");
+    expect(first.nudge).toContain("github_get_issue #12");
+    const state = advance({ count: 0 }, first, 1);
+    expect(state).toMatchObject({ count: 1, uncheckedNudged: true });
+    // Bounded: the next failure ends the run as before, even with a nudge left.
+    expect(await decideTurnEnd(turn({ state, verdict: down }))).toMatchObject({
+      outcome: "done",
+      rule: "judge_error",
+    });
+    // A routine's record isn't posted: nothing to hold.
+    const routine = await decideTurnEnd(turn({ kind: "routine", verdict: down }));
+    expect(routine).toMatchObject({ outcome: "continue", rule: "untried", judgeError: true });
+    expect(routine.nudge).not.toContain("Not posted yet");
+    // Only out of the turn end's wait (a slow judge): done at once, or every reply would wait a turn more.
+    expect(await decideTurnEnd(turn({ verdict: () => Promise.reject(new JudgeBudgetError()) }))).toMatchObject({
+      outcome: "done",
+      rule: "judge_error",
     });
   });
 });

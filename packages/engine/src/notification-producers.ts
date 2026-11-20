@@ -1563,6 +1563,21 @@ export async function notifyComposioLimit(deps: NotificationDeps, orgId: string,
   });
 }
 
+/**
+ * The workspace used its platform AI for the month (ADR 0079): who can connect its own AI key hears it once that
+ * month (the caller marks the month first).
+ */
+export async function notifyPlatformAiLimit(deps: NotificationDeps, orgId: string, month: string) {
+  await notify(deps, {
+    orgId,
+    userIds: await adminsOf(deps, orgId, "manage_credentials"),
+    kind: "platform_ai_limit",
+    groupKey: `platform_ai_limit:${month}`,
+    source: {},
+    latest: { title: month },
+  });
+}
+
 const skillWaitingGroup = (skillId: string) => `skill_update:waiting:${skillId}:`;
 
 /**

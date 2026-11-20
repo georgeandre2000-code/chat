@@ -214,6 +214,7 @@ export const askersOf = (n: Pick<AppNotification, "count" | "latest">) => ({
 export function workspaceHeadline(n: Pick<AppNotification, "kind" | "latest">) {
   if (n.kind === "computer_ready") return "computerSetup.notification.ready" as const;
   if (n.kind === "composio_limit") return "connectors.composio.limitNotice" as const;
+  if (n.kind === "platform_ai_limit") return "limits.platformAi.notice" as const;
   if (n.kind === "computer_disk_full") return "machines.shared.diskFullNotice" as const;
   if (n.kind === "computer_no_chrome") return "machines.chromeMissingNotice" as const;
   if (n.kind === "skill_update") {
@@ -497,8 +498,9 @@ export function openTarget(n: AppNotification): OpenTarget | null {
       : s.routineId
         ? { to: "/org/$orgId/routines", search: { open: s.routineId } }
         : null;
-  // The month's Composio calls are counted in Uso.
-  if (n.kind === "composio_limit") return { to: "/org/$orgId/settings/$section", params: { section: "usage" } };
+  // The month's Composio calls are counted in Uso; an AI key that brings the picking back is connected there.
+  if (n.kind === "composio_limit" || n.kind === "platform_ai_limit")
+    return { to: "/org/$orgId/settings/$section", params: { section: "usage" } };
   // A person's limit (ADR 0141): who decides opens that person's month in Uso › Pessoas; the person, Seu uso.
   if (n.kind === "usage_limit") {
     const theirs = n.latest.statusTo === "reached" || n.latest.statusTo === "request";

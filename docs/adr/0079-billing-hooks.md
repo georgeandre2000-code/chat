@@ -92,3 +92,22 @@ ADR 0162: the billing link may carry `plan`, the billing service's own key for t
 passed on unread so the billing service opens that plan's Checkout. The plan's name and price come to the browser from
 the billing service's public `plans.json`, never from this server. On a hold, the hold's banner is the workspace's one
 way to the plan: the right hand's card and the first-task card offer none.
+
+## Amendment (2026-11-20): past the platform AI, agents keep their tools, go on, and the workspace is told (§5)
+
+A workspace past `platformUsdPerMonth` with no AI key of its own lost more than routing: every Jev call was refused, so
+runs loaded only the tool groups their thread's previous run used, turn ends closed as `judge_error` with no nudge, and
+nothing said why. Now:
+
+- **Tool groups.** A refused or failed tool-group judge loads every group the agent is granted, the reason on the run's
+  `context` step (`toolGroups.reason`, `platform_cap` here). A slow judge still starts with the kept groups.
+- **Turn ends.** The judge falls back to the workspace's small model as before. When that fails too, the run gets one
+  self-check turn per run (`uncheckedNudge`, step `nudged: unchecked`): its reply is held, posted as it is if it adds
+  nothing. A check that only ran out of the turn end's wait still ends as done.
+- **Routing.** The router's Jev step is skipped past the cap (`platformCapRouter`), so the workspace's own small model
+  picks; only with none is nothing picked (`platform_cap`).
+- **Saying so.** At 100%, with no AI key of its own, whoever may `manage_credentials` gets one `platform_ai_limit`
+  notice that month (inbox only, opening AI and usage). The receipt under an unrouted message says what stops, until the 1st, that mentioned agents
+  work as usual, and the way out: an AI key in Settings › AI and usage.
+- **A routine's resume.** A routine's background run may set `follow_up` for work it is blocked on; at its time the
+  agent wakes where the routine reports, in a run that keeps the routine's bounds.

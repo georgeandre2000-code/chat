@@ -2894,7 +2894,7 @@
     },
     "retry": "Opnieuw proberen",
     "retrying": "Opnieuw proberen…",
-    "platformCap": "Noem een agent met @ om hem te laten antwoorden.",
+    "platformCap": "Deze werkruimte heeft de AI van deze maand voor het kiezen van wie antwoordt opgebruikt: tot de 1e roept alleen een @vermelding een agent. Agents die je noemt werken gewoon. Een admin kan het nu weer aanzetten door een AI-sleutel te koppelen in Instellingen › AI en gebruik.",
     "mentionNeeded": "Zonder @ antwoordt geen agent",
     "mentionNeededHint": "Geen AI hier kon een agent voor dit bericht kiezen. Noem een agent om hem te roepen.",
     "picking": "Kiest wie antwoordt",
@@ -19464,6 +19464,9 @@
     "failed": "Kon het nu niet openen. Probeer het zo opnieuw."
   },
   "limits": {
+    "platformAi": {
+      "notice": "Deze werkruimte heeft de AI van deze maand voor het kiezen van wie antwoordt opgebruikt: tot de 1e roept alleen een @vermelding een agent. Koppel een AI-sleutel in Instellingen › AI en gebruik om het nu weer aan te zetten."
+    },
     "members": {
       "full": "Deze werkruimte heeft {{members}} van de {{limit}} mensen.",
       "fullOne": "Het agentes.chat-abonnement van deze werkruimte is voor 1 persoon.",

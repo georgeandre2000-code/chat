@@ -667,7 +667,10 @@ export interface RouterDeps {
   hasAi?(orgId: string): Promise<boolean>;
   /** What picks now, for `ai-status`. */
   routing?: RoutingSetup;
-  /** Whether the workspace used up its platform AI for the month (`limits.ts`): only with a chain that bills it. */
+  /**
+   * Whether the workspace used up its platform AI for the month (`limits.ts`): only with a chain that bills it. Then
+   * nobody is picked, unless `routing` names a small model of its own.
+   */
   platformCapReached?(orgId: string): Promise<boolean>;
   /**
    * The agents among `agentIds` that are out of office now (`outOfOfficeIds`, ADR 0084 §12): their plan or budget ran
@@ -895,7 +898,12 @@ export async function routeMessage(
   // never misses a key). Stored as `no_ai`, which "Responder agora" routes again once an AI is connected.
   if (waitsForPlan) return { ...(await unrouted(NO_AI, KEPT_ON_HOLD)), held: true };
   if (deps.hasAi && !(await deps.hasAi(message.orgId))) return unrouted(NO_AI);
-  if (await deps.platformCapReached?.(message.orgId)) return unrouted(PLATFORM_CAP);
+  // Past the workspace's platform AI for the month, its own small model still picks (the chain skips Jev).
+  if (
+    (await deps.platformCapReached?.(message.orgId)) &&
+    !(await deps.routing?.smallModel(message.orgId).catch(() => null))
+  )
+    return unrouted(PLATFORM_CAP);
   const quietMs = byAgent ? 0 : (deps.quietMs ?? 0);
   if (quietMs > 0) {
     const end = message.createdAt.getTime() + quietMs;
