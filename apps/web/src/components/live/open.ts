@@ -24,6 +24,23 @@ export function openLivePage(
   });
 }
 
+/**
+ * Opens a picture, a video or a PDF on its page with its conversation (ADR 0208): at a comment (`m`), or with
+ * Comment on (`comment`, "Comment" in the viewer).
+ */
+export function openMediaPage(
+  navigate: Navigate,
+  orgId: string,
+  fileId: string,
+  options: { m?: string; comment?: boolean } = {},
+) {
+  void navigate({
+    to: "/org/$orgId/drive/$fileId",
+    params: { orgId, fileId },
+    search: { ...(options.m ? { m: options.m } : {}), ...(options.comment ? { comment: true } : {}) },
+  });
+}
+
 const kindIn = (value: unknown, id: string): ArtifactKind | null => {
   if (!value || typeof value !== "object") return null;
   const o = value as { id?: unknown; kind?: unknown };

@@ -15645,6 +15645,45 @@
       "exitFullscreen": "Quitter le plein écran",
       "open": "Ouvrir"
     },
+    "comments": {
+      "title": "Commentaires",
+      "resolve": "Résoudre",
+      "reopen": "Rouvrir",
+      "resolvedBy": "Résolu par {{name}} · {{time}}",
+      "resolvedCount_one": "{{count}} résolu",
+      "resolvedCount_many": "{{count}} résolus",
+      "resolvedCount_other": "{{count}} résolus",
+      "showResolved": "Afficher les résolus",
+      "hideResolved": "Masquer les résolus",
+      "fromVersion": "De la version {{version}}",
+      "peekOpen": "Cliquez pour ouvrir dans la conversation",
+      "markAt": "Commentaire {{n}} à {{time}}, de {{name}}",
+      "page": "Page {{page}}",
+      "pageOf": "{{page}} sur {{count}}",
+      "pdfFailed": "Ce PDF ne peut pas être affiché ici. Téléchargez-le pour l'ouvrir.",
+      "loadFailed": "Cette image ne peut pas être affichée ici.",
+      "hint": {
+        "image": "Cliquez pour marquer un point ou faites glisser pour marquer une zone",
+        "video": "Cliquez sur la vidéo pour commenter ce moment, ou faites glisser pour marquer une zone",
+        "pdf": "Cliquez sur une page pour marquer un point ou faites glisser pour marquer une zone"
+      },
+      "line": {
+        "image_one": "{{count}} commentaire sur l'image",
+        "image_many": "{{count}} commentaires sur l'image",
+        "image_other": "{{count}} commentaires sur l'image",
+        "video_one": "{{count}} commentaire sur la vidéo",
+        "video_many": "{{count}} commentaires sur la vidéo",
+        "video_other": "{{count}} commentaires sur la vidéo",
+        "pdf_one": "{{count}} commentaire sur le PDF",
+        "pdf_many": "{{count}} commentaires sur le PDF",
+        "pdf_other": "{{count}} commentaires sur le PDF"
+      },
+      "write": {
+        "image": "Écrivez à propos de l'image…",
+        "video": "Écrivez à propos de la vidéo…",
+        "pdf": "Écrivez à propos du PDF…"
+      }
+    },
     "zoom": {
       "toolbar": "Zoom",
       "in": "Agrandir",
@@ -22174,25 +22213,36 @@
         "spreadsheet": "Conversation de la feuille de calcul",
         "slides": "Conversation de la présentation",
         "document": "Conversation du document",
-        "file": "Conversation du fichier"
+        "file": "Conversation du fichier",
+        "image": "Conversation de l'image",
+        "video": "Conversation de la vidéo",
+        "pdf": "Conversation du PDF"
       },
       "placeholder": {
         "canvas": "Écrivez à propos de ce tableau blanc · utilisez @ pour appeler un agent",
         "spreadsheet": "Écrivez à propos de cette feuille de calcul · utilisez @ pour appeler un agent",
         "slides": "Écrivez à propos de cette présentation · utilisez @ pour appeler un agent",
         "document": "Écrivez à propos de ce document · utilisez @ pour appeler un agent",
-        "file": "Écrivez à propos de ce fichier · utilisez @ pour appeler un agent"
+        "file": "Écrivez à propos de ce fichier · utilisez @ pour appeler un agent",
+        "image": "Écrivez à propos de cette image · utilisez @ pour appeler un agent",
+        "video": "Écrivez à propos de cette vidéo · utilisez @ pour appeler un agent",
+        "pdf": "Écrivez à propos de ce PDF · utilisez @ pour appeler un agent"
       },
       "this": {
         "canvas": "ce tableau blanc",
         "spreadsheet": "cette feuille de calcul",
         "slides": "cette présentation",
-        "document": "ce document"
+        "document": "ce document",
+        "image": "cette image",
+        "video": "cette vidéo",
+        "pdf": "ce PDF"
       },
       "origin": {
         "from": "<0>{{name}}</0> a créé {{what}} depuis la <1>{{place}}</1>",
         "made": "<0>{{name}}</0> a créé {{what}}",
-        "imported": "Importé depuis <1>{{file}}</1> par {{name}}"
+        "imported": "Importé depuis <1>{{file}}</1> par {{name}}",
+        "sentIn": "<0>{{name}}</0> a envoyé {{what}} dans la <1>{{place}}</1>",
+        "sent": "<0>{{name}}</0> a envoyé {{what}}"
       },
       "about": {
         "range": "À propos de {{range}} dans {{sheet}}",
@@ -22200,7 +22250,26 @@
         "canvas": "À propos de {{label}} sur le tableau blanc",
         "text": "À propos du texte sélectionné",
         "point": "À propos d'un endroit du tableau blanc",
-        "other": "À propos de {{label}}"
+        "other": "À propos de {{label}}",
+        "imageArea": "À propos de la zone {{n}} de l'image",
+        "imagePoint": "À propos du point {{n}} de l'image",
+        "videoAt": "À propos de la vidéo à {{time}}",
+        "pdfPage": "À propos de la page {{page}} du PDF",
+        "image": "À propos de l'image",
+        "video": "À propos de la vidéo",
+        "pdf": "À propos du PDF"
+      },
+      "what": {
+        "area": "Zone {{n}}",
+        "point": "Point {{n}}",
+        "anArea": "Une zone",
+        "aPoint": "Un point",
+        "page": "Page {{page}}"
+      },
+      "where": {
+        "image": "sur l'image",
+        "video": "dans la vidéo",
+        "pdf": "dans le PDF"
       },
       "drop": "Ne pas envoyer la sélection",
       "aboutLine": "Afficher {{what}} ({{where}}) dans le fichier",

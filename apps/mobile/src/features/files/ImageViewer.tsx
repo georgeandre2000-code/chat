@@ -1,7 +1,9 @@
 import { useArtifact } from "@agenteschat/client";
+import { mediaKindOfArtifact } from "@agenteschat/client/lib/files";
 import { keepWhole } from "@agenteschat/client/lib/format";
 import { LinearGradient } from "expo-linear-gradient";
 import { StatusBar } from "expo-status-bar";
+import type { VideoPlayer as Player } from "expo-video";
 import { type ReactNode, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { ActivityIndicator, type LayoutChangeEvent, StyleSheet, useWindowDimensions, View } from "react-native";
@@ -20,6 +22,11 @@ import Animated, {
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { scheduleOnRN } from "react-native-worklets";
 import { Icon, type IconName, PressScale, SCREEN_X, Text, useTheme } from "@/ui";
+import { type OpenTalk, useMediaPins, useOpenFileTalk } from "../live-files/talk/hooks";
+import { commentSelection, type Mark, picturePins, pinUnder, pointMark } from "../live-files/talk/logic";
+import { PicturePins } from "../live-files/talk/PicturePins";
+import { takeReveal, useRevealFor } from "../live-files/talk/store";
+import { FileTalkLine } from "../live-files/talk/TalkLine";
 import { useDirectory, useOrgId } from "../shared/hooks";
 import { goBack } from "../shared/parts";
 import { savedAt, useFileActions, useSavedWhen } from "./actions";
@@ -28,7 +35,15 @@ import { useRemoteFile } from "./source";
 import { ViewerVideo } from "./VideoPlayer";
 import { tellViewerPlace } from "./viewer-place";
 import { PageWait, ZoomPicture } from "./ZoomPicture";
-import { awaySpeed, pullCloses, pullDirection, pulledPlacement, pullProgress, type Size } from "./zoom";
+import {
+  awaySpeed,
+  type PictureTap,
+  pullCloses,
+  pullDirection,
+  pulledPlacement,
+  pullProgress,
+  type Size,
+} from "./zoom";
 
 /**
  * Pictures and videos, full screen, as the phone's own photos: one viewer for both, wherever they open from (a
@@ -40,7 +55,10 @@ import { awaySpeed, pullCloses, pullDirection, pulledPlacement, pullProgress, ty
  * its own speed as the viewer closes, else it springs back from that speed; and Compartilhar, Enviar cópia, Salvar em
  * Fotos, Ver no Drive at the bottom (the file screen's words and icons for the same actions), the file's only actions
  * (no "…" repeating them). A tap on a picture hides and shows the bars;
- * zooming in hides them. With reduced motion a closing picture fades instead of flying off.
+ * zooming in hides them. With reduced motion a closing picture fades instead of flying off. A picture or a video has
+ * its conversation (ADR 0208), as a live file does: its line over the actions, its open comments pinned on a picture
+ * (a tap on one opens the conversation there), and Comment on the right of the name: a tap on the picture then marks
+ * a point, a video's comment is at the moment it is paused at. The conversation opens once the viewer has closed.
  */
 export function ImageViewer({
   files: rawFiles,
@@ -79,6 +97,13 @@ const AWAY_SPRING = { stiffness: 180, damping: 26, mass: 1, overshootClamping: t
  * change, kept with reduced motion (the system setting would otherwise skip it).
  */
 const FADE_OUT = { duration: 180, reduceMotion: ReduceMotion.Never };
+/**
+ * The conversation is a screen of the stack under the viewer, so the viewer closes first and the conversation opens a
+ * moment later (as "View in Drive" does): pushed over the viewer, it would open hidden under it.
+ */
+const LEAVE_MS = 60;
+/** A page's place among the viewer's pages: its file and version. */
+const pageKey = (id: string, version: number | undefined) => `${id}@${version ?? "latest"}`;
 
 function Viewer({
   rawFiles,
@@ -128,6 +153,54 @@ function Viewer({
     if (from && currentId) tellViewerPlace(from, currentId);
   }, [from, currentId]);
 
+  // ── The file's conversation (ADR 0208) ────────────────────────────────────────────────────────────────────────
+  // A picture or a video (a PDF opens on its own screen); its comments, numbered as the conversation has them.
+  const media = mediaKindOfArtifact(detail);
+  const talkFile = media ? detail : undefined;
+  const pins = useMediaPins(talkFile);
+  const openTalk = useOpenFileTalk(talkFile);
+  const [commenting, setCommenting] = useState(false);
+  // The videos' players by page: Comment reads the moment the one in sight is at.
+  const players = useRef(new Map<string, Player>());
+  const onPlayer = useCallback((key: string, player: Player | null) => {
+    if (player) players.current.set(key, player);
+    else players.current.delete(key);
+  }, []);
+  const talkAt = useCallback(
+    (open: OpenTalk) => {
+      close();
+      setTimeout(() => openTalk(open), LEAVE_MS);
+    },
+    [close, openTalk],
+  );
+  const openPin = useCallback((messageId: string) => talkAt({ messageId, selection: null }), [talkAt]);
+  // A point marked with Comment on: the conversation opens with it over the composer ("About point 4 of the image").
+  const markHere = useCallback(
+    (mark: Mark) => {
+      setCommenting(false);
+      if (talkFile) talkAt({ selection: commentSelection(pins, { mark }, talkFile.shownVersion) });
+    },
+    [talkFile, pins, talkAt],
+  );
+  // Comment: on a picture, a tap marks the point; a video stops where it is and the comment is at that moment.
+  const comment = () => {
+    if (!talkFile) return;
+    if (media !== "video") {
+      setCommenting((on) => !on);
+      return;
+    }
+    const player = current ? players.current.get(pageKey(current.id, current.version)) : undefined;
+    let time: number | undefined;
+    try {
+      player?.pause();
+      time = player?.currentTime;
+    } catch {
+      // Released with its page: the comment is about the video.
+    }
+    const at = time !== undefined && Number.isFinite(time) ? time : null;
+    talkAt({ selection: at === null ? null : commentSelection(pins, { time: at }, talkFile.shownVersion) });
+  };
+
   // Zoomed in, the pager holds still (the fingers move the picture), the side buttons step aside and the bars go.
   const onZoom = useCallback((now: boolean) => {
     setZoomed(now);
@@ -171,6 +244,7 @@ function Viewer({
         onPageSelected={(e) => {
           setIndex(Math.round(e.nativeEvent.position));
           setZoomed(false);
+          setCommenting(false);
         }}
         onPageScrollStateChanged={(e) => setPaging(e.nativeEvent.pageScrollState !== "idle")}
       >
@@ -189,10 +263,14 @@ function Viewer({
                 pullY={pullY}
                 away={away}
                 leaving={leaving}
+                commenting={commenting && i === index}
                 onTap={onTap}
                 onZoom={onZoom}
                 onVideo={showChrome}
                 onClose={close}
+                onPin={openPin}
+                onMark={markHere}
+                onPlayer={onPlayer}
               />
             ) : null}
           </View>
@@ -222,9 +300,30 @@ function Viewer({
             </Text>
           ) : null}
         </View>
-        {/* As wide as the ×, so the title stands in the screen's middle. */}
-        <View pointerEvents="none" style={styles.round} />
+        {/* A picture's or a video's Comment (ADR 0208); else a space as wide as the ×, so the title stands in the
+            screen's middle. */}
+        {media ? (
+          <Round
+            icon="comment"
+            label={t("mobile.live.canvas.tools.comment")}
+            on={media === "image" ? commenting : undefined}
+            onPress={comment}
+          />
+        ) : (
+          <View pointerEvents="none" style={styles.round} />
+        )}
       </Chrome>
+
+      {/* With Comment on: what a tap does now, under the bar (the canvas's hint). */}
+      {commenting ? (
+        <View pointerEvents="none" style={[styles.hintAt, { top: bars.top + 8 }]}>
+          <View style={styles.hint}>
+            <Text variant="footnote" style={{ color: WHITE }} numberOfLines={2}>
+              {t("mobile.live.canvas.commentHint")}
+            </Text>
+          </View>
+        </View>
+      ) : null}
 
       {/* Gone while zoomed, as the swipe is: the fingers move the picture then. */}
       {files.length > 1 ? (
@@ -249,6 +348,8 @@ function Viewer({
         onHeight={(bottom) => setBars((b) => (b.bottom === bottom ? b : { ...b, bottom }))}
       >
         <LinearGradient pointerEvents="none" colors={SHADE_UP} locations={SHADE_STOPS} style={styles.shadeBottom} />
+        {/* The file's conversation over its actions, as under a live file. */}
+        {talkFile ? <FileTalkLine file={talkFile} bare onOpen={() => talkAt({ selection: null })} /> : null}
         <View style={styles.actions}>
           {detail?.inDrive !== false ? (
             <Action icon="person" label={t("share.button")} disabled={!detail} onPress={actions.shareSheet} />
@@ -279,7 +380,8 @@ function Viewer({
  * one in sight at 1×, the pull to close, there from the first frame: a page still loading, or one that couldn't, is
  * swiped away as a picture is. The picture stays under the finger (`pulledPlacement`) and can be caught again while it
  * springs back; let go, where it would come to rest decides (`pullCloses`), and it leaves or springs back from the
- * speed it was let go at.
+ * speed it was let go at. A picture's open comments are pinned on it (ADR 0208): a tap on a pin opens its message,
+ * with Comment on (`commenting`) a tap marks a point, else it shows or hides the bars.
  */
 function Page({
   id,
@@ -292,10 +394,14 @@ function Page({
   pullY,
   away,
   leaving,
+  commenting,
   onTap,
   onZoom,
   onVideo,
   onClose,
+  onPin,
+  onMark,
+  onPlayer,
 }: {
   id: string;
   version?: number;
@@ -307,10 +413,14 @@ function Page({
   pullY: SharedValue<number>;
   away: SharedValue<number>;
   leaving: SharedValue<boolean>;
+  commenting: boolean;
   onTap: () => void;
   onZoom: (zoomed: boolean) => void;
   onVideo: () => void;
   onClose: () => void;
+  onPin: (messageId: string) => void;
+  onMark: (mark: Mark) => void;
+  onPlayer: (key: string, player: Player | null) => void;
 }) {
   const orgId = useOrgId();
   const { reducedMotion } = useTheme();
@@ -331,6 +441,28 @@ function Page({
     },
     [active, onZoom],
   );
+  // Its open comments' pins, on a picture (ADR 0208).
+  const pins = useMediaPins(mediaKindOfArtifact(artifact.data) === "image" ? artifact.data : undefined);
+  const shownPins = useMemo(() => picturePins(pins), [pins]);
+  const tapped = useCallback(
+    (at: PictureTap) => {
+      // A pin under the finger opens its message, Comment on or not; with it on, the tap is a point on the picture.
+      const pin = pinUnder(shownPins, at);
+      const mark = commenting && !pin ? pointMark(at) : null;
+      if (pin) onPin(pin.messageId);
+      else if (mark) onMark(mark);
+      else if (!commenting) onTap();
+    },
+    [shownPins, commenting, onPin, onMark, onTap],
+  );
+  // A comment's line about a moment of this video opened it: it starts there, once.
+  const waiting = useRevealFor(id);
+  const [startAt, setStartAt] = useState<number | undefined>(undefined);
+  useEffect(() => {
+    if (!waiting || video === null) return;
+    if (video && waiting.selection.time !== undefined) setStartAt(waiting.selection.time);
+    takeReveal(id);
+  }, [waiting, video, id]);
   // Where a pull caught mid-spring started from, so the picture stays under the finger; the spot the finger took, from
   // the picture's center, which the picture shrinks around; and how much of it shows (it fades out with reduced motion).
   const from = useSharedValue({ x: 0, y: 0 });
@@ -403,6 +535,8 @@ function Page({
               name={info?.name ?? ""}
               active={active}
               bars={bars}
+              startAt={startAt}
+              onPlayer={onPlayer}
             />
           </View>
         </GestureDetector>
@@ -414,9 +548,10 @@ function Page({
           pull={pull}
           enabled={!paging}
           active={active}
-          onTap={onTap}
+          onTap={tapped}
           onZoom={zoomChanged}
           onRetry={() => void link.refetch()}
+          overlay={shownPins.length > 0 ? (zoom) => <PicturePins pins={shownPins} zoom={zoom} /> : undefined}
         />
       ) : (
         <GestureDetector gesture={pull}>
@@ -447,16 +582,23 @@ function PageVideo({
   name,
   active,
   bars,
+  startAt,
+  onPlayer,
 }: {
   id: string;
   version?: number;
   name: string;
   active: boolean;
   bars: { top: number; bottom: number };
+  /** The moment it starts from (a comment's). */
+  startAt: number | undefined;
+  onPlayer: (key: string, player: Player | null) => void;
 }) {
   const { t } = useTranslation();
   const orgId = useOrgId();
   const link = useRemoteFile(orgId, id, version, { once: true });
+  const key = pageKey(id, version);
+  const ownPlayer = useCallback((player: Player | null) => onPlayer(key, player), [onPlayer, key]);
   const [unplayable, setUnplayable] = useState(false);
   const source = useMemo(() => (link.data ? { uri: link.data.uri, headers: link.data.headers } : null), [link.data]);
   return (
@@ -475,6 +617,8 @@ function PageVideo({
           name={name}
           active={active}
           onFailed={() => setUnplayable(true)}
+          startAt={startAt}
+          onPlayer={ownPlayer}
         />
       ) : (
         <PageWait icon="play" failed={link.isError} retrying={link.isFetching} onRetry={() => void link.refetch()} />
@@ -515,17 +659,20 @@ function Chrome({
   );
 }
 
+/** A round button over the picture; `on`: a tool in use (Comment), white with a dark mark, as the canvas's dock. */
 function Round({
   icon,
   label,
   onPress,
   disabled = false,
+  on,
   plate = PLATE,
 }: {
   icon: IconName;
   label: string;
   onPress: () => void;
   disabled?: boolean;
+  on?: boolean;
   plate?: string;
 }) {
   return (
@@ -535,11 +682,12 @@ function Round({
       disabled={disabled}
       accessibilityRole="button"
       accessibilityLabel={label}
+      {...(on !== undefined ? { accessibilityState: { selected: on } } : {})}
       hitSlop={4}
-      style={[styles.round, { backgroundColor: plate }]}
+      style={[styles.round, { backgroundColor: on ? WHITE : plate }]}
       contentStyle={styles.center}
     >
-      <Icon name={icon} size={20} color={WHITE} />
+      <Icon name={icon} size={20} color={on ? "#000" : WHITE} />
     </PressScale>
   );
 }
@@ -606,6 +754,9 @@ const styles = StyleSheet.create({
     paddingBottom: 10,
   },
   title: { flex: 1, minWidth: 0, alignItems: "center" },
+  // Comment's hint, under the bar, on the plate the side buttons have.
+  hintAt: { position: "absolute", left: SCREEN_X, right: SCREEN_X, alignItems: "center" },
+  hint: { paddingHorizontal: 14, paddingVertical: 8, borderRadius: 16, backgroundColor: SCRIM },
   titleLine: { textAlign: "center" },
   shadeTop: { position: "absolute", top: 0, left: 0, right: 0, bottom: -SHADE_PAST },
   shadeBottom: { position: "absolute", top: -SHADE_PAST, left: 0, right: 0, bottom: 0 },

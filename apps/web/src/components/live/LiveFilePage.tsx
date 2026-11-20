@@ -10,6 +10,7 @@ import {
   useSaveLiveVersion,
 } from "@agenteschat/client";
 import { errorText } from "@agenteschat/client/lib/errors";
+import { mediaKindOfArtifact } from "@agenteschat/client/lib/files";
 import { clockHour, dayLabel, formatTime } from "@agenteschat/client/lib/format";
 import type { Peer } from "@agenteschat/live/awareness";
 import {
@@ -135,9 +136,10 @@ export function LiveFilePage({
   // The window's title in the desktop app (its Window menu, Mission Control) and the browser's tab: the file's name.
   useDocumentTitle(artifact?.title);
 
-  // Not a live file (an old link, a file that changed kind): the Drive's viewer shows it.
+  // Not a live file (an old link, a file that changed kind): the Drive's viewer shows it. A picture, a video or a PDF
+  // has a page of its own (`FilePage`, ADR 0208).
   useEffect(() => {
-    if (!artifact || isLiveFileKind(artifact.kind)) return;
+    if (!artifact || isLiveFileKind(artifact.kind) || mediaKindOfArtifact(artifact)) return;
     void navigate({
       to: "/org/$orgId/drive",
       params: { orgId: org.id },

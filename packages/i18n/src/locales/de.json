@@ -15105,6 +15105,41 @@
       "exitFullscreen": "Vollbild beenden",
       "open": "Öffnen"
     },
+    "comments": {
+      "title": "Kommentare",
+      "resolve": "Erledigen",
+      "reopen": "Wieder öffnen",
+      "resolvedBy": "Erledigt von {{name}} · {{time}}",
+      "resolvedCount_one": "{{count}} erledigt",
+      "resolvedCount_other": "{{count}} erledigt",
+      "showResolved": "Erledigte zeigen",
+      "hideResolved": "Erledigte ausblenden",
+      "fromVersion": "Aus Version {{version}}",
+      "peekOpen": "Klicken, um es in der Unterhaltung zu öffnen",
+      "markAt": "Kommentar {{n}} bei {{time}}, von {{name}}",
+      "page": "Seite {{page}}",
+      "pageOf": "{{page}} von {{count}}",
+      "pdfFailed": "Dieses PDF kann hier nicht angezeigt werden. Lade es herunter, um es zu öffnen.",
+      "loadFailed": "Dieses Bild kann hier nicht angezeigt werden.",
+      "hint": {
+        "image": "Klicken, um einen Punkt zu markieren, oder ziehen, um einen Bereich zu markieren",
+        "video": "Aufs Video klicken, um diesen Moment zu kommentieren, oder ziehen, um einen Bereich zu markieren",
+        "pdf": "Auf eine Seite klicken, um einen Punkt zu markieren, oder ziehen, um einen Bereich zu markieren"
+      },
+      "line": {
+        "image_one": "{{count}} Kommentar im Bild",
+        "image_other": "{{count}} Kommentare im Bild",
+        "video_one": "{{count}} Kommentar im Video",
+        "video_other": "{{count}} Kommentare im Video",
+        "pdf_one": "{{count}} Kommentar im PDF",
+        "pdf_other": "{{count}} Kommentare im PDF"
+      },
+      "write": {
+        "image": "Schreib über das Bild…",
+        "video": "Schreib über das Video…",
+        "pdf": "Schreib über das PDF…"
+      }
+    },
     "zoom": {
       "toolbar": "Zoom",
       "in": "Vergrößern",
@@ -21429,25 +21464,36 @@
         "spreadsheet": "Unterhaltung zur Tabelle",
         "slides": "Unterhaltung zur Präsentation",
         "document": "Unterhaltung zum Dokument",
-        "file": "Unterhaltung zur Datei"
+        "file": "Unterhaltung zur Datei",
+        "image": "Unterhaltung zum Bild",
+        "video": "Unterhaltung zum Video",
+        "pdf": "Unterhaltung zum PDF"
       },
       "placeholder": {
         "canvas": "Schreib über dieses Whiteboard · mit @ rufst du einen Agenten",
         "spreadsheet": "Schreib über diese Tabelle · mit @ rufst du einen Agenten",
         "slides": "Schreib über diese Präsentation · mit @ rufst du einen Agenten",
         "document": "Schreib über dieses Dokument · mit @ rufst du einen Agenten",
-        "file": "Schreib über diese Datei · mit @ rufst du einen Agenten"
+        "file": "Schreib über diese Datei · mit @ rufst du einen Agenten",
+        "image": "Schreib über dieses Bild · mit @ rufst du einen Agenten",
+        "video": "Schreib über dieses Video · mit @ rufst du einen Agenten",
+        "pdf": "Schreib über dieses PDF · mit @ rufst du einen Agenten"
       },
       "this": {
         "canvas": "dieses Whiteboard",
         "spreadsheet": "diese Tabelle",
         "slides": "diese Präsentation",
-        "document": "dieses Dokument"
+        "document": "dieses Dokument",
+        "image": "dieses Bild",
+        "video": "dieses Video",
+        "pdf": "dieses PDF"
       },
       "origin": {
         "from": "<0>{{name}}</0> hat {{what}} aus der <1>{{place}}</1> erstellt",
         "made": "<0>{{name}}</0> hat {{what}} erstellt",
-        "imported": "Von {{name}} aus <1>{{file}}</1> importiert"
+        "imported": "Von {{name}} aus <1>{{file}}</1> importiert",
+        "sentIn": "<0>{{name}}</0> hat {{what}} in der <1>{{place}}</1> gesendet",
+        "sent": "<0>{{name}}</0> hat {{what}} gesendet"
       },
       "about": {
         "range": "Zu {{range}} in {{sheet}}",
@@ -21455,7 +21501,26 @@
         "canvas": "Zu {{label}} auf dem Whiteboard",
         "text": "Zum ausgewählten Text",
         "point": "Zu einer Stelle auf dem Whiteboard",
-        "other": "Zu {{label}}"
+        "other": "Zu {{label}}",
+        "imageArea": "Zu Bereich {{n}} des Bildes",
+        "imagePoint": "Zu Punkt {{n}} des Bildes",
+        "videoAt": "Zu {{time}} im Video",
+        "pdfPage": "Zu Seite {{page}} des PDFs",
+        "image": "Zum Bild",
+        "video": "Zum Video",
+        "pdf": "Zum PDF"
+      },
+      "what": {
+        "area": "Bereich {{n}}",
+        "point": "Punkt {{n}}",
+        "anArea": "Ein Bereich",
+        "aPoint": "Ein Punkt",
+        "page": "Seite {{page}}"
+      },
+      "where": {
+        "image": "im Bild",
+        "video": "im Video",
+        "pdf": "im PDF"
       },
       "drop": "Auswahl nicht senden",
       "aboutLine": "{{what}} ({{where}}) in der Datei zeigen",

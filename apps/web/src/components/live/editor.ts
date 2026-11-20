@@ -62,6 +62,8 @@ export interface LiveEditorSearch {
   present?: boolean;
   /** A message of the file's conversation to open at (a link, a notice, a canvas's comment pin, ADR 0199). */
   m?: string;
+  /** A picture's, a video's or a PDF's page opens with Comment on ("Comment" in the viewer, ADR 0208). */
+  comment?: boolean;
 }
 
 /** "Pedir ao Atlas", "Variações" (ADR 0199): what goes to the file's conversation's composer. */

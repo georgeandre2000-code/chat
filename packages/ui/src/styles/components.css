@@ -8088,6 +8088,21 @@ button.ac-voice__play:active {
   display: flex;
   align-items: center;
 }
+/* A file's comments over the timeline (ADR 0208): the slider and, over it, the marks the caller places. */
+.ac-video__seekbox {
+  position: relative;
+  flex: 1;
+  min-width: 48px;
+  display: flex;
+  align-items: center;
+}
+.ac-video__marks {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: calc(100% - 2px);
+  height: 0;
+}
 .ac-video__volume {
   width: 0;
   overflow: hidden;

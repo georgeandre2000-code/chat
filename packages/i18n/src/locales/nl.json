@@ -15173,6 +15173,41 @@
       "exitFullscreen": "Volledig scherm sluiten",
       "open": "Openen"
     },
+    "comments": {
+      "title": "Opmerkingen",
+      "resolve": "Oplossen",
+      "reopen": "Heropenen",
+      "resolvedBy": "Opgelost door {{name}} · {{time}}",
+      "resolvedCount_one": "{{count}} opgelost",
+      "resolvedCount_other": "{{count}} opgelost",
+      "showResolved": "Opgeloste tonen",
+      "hideResolved": "Opgeloste verbergen",
+      "fromVersion": "Uit versie {{version}}",
+      "peekOpen": "Klik om te openen in het gesprek",
+      "markAt": "Opmerking {{n}} op {{time}}, van {{name}}",
+      "page": "Pagina {{page}}",
+      "pageOf": "{{page}} van {{count}}",
+      "pdfFailed": "Deze PDF kan hier niet worden getoond. Download hem om hem te openen.",
+      "loadFailed": "Deze afbeelding kan hier niet worden getoond.",
+      "hint": {
+        "image": "Klik om een punt te markeren of sleep om een gebied te markeren",
+        "video": "Klik op de video voor een opmerking bij dit moment, of sleep om een gebied te markeren",
+        "pdf": "Klik op een pagina om een punt te markeren of sleep om een gebied te markeren"
+      },
+      "line": {
+        "image_one": "{{count}} opmerking op de afbeelding",
+        "image_other": "{{count}} opmerkingen op de afbeelding",
+        "video_one": "{{count}} opmerking in de video",
+        "video_other": "{{count}} opmerkingen in de video",
+        "pdf_one": "{{count}} opmerking in de PDF",
+        "pdf_other": "{{count}} opmerkingen in de PDF"
+      },
+      "write": {
+        "image": "Schrijf over de afbeelding…",
+        "video": "Schrijf over de video…",
+        "pdf": "Schrijf over de PDF…"
+      }
+    },
     "zoom": {
       "toolbar": "Zoom",
       "in": "Inzoomen",
@@ -21612,25 +21647,36 @@
         "spreadsheet": "Gesprek over de spreadsheet",
         "slides": "Gesprek over de presentatie",
         "document": "Gesprek over het document",
-        "file": "Gesprek over het bestand"
+        "file": "Gesprek over het bestand",
+        "image": "Gesprek over de afbeelding",
+        "video": "Gesprek over de video",
+        "pdf": "Gesprek over de PDF"
       },
       "placeholder": {
         "canvas": "Schrijf over dit whiteboard · gebruik @ om een agent te roepen",
         "spreadsheet": "Schrijf over deze spreadsheet · gebruik @ om een agent te roepen",
         "slides": "Schrijf over deze presentatie · gebruik @ om een agent te roepen",
         "document": "Schrijf over dit document · gebruik @ om een agent te roepen",
-        "file": "Schrijf over dit bestand · gebruik @ om een agent te roepen"
+        "file": "Schrijf over dit bestand · gebruik @ om een agent te roepen",
+        "image": "Schrijf over deze afbeelding · gebruik @ om een agent te roepen",
+        "video": "Schrijf over deze video · gebruik @ om een agent te roepen",
+        "pdf": "Schrijf over deze PDF · gebruik @ om een agent te roepen"
       },
       "this": {
         "canvas": "dit whiteboard",
         "spreadsheet": "deze spreadsheet",
         "slides": "deze presentatie",
-        "document": "dit document"
+        "document": "dit document",
+        "image": "deze afbeelding",
+        "video": "deze video",
+        "pdf": "deze PDF"
       },
       "origin": {
         "from": "<0>{{name}}</0> maakte {{what}} vanuit het <1>{{place}}</1>",
         "made": "<0>{{name}}</0> maakte {{what}}",
-        "imported": "Geïmporteerd uit <1>{{file}}</1> door {{name}}"
+        "imported": "Geïmporteerd uit <1>{{file}}</1> door {{name}}",
+        "sentIn": "<0>{{name}}</0> stuurde {{what}} in het <1>{{place}}</1>",
+        "sent": "<0>{{name}}</0> stuurde {{what}}"
       },
       "about": {
         "range": "Over {{range}} in {{sheet}}",
@@ -21638,7 +21684,26 @@
         "canvas": "Over {{label}} op het whiteboard",
         "text": "Over de geselecteerde tekst",
         "point": "Over een plek op het whiteboard",
-        "other": "Over {{label}}"
+        "other": "Over {{label}}",
+        "imageArea": "Over gebied {{n}} van de afbeelding",
+        "imagePoint": "Over punt {{n}} van de afbeelding",
+        "videoAt": "Over {{time}} in de video",
+        "pdfPage": "Over pagina {{page}} van de PDF",
+        "image": "Over de afbeelding",
+        "video": "Over de video",
+        "pdf": "Over de PDF"
+      },
+      "what": {
+        "area": "Gebied {{n}}",
+        "point": "Punt {{n}}",
+        "anArea": "Een gebied",
+        "aPoint": "Een punt",
+        "page": "Pagina {{page}}"
+      },
+      "where": {
+        "image": "op de afbeelding",
+        "video": "in de video",
+        "pdf": "in de PDF"
       },
       "drop": "Selectie niet meesturen",
       "aboutLine": "{{what}} ({{where}}) in het bestand tonen",

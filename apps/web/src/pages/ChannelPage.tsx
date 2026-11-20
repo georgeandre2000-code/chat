@@ -9,6 +9,7 @@ import type {
   ArtifactRef,
   Channel,
   HeldPlace,
+  LiveSelection,
   Member,
   MemoryUpdate,
   MessageMedia,
@@ -330,6 +331,8 @@ import { useLeaveChannelWithUndo } from "@/components/LeaveChannelDialog";
 import { useUploadFailed } from "@/components/Limits";
 import { LiveCodeToggle } from "@/components/LiveCode";
 import { ErrorState, LoadingConversation } from "@/components/Loading";
+import { ResolveButton, ResolvedLine } from "@/components/live/media/ResolveBits";
+import { ChatCommentsLine } from "@/components/live/media/ViewerBits";
 import { LiveQuoteBar, LiveRefLine } from "@/components/live/TalkBits";
 import { useFileTalk } from "@/components/live/talk";
 import { AwayPill, WaitingCard } from "@/components/MachineOutages";
@@ -1136,6 +1139,7 @@ function ChannelView({
     <LiveQuoteBar
       kind={fileHere.kind}
       selection={fileHere.about}
+      thumb={fileHere.aboutThumb}
       onDrop={() => {
         fileHere.dropAbout();
         composer.current?.focus();
@@ -2207,20 +2211,23 @@ function ChannelView({
     setDraft("");
     const meta = localMeta(quote, quote ? dir.authorName(quote.author) : "", attached);
     setQuote(null);
-    // About what is selected in the file beside it (ADR 0199): the message carries it, then the quote goes.
-    if (fileHere?.about) {
-      meta.liveRef = {
-        artifactId: fileHere.artifactId,
-        kind: fileHere.kind,
-        title: fileHere.title,
-        selection: fileHere.about,
-      };
-      fileHere.dropAbout();
-    }
-    // From the thread panel or page: the reply makes it a "Responder" thread (out of the channel's timeline).
-    if (thread && chrome?.openThread) meta[OPEN_THREAD] = true;
-    // "Parar e mandar" (⌘↵): the agent drops the step it is on and reads this now.
-    send(text, thread ? thread.id : null, meta, opts?.interrupt ? { steer: "now" } : undefined);
+    // About what is selected in the file beside it (ADR 0199): the message carries it, then the quote goes. A comment
+    // on a picture, a video or a PDF uploads its pictures of the place first (ADR 0208), so only a sent one keeps them.
+    const file = fileHere?.about ? fileHere : null;
+    const about = file?.about ?? null;
+    const prepared = about && file?.prepareAbout ? file.prepareAbout(about) : null;
+    file?.dropAbout();
+    const go = (selection: LiveSelection | null) => {
+      if (file && selection) {
+        meta.liveRef = { artifactId: file.artifactId, kind: file.kind, title: file.title, selection };
+      }
+      // From the thread panel or page: the reply makes it a "Responder" thread (out of the channel's timeline).
+      if (thread && chrome?.openThread) meta[OPEN_THREAD] = true;
+      // "Parar e mandar" (⌘↵): the agent drops the step it is on and reads this now.
+      send(text, thread ? thread.id : null, meta, opts?.interrupt ? { steer: "now" } : undefined);
+    };
+    if (prepared) void prepared.then(go, () => go(about));
+    else go(about);
     dropFiles(() => false);
   };
   // A GIF or a sticker from the picker (ADR 0091): one click sends it here, as a message of its own (no text), shown
@@ -4984,6 +4991,10 @@ export const TimelineMessage = memo(function TimelineMessage({
                 </div>
               </ImageSet>
             )}
+            {/* A picture, a video or a PDF with comments (ADR 0208): its line, to its page. */}
+            {artifacts.map((r) =>
+              r.deleted ? null : <ChatCommentsLine key={`talk:${r.id}`} artifactId={r.id} version={r.version} />,
+            )}
             {/* Its tools after its words and what it changed: the same place live, kept and saved. */}
             {keptSteps?.length && seenLive ? (
               <LiveTools work={keptSteps} agentName={name} color={colorOf(agent)} done stopped={stopped.canceled} />
@@ -5050,13 +5061,20 @@ export const TimelineMessage = memo(function TimelineMessage({
             ))}
             {/* A "Responder" thread went on from here: its line (opens the panel). */}
             {threadLine && <ThreadReplyLine thread={threadLine.thread} count={threadLine.count} />}
+            {/* A comment on a picture, a video or a PDF that was resolved (ADR 0208): by whom, when. */}
+            {liveRef && <ResolvedLine message={m} />}
             {feedback && (
               <MessageFeedback
                 messageId={m.id}
                 agentName={agent?.name ?? t("channel.unknownAgent")}
                 active={active}
                 initial={m.reactions}
-                quick={<ReplyButton message={m} />}
+                quick={
+                  <>
+                    <ReplyButton message={m} />
+                    <ResolveButton message={m} />
+                  </>
+                }
                 more={<MessageMoreMenu entries={menu.more} />}
               />
             )}

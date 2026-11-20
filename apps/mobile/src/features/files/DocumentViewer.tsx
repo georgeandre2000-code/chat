@@ -1,6 +1,6 @@
 import { type ArtifactDetail, isLiveFileKind, useApi, useArtifact } from "@agenteschat/client";
 import { formatJson, highlightCode } from "@agenteschat/client/lib/code";
-import { isJsonFile } from "@agenteschat/client/lib/files";
+import { isJsonFile, mediaKindOfArtifact } from "@agenteschat/client/lib/files";
 import { isolatedPage } from "@agenteschat/client/lib/isolated-page";
 import { useQuery } from "@tanstack/react-query";
 import { type ReactNode, useEffect, useMemo, useState } from "react";
@@ -13,8 +13,11 @@ import { router } from "@/ui/navigation";
 import { ISOLATED_WEB_VIEW, STORAGE_STANDINS } from "../blocks/logic";
 import { CodeText, RawToggle } from "../chat/CodeCard";
 import { MessageText } from "../chat/MessageText";
+import { chatHref } from "../links/logic";
 import { DeckPage, EditAs, SheetPage, useOfficeHtml } from "../live-files/office/OfficePages";
 import { liveRoute } from "../live-files/routes";
+import { useTalkFocus } from "../live-files/talk/hooks";
+import { FileTalkLine } from "../live-files/talk/TalkLine";
 import { chooseAction } from "../settings/parts";
 import { LoadFailed } from "../shared/FirstUse";
 import { useColors, useDirectory, useOrgId } from "../shared/hooks";
@@ -35,7 +38,8 @@ import { fileText, useRemoteFile } from "./source";
  * natively there), an Office file as the server read it (ADR 0198: a workbook in the spreadsheet's grid, a deck's
  * slides, a Word document's page) and an old table in the same grid, anything else says it opens in another app.
  * Pictures and videos open straight in the picture viewer (`openFile`), live files on their own screens (ADR 0196);
- * one reached here anyway (a file's link that didn't say what it was) goes on there.
+ * one reached here anyway (a file's link that didn't say what it was) goes on there, and a link to a message of a
+ * picture's or a video's conversation opens that conversation at it (ADR 0208). A PDF has its conversation under it.
  */
 export function DocumentViewer({
   id,
@@ -44,7 +48,10 @@ export function DocumentViewer({
 }: {
   id: string;
   version?: number;
-  /** A live file's conversation message to open at (`?m=`, ADR 0199), handed on to the file's own screen. */
+  /**
+   * A message of the file's conversation to open at (`?m=`, ADR 0199): handed on to a live file's own screen, opened
+   * over a PDF, or the conversation itself for a picture or a video (ADR 0208).
+   */
   focusId?: string | null;
 }) {
   const { t } = useTranslation();
@@ -67,9 +74,16 @@ export function DocumentViewer({
   const media = info?.view === "image" || info?.view === "video" || info?.view === "live";
   useEffect(() => {
     if (!media || !detail) return;
+    const talk = detail.conversation;
     if (isLiveFileKind(detail.kind)) router.replace(liveRoute(detail.kind, detail.id, focusId));
+    // The viewer is a modal no conversation can be pushed over: the conversation takes this screen's place.
+    else if (focusId && talk && mediaKindOfArtifact(detail))
+      router.replace(chatHref(talk.channelId, talk.rootId, focusId));
     else openFile({ id: detail.id, detail }, undefined, { replace: true });
   }, [media, detail, focusId]);
+  // A PDF's conversation (ADR 0208): its line under it, and a link to one of its messages opens it over the PDF.
+  const pdfTalk = !media && mediaKindOfArtifact(detail) === "pdf" ? detail : undefined;
+  useTalkFocus(pdfTalk, focusId);
 
   const copy = () => {
     if (text.data === undefined) return;
@@ -168,6 +182,7 @@ export function DocumentViewer({
           }
         />
       )}
+      {pdfTalk ? <FileTalkLine file={pdfTalk} /> : null}
     </>
   );
 }

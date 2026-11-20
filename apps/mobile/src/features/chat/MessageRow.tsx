@@ -2,12 +2,14 @@ import {
   browserHandoffOf,
   browserTrailOf,
   desktopTrailOf,
+  isPinnedSelection,
   keys,
   type Message,
   type MessageReceipt,
   messageLiveRef,
   type ReplyRef,
   type RunConsultation,
+  resolvedOf,
   type ScreenKind,
   type SurfaceLinks,
   type ThreadInfo,
@@ -108,7 +110,7 @@ import { WaitToolOffAction } from "../devices/ToolOneClick";
 import { localFilesOf } from "../files/local-files";
 import { LocalFiles, MessageFiles } from "../files/MessageFiles";
 import { consultationHref, routineHref } from "../links/logic";
-import { MessageAbout } from "../live-files/talk/AboutLine";
+import { MessageAbout, ResolvedLine } from "../live-files/talk/AboutLine";
 import { surfaceTagText } from "../me/surface";
 import { DecisionCard, MissionCard, PlanCard, ReviewCard, SetupFailedCard } from "../missions/cards";
 import { AwayPill, BrainWait } from "../outages/WaitCard";
@@ -508,6 +510,8 @@ function RowBody({
   const quote = replyOf(meta);
   // About part of a live file (ADR 0199): its line over the message, a tap shows that part in the file.
   const liveRef = messageLiveRef(m);
+  // A comment with a pin on a picture, a video or a PDF, resolved (ADR 0208): who did it, under it.
+  const resolved = liveRef && !m.local && isPinnedSelection(liveRef.selection) ? resolvedOf(meta) : null;
   const myHandle = useRowMyHandle();
   const mentionsMe = !mine && mentionsReader({ body, meta }, myHandle);
 
@@ -532,9 +536,11 @@ function RowBody({
     </>
   );
   const missionDecision = decision ? <DecisionCard missionId={decision.missionId} decisionId={decision.id} /> : null;
-  // Under everything: the thread it started, its reactions and whether it went out.
+  // Under everything: who resolved it (a comment on a file), the thread it started, its reactions and whether it went
+  // out.
   const foot = (
     <>
+      {resolved ? <ResolvedLine resolved={resolved} end={onRight} /> : null}
       {thread && !meta?.missionStart ? (
         <View style={onRight ? styles.meEnd : undefined}>
           <ThreadLink thread={thread} />

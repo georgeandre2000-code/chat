@@ -14586,6 +14586,37 @@
       "exitFullscreen": "Keluar dari layar penuh",
       "open": "Buka"
     },
+    "comments": {
+      "title": "Komentar",
+      "resolve": "Tandai selesai",
+      "reopen": "Buka lagi",
+      "resolvedBy": "Diselesaikan oleh {{name}} · {{time}}",
+      "resolvedCount_other": "{{count}} selesai",
+      "showResolved": "Tampilkan yang selesai",
+      "hideResolved": "Sembunyikan yang selesai",
+      "fromVersion": "Dari versi {{version}}",
+      "peekOpen": "Klik untuk membuka di percakapan",
+      "markAt": "Komentar {{n}} di {{time}}, dari {{name}}",
+      "page": "Halaman {{page}}",
+      "pageOf": "{{page}} dari {{count}}",
+      "pdfFailed": "PDF ini tidak bisa ditampilkan di sini. Unduh untuk membukanya.",
+      "loadFailed": "Gambar ini tidak bisa ditampilkan di sini.",
+      "hint": {
+        "image": "Klik untuk menandai titik atau seret untuk menandai bagian",
+        "video": "Klik video untuk berkomentar di momen ini, atau seret untuk menandai bagian",
+        "pdf": "Klik halaman untuk menandai titik atau seret untuk menandai bagian"
+      },
+      "line": {
+        "image_other": "{{count}} komentar di gambar",
+        "video_other": "{{count}} komentar di video",
+        "pdf_other": "{{count}} komentar di PDF"
+      },
+      "write": {
+        "image": "Tulis tentang gambar…",
+        "video": "Tulis tentang video…",
+        "pdf": "Tulis tentang PDF…"
+      }
+    },
     "zoom": {
       "toolbar": "Zoom",
       "in": "Perbesar",
@@ -20871,25 +20902,36 @@
         "spreadsheet": "Percakapan spreadsheet",
         "slides": "Percakapan presentasi",
         "document": "Percakapan dokumen",
-        "file": "Percakapan file"
+        "file": "Percakapan file",
+        "image": "Percakapan gambar",
+        "video": "Percakapan video",
+        "pdf": "Percakapan PDF"
       },
       "placeholder": {
         "canvas": "Tulis tentang kanvas ini · pakai @ untuk memanggil agen",
         "spreadsheet": "Tulis tentang spreadsheet ini · pakai @ untuk memanggil agen",
         "slides": "Tulis tentang presentasi ini · pakai @ untuk memanggil agen",
         "document": "Tulis tentang dokumen ini · pakai @ untuk memanggil agen",
-        "file": "Tulis tentang file ini · pakai @ untuk memanggil agen"
+        "file": "Tulis tentang file ini · pakai @ untuk memanggil agen",
+        "image": "Tulis tentang gambar ini · pakai @ untuk memanggil agen",
+        "video": "Tulis tentang video ini · pakai @ untuk memanggil agen",
+        "pdf": "Tulis tentang PDF ini · pakai @ untuk memanggil agen"
       },
       "this": {
         "canvas": "kanvas ini",
         "spreadsheet": "spreadsheet ini",
         "slides": "presentasi ini",
-        "document": "dokumen ini"
+        "document": "dokumen ini",
+        "image": "gambar ini",
+        "video": "video ini",
+        "pdf": "PDF ini"
       },
       "origin": {
         "from": "<0>{{name}}</0> membuat {{what}} dari <1>{{place}}</1>",
         "made": "<0>{{name}}</0> membuat {{what}}",
-        "imported": "Diimpor dari <1>{{file}}</1> oleh {{name}}"
+        "imported": "Diimpor dari <1>{{file}}</1> oleh {{name}}",
+        "sentIn": "<0>{{name}}</0> mengirim {{what}} di <1>{{place}}</1>",
+        "sent": "<0>{{name}}</0> mengirim {{what}}"
       },
       "about": {
         "range": "Tentang {{range}} di {{sheet}}",
@@ -20897,7 +20939,26 @@
         "canvas": "Tentang {{label}} di kanvas",
         "text": "Tentang teks yang dipilih",
         "point": "Tentang satu titik di kanvas",
-        "other": "Tentang {{label}}"
+        "other": "Tentang {{label}}",
+        "imageArea": "Tentang bagian {{n}} di gambar",
+        "imagePoint": "Tentang titik {{n}} di gambar",
+        "videoAt": "Tentang {{time}} di video",
+        "pdfPage": "Tentang halaman {{page}} di PDF",
+        "image": "Tentang gambar",
+        "video": "Tentang video",
+        "pdf": "Tentang PDF"
+      },
+      "what": {
+        "area": "Bagian {{n}}",
+        "point": "Titik {{n}}",
+        "anArea": "Satu bagian",
+        "aPoint": "Satu titik",
+        "page": "Halaman {{page}}"
+      },
+      "where": {
+        "image": "di gambar",
+        "video": "di video",
+        "pdf": "di PDF"
       },
       "drop": "Jangan kirim pilihan",
       "aboutLine": "Tampilkan {{what}} ({{where}}) di file",

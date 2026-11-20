@@ -1859,6 +1859,14 @@ export type ChannelEvent =
     }
   /** A message was unpinned. */
   | { type: "message.unpinned"; channelId: string; messageId: string }
+  /** A comment on a picture, a video or a PDF was resolved (or opened again: `resolved` null), ADR 0208. */
+  | {
+      type: "message.resolved";
+      channelId: string;
+      messageId: string;
+      threadId: string | null;
+      resolved: { by: { type: "person" | "agent"; id: string }; at: string } | null;
+    }
   /** A person read this DM up to `lastReadAt` (DMs between people only: "Visto"). */
   | { type: "channel.read"; channelId: string; userId: string; lastReadAt: string }
   /**

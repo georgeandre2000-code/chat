@@ -70,7 +70,7 @@ import { listedText } from "../lib/voice";
 import type { Wallpaper } from "../lib/wallpaper";
 import type { AudienceChoice } from "../lib/who-sees";
 import type { WikiAccess } from "../lib/wiki";
-import { liveRefOf } from "../live/types";
+import { liveRefOf, type ResolvedMark } from "../live/types";
 import type { RealtimeConnection } from "../realtime/connection";
 import { readUnknownMembers, setOrgDeletion } from "../realtime/machines";
 import type { ApiClient } from "./client";
@@ -1912,6 +1912,48 @@ export function cacheMessageMeta(
     const list = data as Message[];
     if (!list.some((m) => m && m.id === messageId)) return data;
     return list.map((m) => (m.id === messageId ? { ...m, meta: { ...(m.meta ?? {}), ...patch(m.meta ?? {}) } } : m));
+  });
+}
+
+/**
+ * A comment on a picture, a video or a PDF was resolved or opened again (ADR 0208, `message.resolved`): its
+ * `meta.resolved` in every loaded list of its channel (the file's conversation and its pins read the same thread).
+ */
+export function cacheResolved(
+  qc: ReturnType<typeof useQueryClient>,
+  orgId: string,
+  channelId: string,
+  messageId: string,
+  resolved: ResolvedMark | null,
+) {
+  cacheMessageMeta(qc, orgId, channelId, messageId, () => ({ resolved: resolved ?? undefined }));
+}
+
+/** "Resolve" / "Reopen" on a comment with a pin: at once here, then as the server says (`message.resolved`). */
+export function useResolveComment(orgId: string) {
+  const api = useApi();
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: (input: { channelId: string; messageId: string; resolved: boolean; by: ResolvedMark["by"] }) =>
+      api.live.resolveComment(orgId, input.messageId, input.resolved),
+    onMutate: (input) => {
+      cacheResolved(
+        qc,
+        orgId,
+        input.channelId,
+        input.messageId,
+        input.resolved ? { by: input.by, at: new Date().toISOString() } : null,
+      );
+    },
+    onSuccess: (res, input) => cacheResolved(qc, orgId, input.channelId, input.messageId, res.resolved),
+    onError: (_error, input) =>
+      cacheResolved(
+        qc,
+        orgId,
+        input.channelId,
+        input.messageId,
+        input.resolved ? null : { by: input.by, at: new Date().toISOString() },
+      ),
   });
 }
 

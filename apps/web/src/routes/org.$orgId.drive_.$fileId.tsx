@@ -1,12 +1,14 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useCallback } from "react";
-import { LiveFilePage, type LiveFileSearch } from "@/components/live/LiveFilePage";
+import { type LiveFileSearch } from "@/components/live/LiveFilePage";
+import { FilePage } from "@/components/live/media/FilePage";
 
 /** Ids the editors write in the address (a sheet's, a slide's): plain, short. */
 const ID = /^[A-Za-z0-9_-]{1,64}$/;
 
 /**
- * A spreadsheet, a presentation or a canvas on a page of the app (ADR 0196 §9, ADR 0199), the sidebar beside it:
+ * A spreadsheet, a presentation or a canvas on a page of the app (ADR 0196 §9, ADR 0199), or a picture, a video or a
+ * PDF with its comments (ADR 0208, `?comment` opens it with Comment on), the sidebar beside it:
  * `?v=` shows a saved version read-only, `?sheet=` and `?slide=` where the editor is, `?present` presents (then the
  * window is the slide's alone), `?m=` opens the file's conversation at that message. Links to files stay
  * `/drive?artifact=…` (`filePath`): the Drive sends live files here.
@@ -18,6 +20,7 @@ export const Route = createFileRoute("/org/$orgId/drive_/$fileId")({
     slide: typeof search.slide === "string" && ID.test(search.slide) ? search.slide : undefined,
     present: search.present === true || search.present === "true" || search.present === 1 ? true : undefined,
     m: typeof search.m === "string" && ID.test(search.m) ? search.m : undefined,
+    comment: search.comment === true || search.comment === "true" || search.comment === 1 ? true : undefined,
   }),
   component: function Page() {
     const { fileId } = Route.useParams();
@@ -30,7 +33,7 @@ export const Route = createFileRoute("/org/$orgId/drive_/$fileId")({
     );
     return (
       <main className="shell__main shell__main--chat lf-main">
-        <LiveFilePage key={fileId} fileId={fileId} search={search} onSearch={onSearch} />
+        <FilePage key={fileId} fileId={fileId} search={search} onSearch={onSearch} />
       </main>
     );
   },

@@ -40,6 +40,7 @@ import { imageSize } from "./image-size";
 import { originOfActor } from "./live/access";
 import { type FileConversationSummary, fileConversationSummaries } from "./live/conversation";
 import { documentExport } from "./live/document-export";
+import { type MediaKind, mediaOfType } from "./live/media";
 import {
   documentFromMarkdown,
   LIVE_SNAPSHOT_TYPE,
@@ -1862,6 +1863,24 @@ export async function storedFileOfArtifact(
     size: v.size,
     sha256: v.sha256,
   };
+}
+
+/**
+ * A picture, a video or a PDF the actor reads (ADR 0208), with what it is: not in the trash, its current version's
+ * type one the apps show (`mediaOfType`). Null for anything else, a refusal included (it reads as not found).
+ */
+export async function mediaFileOf(
+  deps: ArtifactDeps,
+  actor: ArtifactActor,
+  orgId: string,
+  fileId: string,
+): Promise<{ artifact: ArtifactRow; kind: MediaKind; version: number; contentType: string } | null> {
+  if (!UUID.test(fileId) || !UUID.test(orgId)) return null;
+  const a = await readable(deps, actor, orgId, fileId).catch(() => null);
+  if (!a || a.kind !== "file" || a.deletedAt) return null;
+  const v = await versionRow(deps.db, a).catch(() => null);
+  const kind = mediaOfType(v?.contentType);
+  return v && kind ? { artifact: a, kind, version: v.version, contentType: v.contentType } : null;
 }
 
 /**

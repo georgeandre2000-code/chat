@@ -14,6 +14,7 @@ import { type ReactNode, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useApi } from "@/api/context";
 import { CodeBlock } from "@/components/CodeBlock";
+import { ViewerPins } from "@/components/live/media/ViewerBits";
 import { OfficePreview } from "@/components/live/office/OfficePreview";
 import { useOrg } from "@/components/org-context";
 import { ImageZoom } from "./ImageZoom";
@@ -193,7 +194,14 @@ export function FileView({
   if (kind === "image" && canPreview && !failed) {
     return (
       <div className="file-view file-view--image">
-        <ImageZoom key={url} src={url} alt={t("files.imageAlt", { title })} onSwipe={onSwipe} />
+        <ImageZoom
+          key={url}
+          src={url}
+          alt={t("files.imageAlt", { title })}
+          onSwipe={onSwipe}
+          // Its open comments' pins (ADR 0208): a press opens its page at that comment.
+          overlay={<ViewerPins artifactId={artifactId} />}
+        />
       </div>
     );
   }

@@ -15570,6 +15570,45 @@
       "exitFullscreen": "Salir de pantalla completa",
       "open": "Abrir"
     },
+    "comments": {
+      "title": "Comentarios",
+      "resolve": "Resolver",
+      "reopen": "Reabrir",
+      "resolvedBy": "Resuelto por {{name}} · {{time}}",
+      "resolvedCount_one": "{{count}} resuelto",
+      "resolvedCount_many": "{{count}} resueltos",
+      "resolvedCount_other": "{{count}} resueltos",
+      "showResolved": "Mostrar los resueltos",
+      "hideResolved": "Ocultar los resueltos",
+      "fromVersion": "De la versión {{version}}",
+      "peekOpen": "Haz clic para abrir en la conversación",
+      "markAt": "Comentario {{n}} en el minuto {{time}}, de {{name}}",
+      "page": "Página {{page}}",
+      "pageOf": "{{page}} de {{count}}",
+      "pdfFailed": "Este PDF no se puede mostrar aquí. Descárgalo para abrirlo.",
+      "loadFailed": "Esta imagen no se puede mostrar aquí.",
+      "hint": {
+        "image": "Haz clic para marcar un punto o arrastra para marcar un área",
+        "video": "Haz clic en el video para comentar este momento, o arrastra para marcar un área",
+        "pdf": "Haz clic en una página para marcar un punto o arrastra para marcar un área"
+      },
+      "line": {
+        "image_one": "{{count}} comentario en la imagen",
+        "image_many": "{{count}} comentarios en la imagen",
+        "image_other": "{{count}} comentarios en la imagen",
+        "video_one": "{{count}} comentario en el video",
+        "video_many": "{{count}} comentarios en el video",
+        "video_other": "{{count}} comentarios en el video",
+        "pdf_one": "{{count}} comentario en el PDF",
+        "pdf_many": "{{count}} comentarios en el PDF",
+        "pdf_other": "{{count}} comentarios en el PDF"
+      },
+      "write": {
+        "image": "Escribe sobre la imagen…",
+        "video": "Escribe sobre el video…",
+        "pdf": "Escribe sobre el PDF…"
+      }
+    },
     "zoom": {
       "toolbar": "Zoom",
       "in": "Ampliar",
@@ -22026,25 +22065,36 @@
         "spreadsheet": "Conversación de la hoja de cálculo",
         "slides": "Conversación de la presentación",
         "document": "Conversación del documento",
-        "file": "Conversación del archivo"
+        "file": "Conversación del archivo",
+        "image": "Conversación de la imagen",
+        "video": "Conversación del video",
+        "pdf": "Conversación del PDF"
       },
       "placeholder": {
         "canvas": "Escribe sobre esta pizarra · usa @ para llamar a un agente",
         "spreadsheet": "Escribe sobre esta hoja de cálculo · usa @ para llamar a un agente",
         "slides": "Escribe sobre esta presentación · usa @ para llamar a un agente",
         "document": "Escribe sobre este documento · usa @ para llamar a un agente",
-        "file": "Escribe sobre este archivo · usa @ para llamar a un agente"
+        "file": "Escribe sobre este archivo · usa @ para llamar a un agente",
+        "image": "Escribe sobre esta imagen · usa @ para llamar a un agente",
+        "video": "Escribe sobre este video · usa @ para llamar a un agente",
+        "pdf": "Escribe sobre este PDF · usa @ para llamar a un agente"
       },
       "this": {
         "canvas": "esta pizarra",
         "spreadsheet": "esta hoja de cálculo",
         "slides": "esta presentación",
-        "document": "este documento"
+        "document": "este documento",
+        "image": "esta imagen",
+        "video": "este video",
+        "pdf": "este PDF"
       },
       "origin": {
         "from": "<0>{{name}}</0> creó {{what}} desde la <1>{{place}}</1>",
         "made": "<0>{{name}}</0> creó {{what}}",
-        "imported": "Importado de <1>{{file}}</1> por {{name}}"
+        "imported": "Importado de <1>{{file}}</1> por {{name}}",
+        "sentIn": "<0>{{name}}</0> envió {{what}} en la <1>{{place}}</1>",
+        "sent": "<0>{{name}}</0> envió {{what}}"
       },
       "about": {
         "range": "Sobre {{range}} en {{sheet}}",
@@ -22052,7 +22102,26 @@
         "canvas": "Sobre {{label}} en la pizarra",
         "text": "Sobre el texto seleccionado",
         "point": "Sobre un punto de la pizarra",
-        "other": "Sobre {{label}}"
+        "other": "Sobre {{label}}",
+        "imageArea": "Sobre el área {{n}} de la imagen",
+        "imagePoint": "Sobre el punto {{n}} de la imagen",
+        "videoAt": "Sobre el minuto {{time}} del video",
+        "pdfPage": "Sobre la página {{page}} del PDF",
+        "image": "Sobre la imagen",
+        "video": "Sobre el video",
+        "pdf": "Sobre el PDF"
+      },
+      "what": {
+        "area": "Área {{n}}",
+        "point": "Punto {{n}}",
+        "anArea": "Un área",
+        "aPoint": "Un punto",
+        "page": "Página {{page}}"
+      },
+      "where": {
+        "image": "en la imagen",
+        "video": "en el video",
+        "pdf": "en el PDF"
       },
       "drop": "No enviar la selección",
       "aboutLine": "Mostrar {{what}} ({{where}}) en el archivo",

@@ -216,3 +216,21 @@ export const pictureRatio = (size: { width?: number; height?: number } | null | 
   size?.width && size.height && size.width > 0 && size.height > 0
     ? Math.min(4, Math.max(0.25, size.width / size.height))
     : undefined;
+
+/**
+ * What an uploaded file is to its own page (ADR 0208): a picture, a video or a PDF, by the type its version says (the
+ * server's `mediaOfType`, the same list); null for any other file. Those open on a page with their conversation, and
+ * comments there point at a place in them.
+ */
+export function mediaKindOfType(contentType: string | null | undefined): "image" | "video" | "pdf" | null {
+  const kind = PREVIEW[(contentType ?? "").split(";")[0]?.trim().toLowerCase() ?? ""];
+  return kind === "image" || kind === "video" || kind === "pdf" ? kind : null;
+}
+
+/** `mediaKindOfType` of an artifact as the apps hold it (its `content`, when it carries one). */
+export function mediaKindOfArtifact(
+  artifact: { kind: string; content?: { kind?: string; contentType?: string } } | null | undefined,
+): "image" | "video" | "pdf" | null {
+  if (!artifact || artifact.kind !== "file" || artifact.content?.kind !== "file") return null;
+  return mediaKindOfType(artifact.content.contentType);
+}

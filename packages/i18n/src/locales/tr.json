@@ -15040,6 +15040,41 @@
       "exitFullscreen": "Tam ekrandan çık",
       "open": "Aç"
     },
+    "comments": {
+      "title": "Yorumlar",
+      "resolve": "Çöz",
+      "reopen": "Yeniden aç",
+      "resolvedBy": "{{name}} çözdü · {{time}}",
+      "resolvedCount_one": "{{count}} çözüldü",
+      "resolvedCount_other": "{{count}} çözüldü",
+      "showResolved": "Çözülenleri göster",
+      "hideResolved": "Çözülenleri gizle",
+      "fromVersion": "{{version}} sürümünden",
+      "peekOpen": "Sohbette açmak için tıklayın",
+      "markAt": "Yorum {{n}}, {{time}} anında, {{name}}",
+      "page": "Sayfa {{page}}",
+      "pageOf": "{{page}} / {{count}}",
+      "pdfFailed": "Bu PDF burada gösterilemiyor. Açmak için indirin.",
+      "loadFailed": "Bu görsel burada gösterilemiyor.",
+      "hint": {
+        "image": "Bir nokta işaretlemek için tıklayın veya bir alan işaretlemek için sürükleyin",
+        "video": "Bu ana yorum yapmak için videoya tıklayın veya bir alan işaretlemek için sürükleyin",
+        "pdf": "Bir nokta işaretlemek için sayfaya tıklayın veya bir alan işaretlemek için sürükleyin"
+      },
+      "line": {
+        "image_one": "Görselde {{count}} yorum",
+        "image_other": "Görselde {{count}} yorum",
+        "video_one": "Videoda {{count}} yorum",
+        "video_other": "Videoda {{count}} yorum",
+        "pdf_one": "PDF'te {{count}} yorum",
+        "pdf_other": "PDF'te {{count}} yorum"
+      },
+      "write": {
+        "image": "Görsel hakkında yazın…",
+        "video": "Video hakkında yazın…",
+        "pdf": "PDF hakkında yazın…"
+      }
+    },
     "zoom": {
       "toolbar": "Yakınlaştırma",
       "in": "Yakınlaştır",
@@ -21358,25 +21393,36 @@
         "spreadsheet": "E-tablo sohbeti",
         "slides": "Sunum sohbeti",
         "document": "Belge sohbeti",
-        "file": "Dosya sohbeti"
+        "file": "Dosya sohbeti",
+        "image": "Görsel sohbeti",
+        "video": "Video sohbeti",
+        "pdf": "PDF sohbeti"
       },
       "placeholder": {
         "canvas": "Bu tuval hakkında yazın · bir ajanı çağırmak için @ kullanın",
         "spreadsheet": "Bu e-tablo hakkında yazın · bir ajanı çağırmak için @ kullanın",
         "slides": "Bu sunum hakkında yazın · bir ajanı çağırmak için @ kullanın",
         "document": "Bu belge hakkında yazın · bir ajanı çağırmak için @ kullanın",
-        "file": "Bu dosya hakkında yazın · bir ajanı çağırmak için @ kullanın"
+        "file": "Bu dosya hakkında yazın · bir ajanı çağırmak için @ kullanın",
+        "image": "Bu görsel hakkında yazın · bir ajanı çağırmak için @ kullanın",
+        "video": "Bu video hakkında yazın · bir ajanı çağırmak için @ kullanın",
+        "pdf": "Bu PDF hakkında yazın · bir ajanı çağırmak için @ kullanın"
       },
       "this": {
         "canvas": "bu tuvali",
         "spreadsheet": "bu e-tabloyu",
         "slides": "bu sunumu",
-        "document": "bu belgeyi"
+        "document": "bu belgeyi",
+        "image": "bu görseli",
+        "video": "bu videoyu",
+        "pdf": "bu PDF'i"
       },
       "origin": {
         "from": "<0>{{name}}</0>, {{what}} <1>{{place}}</1> sırasında oluşturdu",
         "made": "<0>{{name}}</0>, {{what}} oluşturdu",
-        "imported": "<1>{{file}}</1> dosyasından içe aktarıldı, aktaran: {{name}}"
+        "imported": "<1>{{file}}</1> dosyasından içe aktarıldı, aktaran: {{name}}",
+        "sentIn": "<0>{{name}}</0>, {{what}} <1>{{place}}</1> sırasında gönderdi",
+        "sent": "<0>{{name}}</0>, {{what}} gönderdi"
       },
       "about": {
         "range": "{{sheet}} içindeki {{range}} hakkında",
@@ -21384,7 +21430,26 @@
         "canvas": "Tuvaldeki {{label}} hakkında",
         "text": "Seçili metin hakkında",
         "point": "Tuvaldeki bir nokta hakkında",
-        "other": "{{label}} hakkında"
+        "other": "{{label}} hakkında",
+        "imageArea": "Görseldeki {{n}}. alan hakkında",
+        "imagePoint": "Görseldeki {{n}}. nokta hakkında",
+        "videoAt": "Videonun {{time}} anı hakkında",
+        "pdfPage": "PDF'in {{page}}. sayfası hakkında",
+        "image": "Görsel hakkında",
+        "video": "Video hakkında",
+        "pdf": "PDF hakkında"
+      },
+      "what": {
+        "area": "Alan {{n}}",
+        "point": "Nokta {{n}}",
+        "anArea": "Bir alan",
+        "aPoint": "Bir nokta",
+        "page": "Sayfa {{page}}"
+      },
+      "where": {
+        "image": "görselde",
+        "video": "videoda",
+        "pdf": "PDF'te"
       },
       "drop": "Seçimi gönderme",
       "aboutLine": "Dosyada göster: {{what}} ({{where}})",

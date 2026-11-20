@@ -37161,6 +37161,87 @@
   "files.video.open": {
     "value": "Open"
   },
+  "files.comments.title": {
+    "value": "Comments"
+  },
+  "files.comments.resolve": {
+    "value": "Resolve"
+  },
+  "files.comments.reopen": {
+    "value": "Reopen"
+  },
+  "files.comments.resolvedBy": {
+    "value": "Resolved by {{name}} · {{time}}"
+  },
+  "files.comments.resolvedCount": {
+    "value": {
+      "one": "{{count}} resolved",
+      "other": "{{count}} resolved"
+    }
+  },
+  "files.comments.showResolved": {
+    "value": "Show resolved"
+  },
+  "files.comments.hideResolved": {
+    "value": "Hide resolved"
+  },
+  "files.comments.fromVersion": {
+    "value": "From version {{version}}"
+  },
+  "files.comments.peekOpen": {
+    "value": "Click to open in the conversation"
+  },
+  "files.comments.markAt": {
+    "value": "Comment {{n}} at {{time}}, by {{name}}"
+  },
+  "files.comments.page": {
+    "value": "Page {{page}}"
+  },
+  "files.comments.pageOf": {
+    "value": "{{page}} of {{count}}"
+  },
+  "files.comments.pdfFailed": {
+    "value": "This PDF can't be shown here. Download it to open it."
+  },
+  "files.comments.loadFailed": {
+    "value": "This image can't be shown here."
+  },
+  "files.comments.hint.image": {
+    "value": "Click to mark a point or drag to mark an area"
+  },
+  "files.comments.hint.video": {
+    "value": "Click the video to comment at this moment, or drag to mark an area"
+  },
+  "files.comments.hint.pdf": {
+    "value": "Click a page to mark a point or drag to mark an area"
+  },
+  "files.comments.line.image": {
+    "value": {
+      "one": "{{count}} comment on the image",
+      "other": "{{count}} comments on the image"
+    }
+  },
+  "files.comments.line.video": {
+    "value": {
+      "one": "{{count}} comment on the video",
+      "other": "{{count}} comments on the video"
+    }
+  },
+  "files.comments.line.pdf": {
+    "value": {
+      "one": "{{count}} comment on the PDF",
+      "other": "{{count}} comments on the PDF"
+    }
+  },
+  "files.comments.write.image": {
+    "value": "Write about the image…"
+  },
+  "files.comments.write.video": {
+    "value": "Write about the video…"
+  },
+  "files.comments.write.pdf": {
+    "value": "Write about the PDF…"
+  },
   "files.zoom.toolbar": {
     "value": "Zoom"
   },
@@ -52338,6 +52419,15 @@
   "live.conversation.title.file": {
     "value": "File conversation"
   },
+  "live.conversation.title.image": {
+    "value": "Image conversation"
+  },
+  "live.conversation.title.video": {
+    "value": "Video conversation"
+  },
+  "live.conversation.title.pdf": {
+    "value": "PDF conversation"
+  },
   "live.conversation.placeholder.canvas": {
     "value": "Write about this canvas · use @ to call an agent"
   },
@@ -52353,6 +52443,15 @@
   "live.conversation.placeholder.file": {
     "value": "Write about this file · use @ to call an agent"
   },
+  "live.conversation.placeholder.image": {
+    "value": "Write about this image · use @ to call an agent"
+  },
+  "live.conversation.placeholder.video": {
+    "value": "Write about this video · use @ to call an agent"
+  },
+  "live.conversation.placeholder.pdf": {
+    "value": "Write about this PDF · use @ to call an agent"
+  },
   "live.conversation.this.canvas": {
     "value": "this canvas"
   },
@@ -52365,6 +52464,15 @@
   "live.conversation.this.document": {
     "value": "this document"
   },
+  "live.conversation.this.image": {
+    "value": "this image"
+  },
+  "live.conversation.this.video": {
+    "value": "this video"
+  },
+  "live.conversation.this.pdf": {
+    "value": "this PDF"
+  },
   "live.conversation.origin.from": {
     "value": "<0>{{name}}</0> made {{what}} from the <1>{{place}}</1>"
   },
@@ -52373,6 +52481,12 @@
   },
   "live.conversation.origin.imported": {
     "value": "Imported from <1>{{file}}</1> by {{name}}"
+  },
+  "live.conversation.origin.sentIn": {
+    "value": "<0>{{name}}</0> sent {{what}} in the <1>{{place}}</1>"
+  },
+  "live.conversation.origin.sent": {
+    "value": "<0>{{name}}</0> sent {{what}}"
   },
   "live.conversation.about.range": {
     "value": "About {{range}} in {{sheet}}"
@@ -52391,6 +52505,51 @@
   },
   "live.conversation.about.other": {
     "value": "About {{label}}"
+  },
+  "live.conversation.about.imageArea": {
+    "value": "About area {{n}} of the image"
+  },
+  "live.conversation.about.imagePoint": {
+    "value": "About point {{n}} of the image"
+  },
+  "live.conversation.about.videoAt": {
+    "value": "About {{time}} of the video"
+  },
+  "live.conversation.about.pdfPage": {
+    "value": "About page {{page}} of the PDF"
+  },
+  "live.conversation.about.image": {
+    "value": "About the image"
+  },
+  "live.conversation.about.video": {
+    "value": "About the video"
+  },
+  "live.conversation.about.pdf": {
+    "value": "About the PDF"
+  },
+  "live.conversation.what.area": {
+    "value": "Area {{n}}"
+  },
+  "live.conversation.what.point": {
+    "value": "Point {{n}}"
+  },
+  "live.conversation.what.anArea": {
+    "value": "An area"
+  },
+  "live.conversation.what.aPoint": {
+    "value": "A point"
+  },
+  "live.conversation.what.page": {
+    "value": "Page {{page}}"
+  },
+  "live.conversation.where.image": {
+    "value": "on the image"
+  },
+  "live.conversation.where.video": {
+    "value": "on the video"
+  },
+  "live.conversation.where.pdf": {
+    "value": "on the PDF"
   },
   "live.conversation.drop": {
     "value": "Don't send the selection"

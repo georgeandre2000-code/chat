@@ -15661,6 +15661,45 @@
       "exitFullscreen": "Esci da schermo intero",
       "open": "Apri"
     },
+    "comments": {
+      "title": "Commenti",
+      "resolve": "Risolvi",
+      "reopen": "Riapri",
+      "resolvedBy": "Risolto da {{name}} · {{time}}",
+      "resolvedCount_one": "{{count}} risolto",
+      "resolvedCount_many": "{{count}} risolti",
+      "resolvedCount_other": "{{count}} risolti",
+      "showResolved": "Mostra i risolti",
+      "hideResolved": "Nascondi i risolti",
+      "fromVersion": "Dalla versione {{version}}",
+      "peekOpen": "Fai clic per aprire nella conversazione",
+      "markAt": "Commento {{n}} a {{time}}, di {{name}}",
+      "page": "Pagina {{page}}",
+      "pageOf": "{{page}} di {{count}}",
+      "pdfFailed": "Questo PDF non si può mostrare qui. Scaricalo per aprirlo.",
+      "loadFailed": "Questa immagine non si può mostrare qui.",
+      "hint": {
+        "image": "Fai clic per segnare un punto o trascina per segnare una zona",
+        "video": "Fai clic sul video per commentare questo momento, o trascina per segnare una zona",
+        "pdf": "Fai clic su una pagina per segnare un punto o trascina per segnare una zona"
+      },
+      "line": {
+        "image_one": "{{count}} commento sull'immagine",
+        "image_many": "{{count}} commenti sull'immagine",
+        "image_other": "{{count}} commenti sull'immagine",
+        "video_one": "{{count}} commento sul video",
+        "video_many": "{{count}} commenti sul video",
+        "video_other": "{{count}} commenti sul video",
+        "pdf_one": "{{count}} commento sul PDF",
+        "pdf_many": "{{count}} commenti sul PDF",
+        "pdf_other": "{{count}} commenti sul PDF"
+      },
+      "write": {
+        "image": "Scrivi sull'immagine…",
+        "video": "Scrivi sul video…",
+        "pdf": "Scrivi sul PDF…"
+      }
+    },
     "zoom": {
       "toolbar": "Zoom",
       "in": "Ingrandisci",
@@ -22184,25 +22223,36 @@
         "spreadsheet": "Conversazione del foglio di calcolo",
         "slides": "Conversazione della presentazione",
         "document": "Conversazione del documento",
-        "file": "Conversazione del file"
+        "file": "Conversazione del file",
+        "image": "Conversazione dell'immagine",
+        "video": "Conversazione del video",
+        "pdf": "Conversazione del PDF"
       },
       "placeholder": {
         "canvas": "Scrivi su questa lavagna · usa @ per chiamare un agente",
         "spreadsheet": "Scrivi su questo foglio di calcolo · usa @ per chiamare un agente",
         "slides": "Scrivi su questa presentazione · usa @ per chiamare un agente",
         "document": "Scrivi su questo documento · usa @ per chiamare un agente",
-        "file": "Scrivi su questo file · usa @ per chiamare un agente"
+        "file": "Scrivi su questo file · usa @ per chiamare un agente",
+        "image": "Scrivi su questa immagine · usa @ per chiamare un agente",
+        "video": "Scrivi su questo video · usa @ per chiamare un agente",
+        "pdf": "Scrivi su questo PDF · usa @ per chiamare un agente"
       },
       "this": {
         "canvas": "questa lavagna",
         "spreadsheet": "questo foglio di calcolo",
         "slides": "questa presentazione",
-        "document": "questo documento"
+        "document": "questo documento",
+        "image": "questa immagine",
+        "video": "questo video",
+        "pdf": "questo PDF"
       },
       "origin": {
         "from": "<0>{{name}}</0> ha creato {{what}} dalla <1>{{place}}</1>",
         "made": "<0>{{name}}</0> ha creato {{what}}",
-        "imported": "{{name}} l'ha importato da <1>{{file}}</1>"
+        "imported": "{{name}} l'ha importato da <1>{{file}}</1>",
+        "sentIn": "<0>{{name}}</0> ha inviato {{what}} nella <1>{{place}}</1>",
+        "sent": "<0>{{name}}</0> ha inviato {{what}}"
       },
       "about": {
         "range": "Su {{range}} in {{sheet}}",
@@ -22210,7 +22260,26 @@
         "canvas": "Su {{label}} sulla lavagna",
         "text": "Sul testo selezionato",
         "point": "Su un punto della lavagna",
-        "other": "Su {{label}}"
+        "other": "Su {{label}}",
+        "imageArea": "Sulla zona {{n}} dell'immagine",
+        "imagePoint": "Sul punto {{n}} dell'immagine",
+        "videoAt": "Sul momento {{time}} del video",
+        "pdfPage": "Sulla pagina {{page}} del PDF",
+        "image": "Sull'immagine",
+        "video": "Sul video",
+        "pdf": "Sul PDF"
+      },
+      "what": {
+        "area": "Zona {{n}}",
+        "point": "Punto {{n}}",
+        "anArea": "Una zona",
+        "aPoint": "Un punto",
+        "page": "Pagina {{page}}"
+      },
+      "where": {
+        "image": "sull'immagine",
+        "video": "nel video",
+        "pdf": "nel PDF"
       },
       "drop": "Non inviare la selezione",
       "aboutLine": "Mostra {{what}} ({{where}}) nel file",

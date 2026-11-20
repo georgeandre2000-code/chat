@@ -14533,6 +14533,37 @@
       "exitFullscreen": "全画面表示を終了",
       "open": "開く"
     },
+    "comments": {
+      "title": "コメント",
+      "resolve": "解決",
+      "reopen": "再開",
+      "resolvedBy": "{{name}}が解決 · {{time}}",
+      "resolvedCount_other": "解決済み{{count}}件",
+      "showResolved": "解決済みを表示",
+      "hideResolved": "解決済みを非表示",
+      "fromVersion": "バージョン{{version}}から",
+      "peekOpen": "クリックして会話で開く",
+      "markAt": "コメント{{n}}（{{time}}、{{name}}）",
+      "page": "{{page}}ページ",
+      "pageOf": "{{page}}/{{count}}",
+      "pdfFailed": "このPDFはここでは表示できません。ダウンロードして開いてください。",
+      "loadFailed": "この画像はここでは表示できません。",
+      "hint": {
+        "image": "クリックでポイントを付ける、またはドラッグで範囲を指定",
+        "video": "動画をクリックしてこの場面にコメント、またはドラッグで範囲を指定",
+        "pdf": "ページをクリックしてポイントを付ける、またはドラッグで範囲を指定"
+      },
+      "line": {
+        "image_other": "画像のコメント{{count}}件",
+        "video_other": "動画のコメント{{count}}件",
+        "pdf_other": "PDFのコメント{{count}}件"
+      },
+      "write": {
+        "image": "画像について書く…",
+        "video": "動画について書く…",
+        "pdf": "PDFについて書く…"
+      }
+    },
     "zoom": {
       "toolbar": "ズーム",
       "in": "拡大",
@@ -20770,25 +20801,36 @@
         "spreadsheet": "スプレッドシートの会話",
         "slides": "プレゼンテーションの会話",
         "document": "ドキュメントの会話",
-        "file": "ファイルの会話"
+        "file": "ファイルの会話",
+        "image": "画像の会話",
+        "video": "動画の会話",
+        "pdf": "PDFの会話"
       },
       "placeholder": {
         "canvas": "このキャンバスについて書く · @でエージェントを呼ぶ",
         "spreadsheet": "このスプレッドシートについて書く · @でエージェントを呼ぶ",
         "slides": "このプレゼンテーションについて書く · @でエージェントを呼ぶ",
         "document": "このドキュメントについて書く · @でエージェントを呼ぶ",
-        "file": "このファイルについて書く · @でエージェントを呼ぶ"
+        "file": "このファイルについて書く · @でエージェントを呼ぶ",
+        "image": "この画像について書く · @でエージェントを呼ぶ",
+        "video": "この動画について書く · @でエージェントを呼ぶ",
+        "pdf": "このPDFについて書く · @でエージェントを呼ぶ"
       },
       "this": {
         "canvas": "このキャンバス",
         "spreadsheet": "このスプレッドシート",
         "slides": "このプレゼンテーション",
-        "document": "このドキュメント"
+        "document": "このドキュメント",
+        "image": "この画像",
+        "video": "この動画",
+        "pdf": "このPDF"
       },
       "origin": {
         "from": "<0>{{name}}</0>が<1>{{place}}</1>で{{what}}を作成しました",
         "made": "<0>{{name}}</0>が{{what}}を作成しました",
-        "imported": "{{name}}が<1>{{file}}</1>から読み込みました"
+        "imported": "{{name}}が<1>{{file}}</1>から読み込みました",
+        "sentIn": "<0>{{name}}</0>が<1>{{place}}</1>で{{what}}を送信しました",
+        "sent": "<0>{{name}}</0>が{{what}}を送信しました"
       },
       "about": {
         "range": "{{sheet}}の{{range}}について",
@@ -20796,7 +20838,26 @@
         "canvas": "キャンバス上の{{label}}について",
         "text": "選択したテキストについて",
         "point": "キャンバス上の1か所について",
-        "other": "{{label}}について"
+        "other": "{{label}}について",
+        "imageArea": "画像の範囲{{n}}について",
+        "imagePoint": "画像のポイント{{n}}について",
+        "videoAt": "動画の{{time}}について",
+        "pdfPage": "PDFの{{page}}ページについて",
+        "image": "画像について",
+        "video": "動画について",
+        "pdf": "PDFについて"
+      },
+      "what": {
+        "area": "範囲{{n}}",
+        "point": "ポイント{{n}}",
+        "anArea": "ある範囲",
+        "aPoint": "あるポイント",
+        "page": "{{page}}ページ"
+      },
+      "where": {
+        "image": "画像上",
+        "video": "動画内",
+        "pdf": "PDF内"
       },
       "drop": "選択範囲を送らない",
       "aboutLine": "ファイルで{{what}}（{{where}}）を表示",

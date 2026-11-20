@@ -1,4 +1,4 @@
-import type { Agent, Artifact, LiveKind } from "@agenteschat/client";
+import type { Agent, Artifact, TalkKind } from "@agenteschat/client";
 import { keys, useFileUnread, useThreadMessages } from "@agenteschat/client";
 import { mayAsk } from "@agenteschat/client/lib/audience";
 import { rightHandOf } from "@agenteschat/client/lib/right-hand";
@@ -128,7 +128,7 @@ export function FileConversationPanel({
   focusMessageId,
   onClose,
 }: {
-  kind: LiveKind;
+  kind: TalkKind;
   rootId: string | null;
   docked: boolean;
   focusMessageId?: string;

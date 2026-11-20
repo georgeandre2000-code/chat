@@ -1,4 +1,4 @@
-import { MESSAGES_PAGE, useAiStatus, useApi } from "@agenteschat/client";
+import { isMediaKind, MESSAGES_PAGE, useAiStatus, useApi } from "@agenteschat/client";
 import { workIsOver } from "@agenteschat/client/lib/long-work";
 import { pinsIn } from "@agenteschat/client/lib/pins";
 import type { LegendListRef } from "@legendapp/list/react-native";
@@ -321,7 +321,12 @@ function Chat({
       ? // One line on the phone: the tip after "·" in the web's placeholder doesn't fit.
         t("issues.comment")
       : rootFile
-        ? t(`mobile.live.talk.placeholder.${rootFile.kind}`)
+        ? // A picture's, a video's or a PDF's (ADR 0208): the shared words, one line as the live files' are.
+          t(
+            isMediaKind(rootFile.kind)
+              ? `files.comments.write.${rootFile.kind}`
+              : `mobile.live.talk.placeholder.${rootFile.kind}`,
+          )
         : t("mobile.chat.reply")
     : dm
       ? // One line on the phone: the right hand's "nada muda sem você" doesn't fit beside its name.

@@ -16192,6 +16192,49 @@
       "exitFullscreen": "Zamknij pełny ekran",
       "open": "Otwórz"
     },
+    "comments": {
+      "title": "Komentarze",
+      "resolve": "Rozwiąż",
+      "reopen": "Otwórz ponownie",
+      "resolvedBy": "Rozwiązał(a) {{name}} · {{time}}",
+      "resolvedCount_one": "Rozwiązane: {{count}}",
+      "resolvedCount_few": "Rozwiązane: {{count}}",
+      "resolvedCount_many": "Rozwiązane: {{count}}",
+      "resolvedCount_other": "Rozwiązane: {{count}}",
+      "showResolved": "Pokaż rozwiązane",
+      "hideResolved": "Ukryj rozwiązane",
+      "fromVersion": "Z wersji {{version}}",
+      "peekOpen": "Kliknij, aby otworzyć w rozmowie",
+      "markAt": "Komentarz {{n}} na {{time}}, autor: {{name}}",
+      "page": "Strona {{page}}",
+      "pageOf": "{{page}} z {{count}}",
+      "pdfFailed": "Tego pliku PDF nie da się tu pokazać. Pobierz go, żeby otworzyć.",
+      "loadFailed": "Tego obrazu nie da się tu pokazać.",
+      "hint": {
+        "image": "Kliknij, aby zaznaczyć punkt, albo przeciągnij, aby zaznaczyć obszar",
+        "video": "Kliknij film, aby skomentować ten moment, albo przeciągnij, aby zaznaczyć obszar",
+        "pdf": "Kliknij stronę, aby zaznaczyć punkt, albo przeciągnij, aby zaznaczyć obszar"
+      },
+      "line": {
+        "image_one": "{{count}} komentarz na obrazie",
+        "image_few": "{{count}} komentarze na obrazie",
+        "image_many": "{{count}} komentarzy na obrazie",
+        "image_other": "{{count}} komentarza na obrazie",
+        "video_one": "{{count}} komentarz w filmie",
+        "video_few": "{{count}} komentarze w filmie",
+        "video_many": "{{count}} komentarzy w filmie",
+        "video_other": "{{count}} komentarza w filmie",
+        "pdf_one": "{{count}} komentarz w pliku PDF",
+        "pdf_few": "{{count}} komentarze w pliku PDF",
+        "pdf_many": "{{count}} komentarzy w pliku PDF",
+        "pdf_other": "{{count}} komentarza w pliku PDF"
+      },
+      "write": {
+        "image": "Napisz o obrazie…",
+        "video": "Napisz o filmie…",
+        "pdf": "Napisz o pliku PDF…"
+      }
+    },
     "zoom": {
       "toolbar": "Powiększenie",
       "in": "Powiększ",
@@ -22764,25 +22807,36 @@
         "spreadsheet": "Rozmowa o arkuszu",
         "slides": "Rozmowa o prezentacji",
         "document": "Rozmowa o dokumencie",
-        "file": "Rozmowa o pliku"
+        "file": "Rozmowa o pliku",
+        "image": "Rozmowa o obrazie",
+        "video": "Rozmowa o filmie",
+        "pdf": "Rozmowa o pliku PDF"
       },
       "placeholder": {
         "canvas": "Napisz o tej tablicy · użyj @, aby przywołać agenta",
         "spreadsheet": "Napisz o tym arkuszu · użyj @, aby przywołać agenta",
         "slides": "Napisz o tej prezentacji · użyj @, aby przywołać agenta",
         "document": "Napisz o tym dokumencie · użyj @, aby przywołać agenta",
-        "file": "Napisz o tym pliku · użyj @, aby przywołać agenta"
+        "file": "Napisz o tym pliku · użyj @, aby przywołać agenta",
+        "image": "Napisz o tym obrazie · użyj @, aby przywołać agenta",
+        "video": "Napisz o tym filmie · użyj @, aby przywołać agenta",
+        "pdf": "Napisz o tym pliku PDF · użyj @, aby przywołać agenta"
       },
       "this": {
         "canvas": "tę tablicę",
         "spreadsheet": "ten arkusz",
         "slides": "tę prezentację",
-        "document": "ten dokument"
+        "document": "ten dokument",
+        "image": "ten obraz",
+        "video": "ten film",
+        "pdf": "ten plik PDF"
       },
       "origin": {
         "from": "<0>{{name}}</0> utworzył(a) {{what}} z <1>{{place}}</1>",
         "made": "<0>{{name}}</0> utworzył(a) {{what}}",
-        "imported": "{{name}} zaimportował(a) z <1>{{file}}</1>"
+        "imported": "{{name}} zaimportował(a) z <1>{{file}}</1>",
+        "sentIn": "<0>{{name}}</0> wysłał(a) {{what}} do <1>{{place}}</1>",
+        "sent": "<0>{{name}}</0> wysłał(a) {{what}}"
       },
       "about": {
         "range": "O zakresie {{range}} na karcie {{sheet}}",
@@ -22790,7 +22844,26 @@
         "canvas": "Dotyczy: {{label}} na tablicy",
         "text": "O zaznaczonym tekście",
         "point": "O miejscu na tablicy",
-        "other": "Dotyczy: {{label}}"
+        "other": "Dotyczy: {{label}}",
+        "imageArea": "O obszarze {{n}} obrazu",
+        "imagePoint": "O punkcie {{n}} obrazu",
+        "videoAt": "O momencie {{time}} filmu",
+        "pdfPage": "O stronie {{page}} pliku PDF",
+        "image": "O obrazie",
+        "video": "O filmie",
+        "pdf": "O pliku PDF"
+      },
+      "what": {
+        "area": "Obszar {{n}}",
+        "point": "Punkt {{n}}",
+        "anArea": "Obszar",
+        "aPoint": "Punkt",
+        "page": "Strona {{page}}"
+      },
+      "where": {
+        "image": "na obrazie",
+        "video": "w filmie",
+        "pdf": "w pliku PDF"
       },
       "drop": "Nie wysyłaj zaznaczenia",
       "aboutLine": "Pokaż w pliku: {{what}} ({{where}})",

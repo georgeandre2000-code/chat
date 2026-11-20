@@ -8,6 +8,7 @@ import { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useChannelActions } from "@/components/channel-actions";
 import { MenuEntries } from "@/components/DesktopMenus";
+import { ResolveButton } from "@/components/live/media/ResolveBits";
 import { useOrg } from "@/components/org-context";
 import { PinToDashboard } from "@/components/widgets/PinToDashboard";
 import {
@@ -79,6 +80,7 @@ export function PersonMessageActions({
     <div className="ac-msg__actions" role="toolbar" aria-label={t("channel.actions", { name: authorName })}>
       <ReactButton onPick={(emoji) => reactions.toggle(reactionOf(emoji))} />
       <ReplyButton message={message} />
+      <ResolveButton message={message} />
       <MessageMoreMenu entries={more} />
     </div>
   );

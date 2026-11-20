@@ -32,6 +32,7 @@ import { useNavigate, useRouterState } from "@tanstack/react-router";
 import { createContext, type ReactNode, useCallback, useContext, useEffect, useMemo, useRef, useState } from "react";
 import { flushSync } from "react-dom";
 import { useTranslation } from "react-i18next";
+import { ViewerCommentButtons } from "@/components/live/media/ViewerBits";
 import { knownLive, openLivePage } from "@/components/live/open";
 import { useOrg } from "@/components/org-context";
 import { useDirectory } from "@/hooks/useDirectory";
@@ -258,6 +259,8 @@ export function ArtifactViewer({
           {place}
         </span>
       )}
+      {/* A picture, a video or a PDF: its comments, on its page (ADR 0208). */}
+      {a.kind === "file" && <ViewerCommentButtons artifactId={a.id} />}
       {a.kind === "file" ? (
         <Button
           size="sm"
