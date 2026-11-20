@@ -1,6 +1,8 @@
 import { and, type Database, desc, eq, gt, isNull, ne, or, schema, sql } from "@agenteschat/db";
 import { cutText } from "./format";
 import type { Judge } from "./judge";
+import { inChannelRun } from "./run-scope";
+import { replyThreadOf } from "./runs";
 import { deferrableGroups, type ToolGroup, toolGroupKey } from "./tools/directory";
 import type { ToolDefinition } from "./tools/types";
 
@@ -175,12 +177,12 @@ export async function keptToolGroups(
     channelId: string;
     threadRootId: string;
     triggerMessageId: string;
+    replyInThread: boolean;
   },
   tools: ToolDefinition[],
 ): Promise<string[]> {
   const r = schema.agentRuns;
   const st = schema.agentRunSteps;
-  const flat = run.threadRootId === run.triggerMessageId;
   const [previous] = await db
     .select({ id: r.id })
     .from(r)
@@ -189,7 +191,7 @@ export async function keptToolGroups(
         eq(r.orgId, run.orgId),
         eq(r.agentId, run.agentId),
         eq(r.channelId, run.channelId),
-        flat ? sql`${r.threadRootId} = ${r.triggerMessageId}` : eq(r.threadRootId, run.threadRootId),
+        replyThreadOf(run) ? eq(r.threadRootId, run.threadRootId) : inChannelRun(sql`${r}`),
         ne(r.id, run.id),
       ),
     )

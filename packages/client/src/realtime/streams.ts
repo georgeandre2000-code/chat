@@ -118,6 +118,11 @@ export interface LiveRun {
   agentId: string;
   channelId: string;
   threadId: string;
+  /**
+   * It answers in the thread under the message that asked it (ADR 0208), as the server's active-run list says. Unknown
+   * for a row only live events made: their `threadId` is already where it answers.
+   */
+  replyInThread?: boolean;
   status: LiveStatus;
   error?: string;
   /** `run.finished`'s code for the error (`run.org_paused`…) and its values. */
@@ -810,6 +815,7 @@ export function reconcileRuns(
           [a.runId]: {
             ...r,
             ...(a.triggerMessageId ? { triggerMessageId: a.triggerMessageId } : {}),
+            ...(a.replyInThread !== undefined ? { replyInThread: a.replyInThread } : {}),
             ...(startedAt ? { startedAt } : {}),
             ...(workingSince !== undefined ? { workingSince } : {}),
             ...(lastEventAt ? { lastEventAt } : {}),
@@ -827,6 +833,7 @@ export function reconcileRuns(
       workingSince: served ?? startedAt ?? now,
       lastEventAt: now,
       ...(a.triggerMessageId ? { triggerMessageId: a.triggerMessageId } : {}),
+      ...(a.replyInThread !== undefined ? { replyInThread: a.replyInThread } : {}),
     });
   }
   return s;

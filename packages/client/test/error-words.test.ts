@@ -402,6 +402,8 @@ const PLAIN_LINE = new Set([
   "channel.file_conversation",
   "channel.task_conversation",
   "message.live_ref",
+  // The apps offer "Agents reply in threads" only in a regular channel's details (ADR 0208).
+  "channel.reply_in_threads",
   // Only an agent writes an SVG picture (ADR 0196 §8): the refusal goes back to its tool call, never to a person.
   "live.svg_invalid",
   // Only the outside chat surface's service meets these, on its own bridge routes (ADR 0187).

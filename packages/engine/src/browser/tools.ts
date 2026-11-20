@@ -135,7 +135,7 @@ export {
 import { publishChannelEvent } from "../events";
 import { cutText } from "../format";
 import { outboundRefusal } from "../outbound";
-import { releaseProfileTurns } from "../runs";
+import { releaseProfileTurns, replyThreadOf } from "../runs";
 import { neutralizeUntrusted } from "../untrusted";
 
 const { agents, agentRuns, secretRequests, users } = schema;
@@ -766,7 +766,7 @@ export function createBrowserToolSource(deps: BrowserToolDeps): ToolSource & { r
     publishChannelEvent(deps.pubsub, {
       type: "agent.browser.waiting",
       channelId: ctx.channelId,
-      threadId: ctx.threadRootId === ctx.triggerMessageId ? null : ctx.threadRootId,
+      threadId: replyThreadOf(ctx),
       runId: ctx.runId,
       agentId: ctx.agentId,
       wait,

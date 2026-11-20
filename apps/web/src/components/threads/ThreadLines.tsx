@@ -9,7 +9,7 @@ import {
   WORK_TICK_MS,
   workTime,
 } from "@agenteschat/client/lib/agent-work";
-import { formatTime, relativeTime } from "@agenteschat/client/lib/format";
+import { formatTime, joinNames, relativeTime } from "@agenteschat/client/lib/format";
 import { threadMessageCount, threadTitle } from "@agenteschat/client/lib/threads";
 import { AvatarStack, Button, CountBadge, Icon, Popover } from "@agenteschat/ui";
 import { Link, useNavigate } from "@tanstack/react-router";
@@ -121,6 +121,45 @@ export function ThreadReplyLine({ thread, count }: { thread: ThreadInfo; count: 
             : null
         }
         at={at}
+      />
+    </OpenThread>
+  );
+}
+
+/**
+ * Under a message in a channel that replies in threads (ADR 0208), while its agents work and no reply exists yet:
+ * "Ada está respondendo na thread", opening the thread. Once a reply lands, the thread's own line takes its place.
+ */
+export function ThreadReplyingLine({ messageId, channelId }: { messageId: string; channelId: string }) {
+  const { t } = useTranslation();
+  const actors = useActors();
+  const view = useChannelThreadsView();
+  // The server's runs only: the app's own guess for a message sent here ("pensando…") shows in the channel itself. A
+  // run the active-run list brought back says whether it answers in the thread (its `threadId` is its root either way).
+  const agentIds = useStreams((s) =>
+    [
+      ...new Set(
+        runsInChannel(s, channelId)
+          .filter(
+            (r) => r.threadId === messageId && r.replyInThread !== false && !r.provisional && r.status !== "failed",
+          )
+          .map((r) => r.agentId),
+      ),
+    ].join(","),
+  );
+  if (!agentIds) return null;
+  const people = agentIds.split(",").map((id) => ({ type: "agent" as const, id }));
+  return (
+    <OpenThread threadId={messageId} className="thread-line" pressed={view?.open === messageId}>
+      <ThreadLineBody
+        people={people}
+        label={t("threads.line.replying", {
+          count: people.length,
+          names: joinNames(
+            people.map((p) => actors.name(p)),
+            t,
+          ),
+        })}
       />
     </OpenThread>
   );
