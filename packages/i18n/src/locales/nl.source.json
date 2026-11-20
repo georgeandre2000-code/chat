@@ -19636,6 +19636,9 @@
   "issues.summary": {
     "value": "{{open}} open · {{agents}} with agents"
   },
+  "issues.openCount": {
+    "value": "{{open}} open"
+  },
   "issues.search": {
     "value": "Search tasks"
   },

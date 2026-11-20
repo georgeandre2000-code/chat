@@ -8662,6 +8662,7 @@
     },
     "title": "Zadania",
     "summary": "Otwarte: {{open}} · z agentami: {{agents}}",
+    "openCount": "Otwarte: {{open}}",
     "search": "Szukaj zadań",
     "view": "Widok",
     "board": "Tablica",
