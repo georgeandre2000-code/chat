@@ -2091,13 +2091,34 @@ export const CURSOR_MODEL_LIMITS = { models: 60, id: 80, label: 80 } as const;
 
 /**
  * How a brain turn started on the runner (Claude Code; an older runner leaves it out): on a process already open
- * (`warm`), how long a new one took to say it was ready (`initMs`), and the first event after the turn began.
+ * (`warm`), how long a new one took to say it was ready (`initMs`), and the first event after the turn began. A newer
+ * runner adds where the model's own time went: the API's first streamed message (`firstTokenMs`) and the first whole
+ * block of the answer (`firstAssistantMs`) from the turn's start, the CLI's API retries and the waits they announced,
+ * and the thinking blocks with the characters of their text (0 when the API leaves the text out).
  */
 export interface BrainTurnTimings {
   warm: boolean;
   initMs?: number;
   firstEventMs?: number;
+  firstTokenMs?: number;
+  firstAssistantMs?: number;
+  retries?: number;
+  retryDelayMs?: number;
+  thinkingBlocks?: number;
+  thinkingChars?: number;
 }
+
+/** The measures of `BrainTurnTimings` past `warm`, each a whole number from 0 up to a day. */
+export const BRAIN_TURN_MEASURES = [
+  "initMs",
+  "firstEventMs",
+  "firstTokenMs",
+  "firstAssistantMs",
+  "retries",
+  "retryDelayMs",
+  "thinkingBlocks",
+  "thinkingChars",
+] as const;
 
 /**
  * One event of a brain turn on the wire (`brain.event`), the same shape as
@@ -3674,26 +3695,23 @@ export function parseBrainEvent(v: unknown): WireBrainEvent | null {
     case "done": {
       if (!isString(v.text)) return null;
       const session = isObject(v.session) && isString(v.session.id) ? { id: v.session.id.slice(0, 64) } : undefined;
-      // A runner reports these itself: past a day it is a wrong clock, not a slow start, and would skew the percentiles.
+      // A runner reports these itself: past a day it is a wrong clock, not a slow start, and would skew the percentiles
+      // (the counts share the bound, far above any real turn's).
       const DAY_MS = 86_400_000;
       const ms = (x: unknown) =>
         finite(x) !== undefined && (x as number) >= 0 && (x as number) <= DAY_MS ? Math.round(x as number) : undefined;
       const t = isObject(v.timings) && typeof v.timings.warm === "boolean" ? v.timings : null;
-      const initMs = ms(t?.initMs);
-      const firstEventMs = ms(t?.firstEventMs);
+      const measures = t
+        ? BRAIN_TURN_MEASURES.flatMap((k) => {
+            const n = ms(t[k]);
+            return n === undefined ? [] : [[k, n] as const];
+          })
+        : [];
       return {
         type: "done",
         text: v.text.slice(0, BRAIN_LIMITS.doneText),
         ...(session ? { session } : {}),
-        ...(t
-          ? {
-              timings: {
-                warm: t.warm as boolean,
-                ...(initMs !== undefined ? { initMs } : {}),
-                ...(firstEventMs !== undefined ? { firstEventMs } : {}),
-              },
-            }
-          : {}),
+        ...(t ? { timings: { warm: t.warm as boolean, ...Object.fromEntries(measures) } } : {}),
       };
     }
     case "error":

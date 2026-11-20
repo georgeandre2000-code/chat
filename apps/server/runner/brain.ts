@@ -24,6 +24,7 @@ import {
   type BrainSteerReply,
   type BrainSteerRequest,
   type BrainTurnRequest,
+  type BrainTurnTimings,
   isAccountId,
   isBrainEffort,
   isContextTokens,
@@ -197,6 +198,11 @@ const FAST_FAIL_MS = 30_000;
 const SESSION_ID = /^[a-fA-F0-9-]{36}$/;
 const RUN_ID = /^[a-zA-Z0-9-]{8,64}$/;
 const MODEL = /^[A-Za-z0-9._:[\]-]{1,100}$/;
+/** The `--model` a turn names, if any. */
+const turnModel = (req: BrainTurnRequest) =>
+  typeof req.model === "string" && MODEL.test(req.model) ? req.model : undefined;
+/** How long Claude Code may take to answer one of our control requests before the process counts as refusing it. */
+export const CONTROL_REPLY_MS = 5_000;
 const STDERR_KEEP = 4000;
 
 /**
@@ -381,6 +387,19 @@ function taskOf(ev: Record<string, unknown>): ParsedTask | undefined {
   return undefined;
 }
 
+/** Where a request's model time went on its process, for its timings (`ClaudeStreamParser.stats`). */
+export interface ClaudeTurnStats {
+  /** The API's first streamed message of the main conversation (`message_start`), and its first whole block. */
+  firstTokenAt?: number;
+  firstAssistantAt?: number;
+  /** Every `api_retry`, subagents' too, and the waits they announced (`retry_delay_ms`). */
+  retries: number;
+  retryDelayMs: number;
+  /** The main conversation's thinking blocks, and the characters of their text (none when the API omits it). */
+  thinkingBlocks: number;
+  thinkingChars: number;
+}
+
 /**
  * Claude Code's `stream-json` output → `WireBrainEvent`s. One parser per
  * process (the session id persists); `beginTurn` resets what a turn tracks.
@@ -391,6 +410,8 @@ function taskOf(ev: Record<string, unknown>): ParsedTask | undefined {
  */
 export class ClaudeStreamParser {
   session?: string;
+  /** Counted from `resetStats` on, across the turns the CLI runs for one request (`beginTurn` leaves them). */
+  stats: ClaudeTurnStats = { retries: 0, retryDelayMs: 0, thinkingBlocks: 0, thinkingChars: 0 };
   /** The CLI compacted the conversation (`compact_boundary`) since the last turn that read "# This conversation". */
   compacted = false;
   /** Told at the compaction itself: a runner that dies before the turn ends still knows on its next start. */
@@ -427,6 +448,10 @@ export class ClaudeStreamParser {
   /** The calls of the main conversation (ours and its own) whose result hasn't come yet, oldest first. */
   inFlight(): InFlightTool[] {
     return [...this.tools.values()];
+  }
+
+  resetStats() {
+    this.stats = { retries: 0, retryDelayMs: 0, thinkingBlocks: 0, thinkingChars: 0 };
   }
 
   beginTurn() {
@@ -483,6 +508,10 @@ export class ClaudeStreamParser {
           this.onCompacted?.();
         }
         const retryInMs = ev.subtype === "api_retry" && num(ev.retry_delay_ms) > 0 ? num(ev.retry_delay_ms) : 0;
+        if (ev.subtype === "api_retry") {
+          this.stats.retries++;
+          this.stats.retryDelayMs += retryInMs;
+        }
         const task = taskOf(ev);
         return { events: [], ...(task ? { task } : {}), ...(retryInMs ? { retryInMs } : {}) };
       }
@@ -497,8 +526,10 @@ export class ClaudeStreamParser {
         if (main && (e.type === "message_start" || e.type === "message_stop")) this.openBlocks = 0;
         if (main && e.type === "content_block_start") this.openBlocks++;
         if (main && e.type === "content_block_stop") this.openBlocks = Math.max(0, this.openBlocks - 1);
-        if (main && e.type === "message_start")
+        if (main && e.type === "message_start") {
           this.streamedMessage = isObj(e.message) ? str(e.message.id) || null : null;
+          this.stats.firstTokenAt ??= Date.now();
+        }
         if (main && e.type === "content_block_delta" && delta.type === "text_delta" && str(delta.text)) {
           this.sawDelta = true;
           return { events: [{ type: "text_delta", text: str(delta.text) }] };
@@ -519,6 +550,7 @@ export class ClaudeStreamParser {
         } else {
           // A reply came through: an earlier retry's cause is not why the turn may fail later.
           this.failure = {};
+          this.stats.firstAssistantAt ??= Date.now();
         }
         const messageId = isObj(ev.message) ? str(ev.message.id) : "";
         if (messageId && isObj(ev.message) && isObj(ev.message.usage)) {
@@ -537,6 +569,10 @@ export class ClaudeStreamParser {
         for (const block of content) {
           if (!isObj(block)) continue;
           if (block.type === "tool_use") this.worked = true;
+          if (block.type === "thinking" || block.type === "redacted_thinking") {
+            this.stats.thinkingBlocks++;
+            this.stats.thinkingChars += str(block.thinking).length;
+          }
           if (block.type === "tool_use" && str(block.id) && str(block.name)) {
             this.tools.set(str(block.id), { name: str(block.name), input: block.input ?? {} });
             // Ours run through the bridge, which tells the engine as they start.
@@ -1101,6 +1137,8 @@ export class ClaudeProcess {
   readonly ownSettings: boolean;
   private lineHandler: ((line: string) => void) | null = null;
   private exitHandlers = new Set<() => void>();
+  /** Our control requests waiting for their `control_response`, by request id. */
+  private controls = new Map<string, (response: Record<string, unknown>) => void>();
 
   constructor(
     command: string[],
@@ -1155,6 +1193,7 @@ export class ClaudeProcess {
         // Nothing after a breach reaches the turn, not even what was already on its way.
         if (this.breach) return;
         if (this.onControl && line.includes('"control_request"') && this.refuseControl(line)) return;
+        if (this.controls.size > 0 && line.includes('"control_response"') && this.controlAnswered(line)) return;
         if (line.includes('"task_')) this.noteTask(line);
         if (this.lineHandler) this.lineHandler(line);
         else this.noteIdle(line);
@@ -1221,6 +1260,45 @@ export class ClaudeProcess {
         if (!this.turn) this.ownTurnDue = true;
       }
       return true;
+    } catch {
+      return false;
+    }
+  }
+
+  /**
+   * One control request of ours: "ok" once Claude Code said success (and its answer passes `check`), "refused" on its
+   * error, another answer or exit, "silent" when `ms` passed with no answer (a version that ignores the request).
+   */
+  control(
+    request: Record<string, unknown>,
+    ms: number,
+    check?: (response: Record<string, unknown>) => boolean,
+  ): Promise<"ok" | "refused" | "silent"> {
+    if (this.exited) return Promise.resolve("refused");
+    const id = `agentes-${crypto.randomUUID()}`;
+    return new Promise((resolve) => {
+      const done = (said: "ok" | "refused" | "silent") => {
+        clearTimeout(timer);
+        offExit();
+        this.controls.delete(id);
+        resolve(said);
+      };
+      const timer = setTimeout(() => done("silent"), ms);
+      const offExit = this.onExit(() => done("refused"));
+      this.controls.set(id, (r) =>
+        done(r.subtype === "success" && (!check || check(isObj(r.response) ? r.response : {})) ? "ok" : "refused"),
+      );
+      this.write(`${JSON.stringify({ type: "control_request", request_id: id, request })}\n`);
+    });
+  }
+
+  private controlAnswered(line: string) {
+    try {
+      const ev = JSON.parse(line) as Record<string, unknown>;
+      const r = ev.type === "control_response" && isObj(ev.response) ? ev.response : null;
+      const answer = r ? this.controls.get(str(r.request_id)) : undefined;
+      answer?.(r as Record<string, unknown>);
+      return answer !== undefined;
     } catch {
       return false;
     }
@@ -1764,6 +1842,8 @@ export interface BrainManagerOptions {
   strayWaitMs?: number;
   /** Tests: `OWN_TURN_DUE_WAIT_MS`. */
   dueWaitMs?: number;
+  /** Tests: `CONTROL_REPLY_MS`. */
+  controlReplyMs?: number;
   /** Tests: how long each phase of a turn may stay quiet (`CLAUDE_SILENCE`). */
   silence?: ClaudeSilence;
   log?: (line: string) => void;
@@ -1778,6 +1858,9 @@ interface Live {
   account: string | null;
   /** Launch settings: a turn asking for others restarts the process (resumed). */
   sig: string;
+  /** The model and effort it runs on now: started with, or switched to since (`switchLive`). */
+  model?: string;
+  effort?: BrainEffort;
   /** What `ran` remembers for it: the session, in its account. */
   ranKey: string;
   /** Where its session's first system text is kept (`sessionSystem`). */
@@ -1924,6 +2007,8 @@ export class BrainManager {
   private readonly running = new Map<string, Live>();
   /** Sessions that answered here (`ranKeyOf`): resumed next time even where Claude Code's folder can't be looked at. */
   private readonly ran = new Set<string>();
+  /** Claude Code versions that left a control request of ours unanswered: they get a new process at once instead. */
+  private readonly silentControls = new Set<string>();
   private closed = false;
   /** The accounts its agent thinks with, as root last said (`keepAccount`); undefined: not said. */
   private keep: ReadonlySet<string> | undefined;
@@ -2122,17 +2207,23 @@ export class BrainManager {
 
   private signature(cwd: string, req: BrainTurnRequest, ctx: BrainTurnContext) {
     const secret = ctx.planKey?.key ?? ctx.oauthToken;
+    const model = turnModel(req);
     return JSON.stringify({
       cwd,
-      model: req.model ?? null,
+      // Another model or effort switches on the open process (`switchLive`). Not on a coding plan's key, whose model
+      // also sets its env; nor between a model or effort and none (the CLI's reset is to what it started with); nor
+      // to a model with another `--fallback-model`, which only a start sets.
+      model: ctx.planKey
+        ? (req.model ?? null)
+        : { set: model !== undefined, fallback: fallbackModelFor(model) ?? null },
       personal: req.personalMcp === true,
       perm: req.permissions ?? null,
       // Folders allowed or removed on the machine: the process restarts (resumed) with the new `--add-dir`s.
       dirs: ctx.grants ?? [],
-      // Another account or effort: a new process (in the other account, a new session); a new key or token too.
+      // Another account: a new process (in the other account, a new session); a new key or token too.
       account: ctx.accountHome ? (req.account ?? null) : null,
       key: secret ? createHash("sha256").update(secret).digest("hex").slice(0, 16) : null,
-      effort: isBrainEffort(req.effort) ? req.effort : null,
+      effort: isBrainEffort(req.effort),
       // Another context limit: a new process (resumed), started with it.
       context: isContextTokens(req.contextTokens) ? req.contextTokens : null,
       // Its commits' lines are in its env (`co-authors.ts`): turned off or the agent renamed, a new one (resumed).
@@ -2161,17 +2252,22 @@ export class BrainManager {
     };
     let warm = false;
     let started: Live | undefined;
-    const timed = (final: WireBrainEvent): WireBrainEvent => {
+    const since = (at: number | null | undefined) => (at != null && at >= startedAt ? at - startedAt : undefined);
+    const timed = (final: WireBrainEvent, used: Live): WireBrainEvent => {
       if (final.type !== "done") return final;
-      const initAt = started?.proc.initAt;
-      return {
-        ...final,
-        timings: {
-          warm,
-          ...(initAt != null && initAt >= startedAt ? { initMs: initAt - startedAt } : {}),
-          ...(firstEventMs !== undefined ? { firstEventMs } : {}),
-        },
+      const s = used.proc.parser.stats;
+      const measures: Omit<BrainTurnTimings, "warm"> = {
+        initMs: since(started?.proc.initAt),
+        firstEventMs,
+        firstTokenMs: since(s.firstTokenAt),
+        firstAssistantMs: since(s.firstAssistantAt),
+        retries: s.retries,
+        retryDelayMs: s.retryDelayMs,
+        thinkingBlocks: s.thinkingBlocks,
+        thinkingChars: s.thinkingChars,
       };
+      const kept = Object.entries(measures).filter(([, v]) => v !== undefined);
+      return { ...final, timings: { warm, ...Object.fromEntries(kept) } };
     };
     // A route on this sign-in stops first: two processes on one sign-in race on its refresh token. Kept right
     // before the process starts, since a route may begin during any await before it.
@@ -2183,10 +2279,13 @@ export class BrainManager {
     // A turn Claude Code runs by itself there (or one due): its output would read as this turn's. Wait for
     // its end (output discarded) and keep the process, with the agent's background jobs; kill only a stuck one.
     if (live && live.sig === sig && live.proc.onItsOwn) live = await this.awaitOwnTurn(live, session, ctx);
-    if (live && (live.proc.exited || live.sig !== sig)) {
+    if (live && (live.proc.exited || live.sig !== sig || !(await this.switchLive(live, req, ctx)))) {
       this.drop(live);
       live = undefined;
     }
+    // A turn of its own may have begun while it switched, and the runner may have begun to stop.
+    if (live?.proc.onItsOwn) live = await this.awaitOwnTurn(live, session, ctx);
+    if (this.closed) return errorEvent("runner_stopping", "The runner is stopping.", true);
     const keepAlive = req.keepAlive !== false;
     warm = Boolean(live);
     if (!live && keepAlive) {
@@ -2197,10 +2296,11 @@ export class BrainManager {
       started = live;
     }
     if (live) {
+      live.proc.parser.resetStats();
       const out = await this.onLive(live, req, ctx);
       // A background turn (a routine's run): nothing stays alive for it afterwards, not even a process it found.
       if (!keepAlive) this.drop(live);
-      if (out.final) return timed(out.final);
+      if (out.final) return timed(out.final, live);
       // Stalled and stopped: the same turn again, one-shot, resuming the session, told what hung (`stallNote`).
       if (out.stalled) {
         this.logStall(ctx, session, out.stalled, "resuming one-shot");
@@ -2219,6 +2319,50 @@ export class BrainManager {
       return this.oneShot(key, session, cwd, req, ctx, sig, resume, true, line);
     }
     return this.oneShot(key, session, cwd, req, ctx, sig, this.resumeFor(cwd, session, req, ctx), true);
+  }
+
+  /**
+   * The turn's model and effort on a process already open: Claude Code's `set_model`, and `apply_flag_settings` with
+   * `effortLevel` (answered by 2.1.328), instead of a new process (seconds of start). False when it refused one or
+   * didn't answer: the caller starts a new process, which takes both from its command line.
+   */
+  private async switchLive(live: Live, req: BrainTurnRequest, ctx: BrainTurnContext): Promise<boolean> {
+    const model = turnModel(req);
+    const effort = isBrainEffort(req.effort) ? req.effort : undefined;
+    if (live.model === model && live.effort === effort) return true;
+    const version = live.proc.cliVersion ?? "?";
+    if (this.silentControls.has(version)) return false;
+    live.busy = true;
+    if (live.idleTimer) clearTimeout(live.idleTimer);
+    live.idleTimer = null;
+    try {
+      const ms = this.opts.controlReplyMs ?? CONTROL_REPLY_MS;
+      const said =
+        model === live.model ? "ok" : await live.proc.control({ subtype: "set_model", model: model ?? null }, ms);
+      const appliedEffort =
+        said !== "ok" || effort === live.effort
+          ? said
+          : await live.proc.control({ subtype: "apply_flag_settings", settings: { effortLevel: effort ?? null } }, ms);
+      // A CLI whose `--effort` outranks the flag layer still says success: only `get_settings` shows the effort in force.
+      const saidEffort =
+        appliedEffort !== "ok" || effort === live.effort
+          ? appliedEffort
+          : await live.proc.control({ subtype: "get_settings" }, ms, (r) =>
+              isObj(r.applied) ? r.applied.effort === effort : false,
+            );
+      if (saidEffort === "ok") {
+        live.model = model;
+        live.effort = effort;
+        return true;
+      }
+      if (saidEffort === "silent") this.silentControls.add(version);
+      this.log(
+        `[${ctx.agent.handle}] Claude Code ${version} ${saidEffort === "silent" ? "didn't answer" : "refused"} a switch to ${model ?? "its default model"}, effort ${effort ?? "default"}; starting a new process`,
+      );
+      return false;
+    } finally {
+      live.busy = false;
+    }
   }
 
   /**
@@ -2689,6 +2833,8 @@ export class BrainManager {
       proc,
       account: ctx.accountHome && typeof req.account === "string" ? req.account : null,
       sig,
+      model: turnModel(req),
+      effort: isBrainEffort(req.effort) ? req.effort : undefined,
       ranKey,
       keptSystem,
       dir,
